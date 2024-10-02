@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 
 const DepartmentList = () => {
   const [departments, setDepartments] = useState([]);
+  const navigate = useNavigate(); // Inicializar o navegador
 
   // Função para buscar departamentos da API
   const fetchDepartments = async () => {
@@ -22,7 +24,7 @@ const DepartmentList = () => {
   }, []);
 
   const handleNewUser = () => {
-    alert('Função de criar novo usuário ainda não implementada!');
+    navigate('/departament/create');
   };
 
   return (
@@ -33,7 +35,7 @@ const DepartmentList = () => {
 
       <div className="d-flex justify-content-between">
         <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Nova Missão</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
       </div>
 
       <table className="table table-light table-hover" style={{marginTop: '2%'}}>

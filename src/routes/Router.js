@@ -17,6 +17,7 @@ const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register'))); 
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 const UserCreate = Loadable(lazy(() => import('../components/users/create')));
+const DepartmentCreate = Loadable(lazy(() => import('../components/departamentos/create')));
 const UserList = Loadable(lazy(() => import('../components/users/list')));
 const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
 const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
@@ -37,6 +38,7 @@ const Router = [
       { path: '/user/create', element: <PrivateRoute><UserCreate /></PrivateRoute> },
       { path: '/users', element: <PrivateRoute><UserList /></PrivateRoute> },
       { path: '/departaments', element: <PrivateRoute><DepartmentList /></PrivateRoute> },
+      { path: '/departament/create', element: <PrivateRoute><DepartmentCreate /></PrivateRoute> },
       { path: '/missoes', element: <PrivateRoute><MissoesList /></PrivateRoute> },
     ],
   },
