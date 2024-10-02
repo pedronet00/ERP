@@ -5,7 +5,7 @@ import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
 
 
-const SalesOverview = () => {
+const BalancoFiscal = () => {
 
     // select
     const [month, setMonth] = React.useState('1');
@@ -90,7 +90,7 @@ const SalesOverview = () => {
 
     return (
 
-        <DashboardCard title="Sales Overview" action={
+        <DashboardCard title="Balanço fiscal" action={
             <Select
                 labelId="month-dd"
                 id="month-dd"
@@ -113,4 +113,4 @@ const SalesOverview = () => {
     );
 };
 
-export default SalesOverview;
+export default BalancoFiscal;

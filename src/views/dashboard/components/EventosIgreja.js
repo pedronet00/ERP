@@ -50,7 +50,7 @@ const products = [
 ];
 
 
-const ProductPerformance = () => {
+const EventosIgreja = () => {
     return (
 
         <DashboardCard title="Eventos da igreja">
@@ -154,4 +154,4 @@ const ProductPerformance = () => {
     );
 };
 
-export default ProductPerformance;
+export default EventosIgreja;

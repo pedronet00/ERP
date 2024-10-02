@@ -3,12 +3,15 @@ import { Grid, Box } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
 // components
-import SalesOverview from './components/SalesOverview';
-import YearlyBreakup from './components/YearlyBreakup';
-import RecentTransactions from './components/RecentTransactions';
-import ProductPerformance from './components/ProductPerformance';
+import SalesOverview from './components/BalancoFiscal';
+import YearlyBreakup from './components/QuantidadeMembros';
+import RecentTransactions from './components/EntradaSaida';
+import EventosIgreja from './components/EventosIgreja';
 import Blog from './components/Blog';
-import MonthlyEarnings from './components/MonthlyEarnings';
+import EntradasMensais from './components/EntradasMensais';
+import EntradaSaida from './components/EntradaSaida';
+import BalancoFiscal from './components/BalancoFiscal';
+import QuantidadeMembros from './components/QuantidadeMembros';
 
 
 const Dashboard = () => {
@@ -16,25 +19,27 @@ const Dashboard = () => {
     <PageContainer title="Dashboard" description="this is Dashboard">
       <Box>
         <Grid container spacing={3}>
-          <Grid item xs={12} lg={8}>
-            <SalesOverview />
+          <Grid item xs={12} lg={12}>
+            <EventosIgreja />
+          </Grid>
+          <Grid item xs={8} lg={8}>
+            <EntradaSaida />
           </Grid>
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <YearlyBreakup />
+                <QuantidadeMembros />
               </Grid>
               <Grid item xs={12}>
-                <MonthlyEarnings />
+                <EntradasMensais />
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} lg={4}>
-            <RecentTransactions />
+          
+          <Grid item xs={12} lg={12}>
+            <BalancoFiscal />
           </Grid>
-          <Grid item xs={12} lg={8}>
-            <ProductPerformance />
-          </Grid>
+          
           <Grid item xs={12}>
             <Blog />
           </Grid>

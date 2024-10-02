@@ -12,7 +12,7 @@ import {
 } from '@mui/lab';
 import { Link, Typography } from '@mui/material';
 
-const RecentTransactions = () => {
+const EntradaSaida = () => {
   return (
     <DashboardCard title="Entradas e saídas de recursos">
       <>
@@ -99,4 +99,4 @@ const RecentTransactions = () => {
   );
 };
 
-export default RecentTransactions;
+export default EntradaSaida;

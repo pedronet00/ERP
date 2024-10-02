@@ -5,7 +5,7 @@ import { Stack, Typography, Avatar, Fab } from '@mui/material';
 import { IconArrowDownRight, IconCurrencyDollar } from '@tabler/icons-react';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const MonthlyEarnings = () => {
+const EntradasMensais = () => {
   // chart color
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
@@ -53,7 +53,7 @@ const MonthlyEarnings = () => {
 
   return (
     <DashboardCard
-      title="Monthly Earnings"
+      title="Entradas mensais"
       action={
         <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
           <IconCurrencyDollar width={24} />
@@ -65,7 +65,7 @@ const MonthlyEarnings = () => {
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          $6,820
+          R$ 50.820
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
@@ -83,4 +83,4 @@ const MonthlyEarnings = () => {
   );
 };
 
-export default MonthlyEarnings;
+export default EntradasMensais;

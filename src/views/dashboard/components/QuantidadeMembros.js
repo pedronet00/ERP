@@ -6,7 +6,7 @@ import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const YearlyBreakup = () => {
+const QuantidadeMembros = () => {
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
@@ -110,4 +110,4 @@ const YearlyBreakup = () => {
   );
 };
 
-export default YearlyBreakup;
+export default QuantidadeMembros;
