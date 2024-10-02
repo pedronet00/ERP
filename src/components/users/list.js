@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit } from '@tabler/icons-react';
+import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const UserList = () => {
@@ -31,7 +31,8 @@ const UserList = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Usuários</h2>
-        <button className="btn btn-primary" onClick={handleNewUser}>Novo Usuário</button>
+        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/> Novo Usuário</button>
       </div>
 
       <table className="table table-light table-hover">
