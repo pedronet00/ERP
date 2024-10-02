@@ -44,24 +44,13 @@ const Login2 = () => {
               <AuthLogin
                 subtext={
                   <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={1}>
-                    Your Social Campaigns
+                    Sistema Gerenciador da Primeira Igreja Batista de Presidente Prudente
                   </Typography>
                 }
                 subtitle={
                   <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
-                    <Typography color="textSecondary" variant="h6" fontWeight="500">
-                      New to Modernize?
-                    </Typography>
-                    <Typography
-                      component={Link}
-                      to="/auth/register"
-                      fontWeight="500"
-                      sx={{
-                        textDecoration: 'none',
-                        color: 'primary.main',
-                      }}
-                    >
-                      Create an account
+                    <Typography color="textSecondary" variant="h6" fontWeight="500" textAlign="center">
+                      <i>"Porque dele, por Ele e para Ele são todas as coisas. Glórias, pois, à Ele eternamente. Amém!"</i><br/> Ro 11:36
                     </Typography>
                   </Stack>
                 }
