@@ -19,6 +19,8 @@ const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 const UserCreate = Loadable(lazy(() => import('../components/users/create')));
 const UserList = Loadable(lazy(() => import('../components/users/list')));
 const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
+const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
+
 
 const Router = [
   {
@@ -35,6 +37,7 @@ const Router = [
       { path: '/user/create', element: <PrivateRoute><UserCreate /></PrivateRoute> },
       { path: '/users', element: <PrivateRoute><UserList /></PrivateRoute> },
       { path: '/departaments', element: <PrivateRoute><DepartmentList /></PrivateRoute> },
+      { path: '/missoes', element: <PrivateRoute><MissoesList /></PrivateRoute> },
     ],
   },
   {

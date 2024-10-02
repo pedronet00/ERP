@@ -36,6 +36,7 @@ const UserList = () => {
           <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Email</th>
             <th>Data de Nascimento</th>
           </tr>
         </thead>
@@ -45,6 +46,7 @@ const UserList = () => {
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
+                <td>{user.email}</td>
                 <td>{user.dataNascimentoUsuario}</td>
               </tr>
             ))
