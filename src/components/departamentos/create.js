@@ -79,7 +79,7 @@ const CriarDepartamento = () => {
             id="imgDepartamento"
             value={imgDepartamento}
             onChange={(e) => setImgDepartamento(e.target.value)}
-            required
+            required 
           />
         </div>
         <button type="submit" className="btn btn-primary">Criar Departamento</button>
