@@ -1,6 +1,6 @@
 import {
   IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers
+  IconUsers, IconBuildingChurch, IconScript
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -54,7 +54,23 @@ const Menuitems = [
   
   {
     navlabel: true,
-    subheader: 'Extra',
+    subheader: 'Cultos',
+  },
+  {
+    id: uniqueId(),
+    title: 'Histórico de Cultos',
+    icon: IconBuildingChurch,
+    href: '/ui/shadow',
+  },
+  {
+    id: uniqueId(),
+    title: 'Atas de Cultos',
+    icon: IconScript,
+    href: '/ui/shadow',
+  },
+  {
+    navlabel: true,
+    subheader: 'Outros',
   },
   {
     id: uniqueId(),
