@@ -17,6 +17,7 @@ const Register = Loadable(lazy(() => import('../views/authentication/Register'))
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 const UserCreate = Loadable(lazy(() => import('../components/users/create')));
 const UserList = Loadable(lazy(() => import('../components/users/list')));
+const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
 
 
 const Router = [
@@ -33,6 +34,7 @@ const Router = [
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/user/create', element: <UserCreate/> },
       { path: '/users', element: <UserList/> },
+      { path: '/departaments', element: <DepartmentList/> },
     ],
   },
   {

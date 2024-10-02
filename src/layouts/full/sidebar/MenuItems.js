@@ -31,7 +31,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Departamentos',
     icon: IconCopy,
-    href: '/ui/shadow',
+    href: '/departaments',
   },
   {
     id: uniqueId(),
