@@ -31,11 +31,14 @@ const UserList = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Usuários</h2>
+      </div>
+
+      <div className="d-flex justify-content-between">
         <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/> Novo Usuário</button>
       </div>
 
-      <table className="table table-light table-hover">
+      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
         <thead>
           <tr>
             <th>ID</th>

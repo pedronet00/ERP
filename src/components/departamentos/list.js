@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit } from '@tabler/icons-react';
+import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 
 
 const DepartmentList = () => {
@@ -21,10 +21,22 @@ const DepartmentList = () => {
     fetchDepartments();
   }, []);
 
+  const handleNewUser = () => {
+    alert('Função de criar novo usuário ainda não implementada!');
+  };
+
   return (
     <div className="container mt-4">
-      <h2>Lista de Departamentos</h2>
-      <table className="table table-light table-hover">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Departamentos</h2>
+      </div>
+
+      <div className="d-flex justify-content-between">
+        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Nova Missão</button>
+      </div>
+
+      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
         <thead>
           <tr>
             <th>Título</th>

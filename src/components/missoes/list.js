@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit } from '@tabler/icons-react';
+import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 
 const MissoesList = () => {
   
@@ -14,10 +14,14 @@ const MissoesList = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Missões</h2>
-        <button className="btn btn-primary" onClick={handleNewUser}>Nova Missão</button>
       </div>
 
-      <table className="table table-light table-hover">
+      <div className="d-flex justify-content-between">
+        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Nova Missão</button>
+      </div>
+
+      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
         <thead>
           <tr>
             <th>ID</th>
