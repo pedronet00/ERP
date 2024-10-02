@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate(); // Inicializar o navegador
 
   // Função para buscar usuários da API
   const fetchUsers = async () => {
@@ -22,7 +24,7 @@ const UserList = () => {
 
   // Função do botão de novo usuário (você pode ajustar conforme necessário)
   const handleNewUser = () => {
-    alert('Função de criar novo usuário ainda não implementada!');
+    navigate('/user/create');
   };
 
   return (
