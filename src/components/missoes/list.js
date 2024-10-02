@@ -24,6 +24,7 @@ const MissoesList = () => {
             <th>Cidade</th>
             <th>Membros</th>
             <th>Pastor titular</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -42,18 +43,18 @@ const MissoesList = () => {
               <td>Pastor Humberto Sedano</td>
             </tr>  
             <tr key="1">
-              <td>1</td>
-              <td>Missão Batista de Presidente Bernardes</td>
-              <td>Presidente Bernardes</td>
-              <td>15</td>
-              <td>Pastor Luiz Antônio</td>
+              <td>3</td>
+              <td>Missão Batista de Pirapozinho</td>
+              <td>Pirapozinho</td>
+              <td>12</td>
+              <td>Pastor Wilson Martins</td>
             </tr>  
             <tr key="1">
-              <td>1</td>
-              <td>Missão Batista de Presidente Bernardes</td>
-              <td>Presidente Bernardes</td>
-              <td>15</td>
-              <td>Pastor Luiz Antônio</td>
+              <td>4</td>
+              <td>Missão Batista de Regente Feijó</td>
+              <td>Regente Feijó</td>
+              <td>6</td>
+              <td>Pastor Israel Siqueira</td>
             </tr>  
         </tbody>
       </table>

@@ -37,7 +37,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Missões',
     icon: IconTargetArrow,
-    href: '/ui/shadow',
+    href: '/missoes',
   },
   {
     id: uniqueId(),

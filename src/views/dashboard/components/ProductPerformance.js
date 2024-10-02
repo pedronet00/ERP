@@ -13,39 +13,39 @@ import DashboardCard from '../../../components/shared/DashboardCard';
 const products = [
     {
         id: "1",
-        name: "Sunil Joshi",
-        post: "Web Designer",
-        pname: "Elite Admin",
-        priority: "Low",
-        pbg: "primary.main",
-        budget: "3.9",
+        titulo: "Churrasco 15 de Novembro",
+        publico: "Igreja",
+        data: "15/11/2024",
+        priority: "Alta",
+        pbg: "error.main",
+        orcamento: "1.5",
     },
     {
         id: "2",
-        name: "Andrew McDownland",
-        post: "Project Manager",
-        pname: "Real Homes WP Theme",
-        priority: "Medium",
+        titulo: "Aniversário da Igreja",
+        publico: "Igreja",
+        data: "20/11/2024",
+        priority: "Média",
         pbg: "secondary.main",
-        budget: "24.5",
+        orcamento: "24.5",
     },
     {
         id: "3",
-        name: "Christopher Jamil",
-        post: "Project Manager",
-        pname: "MedicalPro WP Theme",
-        priority: "High",
-        pbg: "error.main",
-        budget: "12.8",
+        titulo: "Natal",
+        publico: "Igreja",
+        data: "24/12/2024",
+        priority: "Média",
+        pbg: "success.main",
+        orcamento: "12.8",
     },
     {
         id: "4",
-        name: "Nirav Joshi",
-        post: "Frontend Engineer",
-        pname: "Hosting Press HTML",
-        priority: "Critical",
+        titulo: "Nirav Joshi",
+        publico: "Frontend Engineer",
+        data: "Hosting Press HTML",
+        priority: "Crítica",
         pbg: "success.main",
-        budget: "2.4",
+        orcamento: "2.4",
     },
 ];
 
@@ -53,7 +53,7 @@ const products = [
 const ProductPerformance = () => {
     return (
 
-        <DashboardCard title="Product Performance">
+        <DashboardCard title="Eventos da igreja">
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
                     aria-label="simple table"
@@ -71,29 +71,29 @@ const ProductPerformance = () => {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Assigned
+                                    Título
                                 </Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Name
+                                    Data
                                 </Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Priority
+                                    Prioridade
                                 </Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Budget
+                                    Orçamento
                                 </Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {products.map((product) => (
-                            <TableRow key={product.name}>
+                            <TableRow key={product.titulo}>
                                 <TableCell>
                                     <Typography
                                         sx={{
@@ -113,7 +113,7 @@ const ProductPerformance = () => {
                                     >
                                         <Box>
                                             <Typography variant="subtitle2" fontWeight={600}>
-                                                {product.name}
+                                                {product.titulo}
                                             </Typography>
                                             <Typography
                                                 color="textSecondary"
@@ -121,14 +121,14 @@ const ProductPerformance = () => {
                                                     fontSize: "13px",
                                                 }}
                                             >
-                                                {product.post}
+                                                {product.publico}
                                             </Typography>
                                         </Box>
                                     </Box>
                                 </TableCell>
                                 <TableCell>
                                     <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                        {product.pname}
+                                        {product.data}
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
@@ -143,7 +143,7 @@ const ProductPerformance = () => {
                                     ></Chip>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <Typography variant="h6">${product.budget}k</Typography>
+                                    <Typography variant="h6">${product.orcamento}k</Typography>
                                 </TableCell>
                             </TableRow>
                         ))}
