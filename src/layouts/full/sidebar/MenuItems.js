@@ -51,22 +51,7 @@ const Menuitems = [
     icon: IconFileDollar,
     href: '/ui/shadow',
   },
-  {
-    navlabel: true,
-    subheader: 'Auth',
-  },
-  {
-    id: uniqueId(),
-    title: 'Login',
-    icon: IconLogin,
-    href: '/auth/login',
-  },
-  {
-    id: uniqueId(),
-    title: 'Register',
-    icon: IconUserPlus,
-    href: '/auth/register',
-  },
+  
   {
     navlabel: true,
     subheader: 'Extra',
