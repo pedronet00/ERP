@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { IconX, IconEdit } from '@tabler/icons-react';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -38,6 +39,7 @@ const UserList = () => {
             <th>Nome</th>
             <th>Email</th>
             <th>Data de Nascimento</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +50,7 @@ const UserList = () => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.dataNascimentoUsuario}</td>
+                <td><IconX/><IconEdit/></td>
               </tr>
             ))
           ) : (

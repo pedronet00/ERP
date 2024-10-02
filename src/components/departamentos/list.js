@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { IconX, IconEdit } from '@tabler/icons-react';
+
 
 const DepartmentList = () => {
   const [departments, setDepartments] = useState([]);
@@ -28,6 +30,7 @@ const DepartmentList = () => {
             <th>Título</th>
             <th>Texto</th>
             <th>Status</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +40,7 @@ const DepartmentList = () => {
                 <td>{department.tituloDepartamento}</td>
                 <td>{department.textoDepartamento}</td>
                 <td>{department.statusDepartamento === 1 ? 'Ativo' : 'Inativo'}</td>
+                <td><IconX/><IconEdit/></td>
               </tr>
             ))
           ) : (

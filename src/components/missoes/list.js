@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { IconX, IconEdit } from '@tabler/icons-react';
 
 const MissoesList = () => {
   
@@ -34,6 +35,7 @@ const MissoesList = () => {
               <td>Presidente Bernardes</td>
               <td>15</td>
               <td>Pastor Luiz Antônio</td>
+              <td><IconX/><IconEdit/></td>
             </tr>  
             <tr key="2">
               <td>2</td>
@@ -41,6 +43,7 @@ const MissoesList = () => {
               <td>Álvares Machado</td>
               <td>30</td>
               <td>Pastor Humberto Sedano</td>
+              <td><IconX/><IconEdit/></td>
             </tr>  
             <tr key="1">
               <td>3</td>
@@ -48,6 +51,7 @@ const MissoesList = () => {
               <td>Pirapozinho</td>
               <td>12</td>
               <td>Pastor Wilson Martins</td>
+              <td><IconX/><IconEdit/></td>
             </tr>  
             <tr key="1">
               <td>4</td>
@@ -55,6 +59,7 @@ const MissoesList = () => {
               <td>Regente Feijó</td>
               <td>6</td>
               <td>Pastor Israel Siqueira</td>
+              <td><IconX/><IconEdit/></td>
             </tr>  
         </tbody>
       </table>
