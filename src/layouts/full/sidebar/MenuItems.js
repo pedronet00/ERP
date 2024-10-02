@@ -76,7 +76,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Ver Blog',
     icon: IconArticle,
-    href: '/icons',
+    href: 'https://pib-three.vercel.app/blog',
   },
   {
     id: uniqueId(),
