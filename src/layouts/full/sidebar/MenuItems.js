@@ -1,5 +1,5 @@
 import {
-  IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUser, IconUserPlus,
+  IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
   IconUsers
 } from '@tabler/icons-react';
 
@@ -29,8 +29,26 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Shadow',
+    title: 'Departamentos',
     icon: IconCopy,
+    href: '/ui/shadow',
+  },
+  {
+    id: uniqueId(),
+    title: 'Missões',
+    icon: IconTargetArrow,
+    href: '/ui/shadow',
+  },
+  {
+    id: uniqueId(),
+    title: 'Recursos',
+    icon: IconStar,
+    href: '/ui/shadow',
+  },
+  {
+    id: uniqueId(),
+    title: 'Finanças',
+    icon: IconFileDollar,
     href: '/ui/shadow',
   },
   {

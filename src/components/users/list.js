@@ -31,7 +31,7 @@ const UserList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}>Novo Usuário</button>
       </div>
 
-      <table className="table table-striped">
+      <table className="table table-light table-hover">
         <thead>
           <tr>
             <th>ID</th>
