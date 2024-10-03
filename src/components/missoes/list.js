@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import {
+  Typography, Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Chip
+} from '@mui/material';
 
 const MissoesList = () => {
   
@@ -39,36 +48,76 @@ const MissoesList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Nova Missão</button>
       </div>
 
-      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Cidade</th>
-            <th>Membros</th>
-            <th>Pastor titular</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {missoes.length > 0 ? (
-            missoes.map((missao) => (
-              <tr key={missao.id}>
-                <td>{missao.id}</td>
-                <td>{missao.nomeMissao}</td>
-                <td>{missao.cidadeMissao}</td>
-                <td>{missao.quantidadeMembros}</td>
-                <td>{missao.pastorTitular}</td>
-                <td><IconX/><IconEdit/></td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">Nenhum departamento encontrado</td>
-            </tr>
-          )} 
-        </tbody>
-      </table>
+      <Table sx={{ marginTop: '2%' }}>
+  <TableHead>
+    <TableRow>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          ID
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Nome
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Cidade
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Membros
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Pastor titular
+        </Typography>
+      </TableCell>
+      <TableCell align="right">
+        <Typography variant="subtitle2" fontWeight={600}>
+          Ações
+        </Typography>
+      </TableCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    {missoes.length > 0 ? (
+      missoes.map((missao) => (
+        <TableRow key={missao.id}>
+          <TableCell>
+            <Typography variant="body2">{missao.id}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{missao.nomeMissao}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{missao.cidadeMissao}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{missao.quantidadeMembros}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{missao.pastorTitular}</Typography>
+          </TableCell>
+          <TableCell align="right">
+            <IconX />
+            <IconEdit />
+          </TableCell>
+        </TableRow>
+      ))
+    ) : (
+      <TableRow>
+        <TableCell colSpan={6} align="center">
+          <Typography variant="body2">Nenhum departamento encontrado</Typography>
+        </TableCell>
+      </TableRow>
+    )}
+  </TableBody>
+</Table>
+
     </div>
   );
 };

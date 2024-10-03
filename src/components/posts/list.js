@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import {
+    Typography, Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Chip
+} from '@mui/material';
 
 
 const PostList = () => {
@@ -38,38 +47,86 @@ const PostList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Post</button>
       </div>
 
-      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Data de Criação</th>
-            <th>Data de Publicação</th>
-            <th>Tipo do Post</th>
-            <th>Status do Post</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.length > 0 ? (
-            posts.map((post) => (
-              <tr key={post.id}>
-                <td>{post.tituloPost}</td>
-                <td>{post.autor.name}</td>
-                <td>{post.created_at}</td>
-                <td>{post.dataPost}</td>
-                <td>{post.tipo.tipoPost}</td>
-                <td>{post.statusPost === 1 ? 'Ativo' : 'Inativo'}</td>
-                <td><IconX/><IconEdit/></td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">Nenhum departamento encontrado</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Table sx={{ marginTop: '2%' }}>
+  <TableHead>
+    <TableRow>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Título
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Autor
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Data de Criação
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Data de Publicação
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Tipo do Post
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Status do Post
+        </Typography>
+      </TableCell>
+      <TableCell align="right">
+        <Typography variant="subtitle2" fontWeight={600}>
+          Ações
+        </Typography>
+      </TableCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    {posts.length > 0 ? (
+      posts.map((post) => (
+        <TableRow key={post.id}>
+          <TableCell>
+            <Typography variant="body2">{post.tituloPost}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{post.autor.name}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{post.created_at}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{post.dataPost}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{post.tipo.tipoPost}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">
+              {post.statusPost === 1 ? 'Ativo' : 'Inativo'}
+            </Typography>
+          </TableCell>
+          <TableCell align="right">
+            <IconX />
+            <IconEdit />
+          </TableCell>
+        </TableRow>
+      ))
+    ) : (
+      <TableRow>
+        <TableCell colSpan={7} align="center">
+          <Typography variant="body2">Nenhum departamento encontrado</Typography>
+        </TableCell>
+      </TableRow>
+    )}
+  </TableBody>
+</Table>
+
     </div>
   );
 };

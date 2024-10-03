@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import {
+  Typography, Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Chip
+} from '@mui/material';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -38,34 +47,68 @@ const UserList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/> Novo Usuário</button>
       </div>
 
-      <table className="table table-light table-hover" style={{marginTop: '2%'}}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Data de Nascimento</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.dataNascimentoUsuario}</td>
-                <td><IconX/><IconEdit/></td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="2">Nenhum usuário encontrado</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Table sx={{ marginTop: '2%' }}>
+  <TableHead>
+    <TableRow>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          ID
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Nome
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Email
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Data de Nascimento
+        </Typography>
+      </TableCell>
+      <TableCell align="right">
+        <Typography variant="subtitle2" fontWeight={600}>
+          Ações
+        </Typography>
+      </TableCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    {users.length > 0 ? (
+      users.map((user) => (
+        <TableRow key={user.id}>
+          <TableCell>
+            <Typography variant="body2">{user.id}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{user.name}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{user.email}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{user.dataNascimentoUsuario}</Typography>
+          </TableCell>
+          <TableCell align="right">
+            <IconX />
+            <IconEdit />
+          </TableCell>
+        </TableRow>
+      ))
+    ) : (
+      <TableRow>
+        <TableCell colSpan={5} align="center">
+          <Typography variant="body2">Nenhum usuário encontrado</Typography>
+        </TableCell>
+      </TableRow>
+    )}
+  </TableBody>
+</Table>
+
     </div>
   );
 };
