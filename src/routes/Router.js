@@ -23,6 +23,7 @@ const DepartmentList = Loadable(lazy(() => import('../components/departamentos/l
 const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
 const MissoesCreate = Loadable(lazy(() => import('../components/missoes/create')));
 const PostList = Loadable(lazy(() => import('../components/posts/list')));
+const Settings = Loadable(lazy(() => import('../components/settings/index')));
 
 
 const Router = [
@@ -44,6 +45,7 @@ const Router = [
       { path: '/missoes', element: <PrivateRoute requiredLevel={2}><MissoesList /></PrivateRoute> },
       { path: '/missoes/create', element: <PrivateRoute requiredLevel={4}><MissoesCreate /></PrivateRoute> },
       { path: '/posts', element: <PrivateRoute requiredLevel={1}><PostList /></PrivateRoute> },
+      { path: '/settings', element: <PrivateRoute requiredLevel={1}><Settings /></PrivateRoute> },
     ],
   },
   {
