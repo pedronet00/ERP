@@ -82,7 +82,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Posts',
     icon: IconPencilStar,
-    href: '/sample-page',
+    href: '/posts',
   },
   {
     navlabel: true,
