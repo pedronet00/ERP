@@ -31,19 +31,19 @@ const Router = [
     element: <FullLayout />,
     children: [
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
-      { path: '/dashboard', exact: true, element: <PrivateRoute><Dashboard /></PrivateRoute> },
-      { path: '/sample-page', exact: true, element: <PrivateRoute><SamplePage /></PrivateRoute> },
-      { path: '/icons', exact: true, element: <PrivateRoute><Icons /></PrivateRoute> },
-      { path: '/ui/typography', exact: true, element: <PrivateRoute><TypographyPage /></PrivateRoute> },
-      { path: '/ui/shadow', exact: true, element: <PrivateRoute><Shadow /></PrivateRoute> },
+      { path: '/dashboard', exact: true, element: <PrivateRoute requiredLevel={1}><Dashboard /></PrivateRoute> },
+      { path: '/sample-page', exact: true, element: <PrivateRoute requiredLevel={3}><SamplePage /></PrivateRoute> },
+      { path: '/icons', exact: true, element: <PrivateRoute requiredLevel={3}><Icons /></PrivateRoute> },
+      { path: '/ui/typography', exact: true, element: <PrivateRoute requiredLevel={3}><TypographyPage /></PrivateRoute> },
+      { path: '/ui/shadow', exact: true, element: <PrivateRoute requiredLevel={3}><Shadow /></PrivateRoute> },
       { path: '*', element: <Navigate to="/auth/404" /> },
-      { path: '/user/create', element: <PrivateRoute><UserCreate /></PrivateRoute> },
-      { path: '/users', element: <PrivateRoute><UserList /></PrivateRoute> },
-      { path: '/departaments', element: <PrivateRoute><DepartmentList /></PrivateRoute> },
-      { path: '/departament/create', element: <PrivateRoute><DepartmentCreate /></PrivateRoute> },
-      { path: '/missoes', element: <PrivateRoute><MissoesList /></PrivateRoute> },
-      { path: '/missoes/create', element: <PrivateRoute><MissoesCreate /></PrivateRoute> },
-      { path: '/posts', element: <PrivateRoute><PostList /></PrivateRoute> },
+      { path: '/user/create', element: <PrivateRoute requiredLevel={4}><UserCreate /></PrivateRoute> },
+      { path: '/users', element: <PrivateRoute requiredLevel={4}><UserList /></PrivateRoute> },
+      { path: '/departaments', element: <PrivateRoute requiredLevel={4}><DepartmentList /></PrivateRoute> },
+      { path: '/departament/create', element: <PrivateRoute requiredLevel={4}><DepartmentCreate /></PrivateRoute> },
+      { path: '/missoes', element: <PrivateRoute requiredLevel={4}><MissoesList /></PrivateRoute> },
+      { path: '/missoes/create', element: <PrivateRoute requiredLevel={4}><MissoesCreate /></PrivateRoute> },
+      { path: '/posts', element: <PrivateRoute requiredLevel={4}><PostList /></PrivateRoute> },
     ],
   },
   {
@@ -57,5 +57,6 @@ const Router = [
     ],
   },
 ];
+
 
 export default Router;

@@ -9,16 +9,18 @@ const SidebarItems = () => {
   const { pathname } = useLocation();
   const pathDirect = pathname;
 
+  // Obtenha o nível do usuário do localStorage
+  const nivelUsuario = parseInt(localStorage.getItem('nivelUsuario'), 10);
+
   return (
     <Box sx={{ px: 3 }}>
       <List sx={{ pt: 0 }} className="sidebarNav">
-        {Menuitems.map((item) => {
+        {Menuitems.filter(item => 
+          !item.allowedLevels || item.allowedLevels.includes(nivelUsuario)
+        ).map((item) => {
           // {/********SubHeader**********/}
           if (item.subheader) {
             return <NavGroup item={item} key={item.subheader} />;
-
-            // {/********If Sub Menu**********/}
-            /* eslint no-else-return: "off" */
           } else {
             return (
               <NavItem item={item} key={item.id} pathDirect={pathDirect} />
@@ -29,4 +31,5 @@ const SidebarItems = () => {
     </Box>
   );
 };
+
 export default SidebarItems;

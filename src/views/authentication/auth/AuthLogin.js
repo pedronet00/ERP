@@ -31,7 +31,9 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
             });
 
             if (response.status === 200) {
+                const nivelUsuario = response.data.nivelUsuario; // Supondo que o nível do usuário vem na resposta
                 localStorage.setItem('email', email);
+                localStorage.setItem('nivelUsuario', nivelUsuario);
                 navigate('/'); // Redireciona para a página inicial
             }
         } catch (error) {
@@ -123,6 +125,8 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                 {error && <Typography color="error">{error}</Typography>}
                 {subtitle}
             </form>
+
+            
         </>
     );
 };
