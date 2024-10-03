@@ -63,7 +63,6 @@ const Header = (props) => {
         </IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          
           <Profile />
         </Stack>
       </ToolbarStyled>
