@@ -70,6 +70,7 @@ const DepartmentList = () => {
         <TextField
           label="Pesquisar Título"
           variant="outlined"
+          size='small'
           value={searchTitle}
           onChange={(e) => setSearchTitle(e.target.value)}
         />
@@ -79,6 +80,7 @@ const DepartmentList = () => {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             label="Status"
+            size='small'
           >
             <MenuItem value="">Todos</MenuItem>
             <MenuItem value="1">Ativo</MenuItem>
