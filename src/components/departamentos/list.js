@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
+import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react'; // IconCheck adicionado
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
   Typography, Box,
   Table,
@@ -32,6 +33,71 @@ const DepartmentList = () => {
       setFilteredDepartments(response.data); // Inicialmente, mostrar todos os departamentos
     } catch (error) {
       console.error("Erro ao buscar departamentos:", error);
+    }
+  };
+
+  // Função para ativar departamento
+  const handleActivateDepartment = async (departmentId) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja ativar este departamento?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, ativar."
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/departamento/${departmentId}/ativar`);
+        // Atualizar a lista de departamentos após a ativação
+        fetchDepartments();
+        Swal.fire({
+          title: "Ativado!",
+          text: "O departamento foi ativado.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao ativar departamento:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao ativar o departamento.",
+          icon: "error"
+        });
+      }
+    }
+  };
+  
+  const handleDeactivateDepartment = async (departmentId) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja desativar este departamento?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, desativar."
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/departamento/${departmentId}/desativar`);
+        // Atualizar a lista de departamentos após a desativação
+        fetchDepartments();
+        Swal.fire({
+          title: "Desativado!",
+          text: "O departamento foi desativado.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao desativar departamento:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao desativar o departamento.",
+          icon: "error"
+        });
+      }
     }
   };
 
@@ -94,8 +160,6 @@ const DepartmentList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
       </div>
 
-      
-
       {/* Tabela de Departamentos */}
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
@@ -138,7 +202,17 @@ const DepartmentList = () => {
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <IconX />
+                  {department.statusDepartamento === 1 ? (
+                    <IconX
+                      onClick={() => handleDeactivateDepartment(department.id)}
+                      style={{ cursor: 'pointer', color: 'red' }}
+                    />
+                  ) : (
+                    <IconCheck
+                      onClick={() => handleActivateDepartment(department.id)}
+                      style={{ cursor: 'pointer', color: 'green' }}
+                    />
+                  )}
                   <IconEdit />
                 </TableCell>
               </TableRow>
