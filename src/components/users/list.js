@@ -204,7 +204,7 @@ const UserList = () => {
                 </TableCell>
                 <TableCell align="right">
                   {user.usuarioAtivo === 1 ? (
-                    <IconX onClick={() => handleDeactivateUser(user.id)} style={{ cursor: 'pointer' }} />
+                    <IconX onClick={() => handleDeactivateUser(user.id)} style={{ cursor: 'pointer', color: 'red' }} />
                   ) : (
                     <IconCheck onClick={() => handleActivateUser(user.id)} style={{ cursor: 'pointer', color: 'green' }} />
                   )}
