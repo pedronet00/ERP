@@ -1,27 +1,25 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import Loadable from '../layouts/full/shared/loadable/Loadable';
 import PrivateRoute from './privateRoute';
 
 /* ***Layouts**** */
-const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
-const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
+import FullLayout from '../layouts/full/FullLayout';
+import BlankLayout from '../layouts/blank/BlankLayout';
 
 /* ****Pages***** */
-const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')))
-const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')))
-const Icons = Loadable(lazy(() => import('../views/icons/Icons')))
-const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')))
-const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')))
-const Error = Loadable(lazy(() => import('../views/authentication/Error')));
-const Register = Loadable(lazy(() => import('../views/authentication/Register'))); 
-const Login = Loadable(lazy(() => import('../views/authentication/Login')));
-const UserCreate = Loadable(lazy(() => import('../components/users/create')));
-const DepartmentCreate = Loadable(lazy(() => import('../components/departamentos/create')));
-const UserList = Loadable(lazy(() => import('../components/users/list')));
-const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
-const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
-
+import Dashboard from '../views/dashboard/Dashboard';
+import SamplePage from '../views/sample-page/SamplePage';
+import Icons from '../views/icons/Icons';
+import TypographyPage from '../views/utilities/TypographyPage';
+import Shadow from '../views/utilities/Shadow';
+import Error from '../views/authentication/Error';
+import Register from '../views/authentication/Register';
+import Login from '../views/authentication/Login';
+import UserCreate from '../components/users/create';
+import DepartmentCreate from '../components/departamentos/create';
+import UserList from '../components/users/list';
+import DepartmentList from '../components/departamentos/list';
+import MissoesList from '../components/missoes/list';
 
 const Router = [
   {
