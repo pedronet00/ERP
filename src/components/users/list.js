@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import Swal from 'sweetalert2'; // Certifique-se de importar Swal
+import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 import {
   Typography,
   Box,
@@ -22,14 +23,14 @@ const UserList = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const navigate = useNavigate(); // Inicializar o navegador
+  const navigate = useNavigate();
 
   // Função para buscar usuários da API
   const fetchUsers = async () => {
     try {
       const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/user');
       setUsers(response.data);
-      setFilteredUsers(response.data); // Inicialmente, todos os usuários são filtrados
+      setFilteredUsers(response.data);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
     }
@@ -40,23 +41,19 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
-  // Função do botão de novo usuário (você pode ajustar conforme necessário)
   const handleNewUser = () => {
     navigate('/user/create');
   };
 
-  // Função para filtrar usuários
   const handleFilterChange = () => {
     let filtered = users;
 
-    // Filtrar por nome
     if (nameFilter) {
       filtered = filtered.filter(user => user.name.toLowerCase().startsWith(nameFilter.toLowerCase()));
     }
 
-    // Filtrar por status
     if (statusFilter) {
-      filtered = filtered.filter(user => 
+      filtered = filtered.filter(user =>
         statusFilter === 'Ativo' ? user.usuarioAtivo === 1 : user.usuarioAtivo === 0
       );
     }
@@ -64,10 +61,73 @@ const UserList = () => {
     setFilteredUsers(filtered);
   };
 
-  // Usar useEffect para aplicar filtros quando os filtros mudarem
   useEffect(() => {
     handleFilterChange();
   }, [nameFilter, statusFilter, users]);
+
+  const handleDeactivateUser = async (userId) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja desativar esse usuário?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, desativar."
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/deactivateUser/${userId}`);
+        // Atualizar a lista de usuários após a desativação
+        fetchUsers();
+        Swal.fire({
+          title: "Desativado!",
+          text: "O usuário foi desativado.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao desativar usuário:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao desativar o usuário.",
+          icon: "error"
+        });
+      }
+    }
+  };
+
+  const handleActivateUser = async (userId) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja ativar esse usuário?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, ativar."
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/activateUser/${userId}`);
+        // Atualizar a lista de usuários após a ativação
+        fetchUsers();
+        Swal.fire({
+          title: "Ativado!",
+          text: "O usuário foi ativado.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao ativar usuário:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao ativar o usuário.",
+          icon: "error"
+        });
+      }
+    }
+  };
 
   return (
     <div className="container mt-4">
@@ -75,63 +135,51 @@ const UserList = () => {
         <h2>Lista de Usuários</h2>
       </div>
 
-      <TextField 
-          label="Filtrar por Nome" 
-          variant="outlined" 
-          value={nameFilter} 
-          onChange={(e) => setNameFilter(e.target.value)} 
-          style={{ marginRight: '10px' }}
-        />
-        <FormControl variant="outlined" style={{ marginRight: '10px', width: '200px' }}>
-          <InputLabel>Status</InputLabel>
-          <Select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            label="Status"
-          >
-            <MenuItem value=""><em>Todos</em></MenuItem>
-            <MenuItem value="Ativo">Ativo</MenuItem>
-            <MenuItem value="Inativo">Inativo</MenuItem>
-          </Select>
-        </FormControl>
+      <TextField
+        label="Filtrar por Nome"
+        variant="outlined"
+        value={nameFilter}
+        onChange={(e) => setNameFilter(e.target.value)}
+        style={{ marginRight: '10px' }}
+      />
+      <FormControl variant="outlined" style={{ marginRight: '10px', width: '200px' }}>
+        <InputLabel>Status</InputLabel>
+        <Select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          label="Status"
+        >
+          <MenuItem value=""><em>Todos</em></MenuItem>
+          <MenuItem value="Ativo">Ativo</MenuItem>
+          <MenuItem value="Inativo">Inativo</MenuItem>
+        </Select>
+      </FormControl>
 
-      <div className="d-flex justify-content-between mb-3" style={{marginTop: '2%'}}>
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/> Novo Usuário</button>
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo Usuário</button>
       </div>
 
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                ID
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>ID</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Nome
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>Nome</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Email
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>Email</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Data de Nascimento
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>Data de Nascimento</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Status
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>Status</Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography variant="subtitle2" fontWeight={600}>
-                Ações
-              </Typography>
+              <Typography variant="subtitle2" fontWeight={600}>Ações</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -155,7 +203,11 @@ const UserList = () => {
                   <Typography variant="body2">{user.usuarioAtivo === 1 ? "Ativo" : "Inativo"}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <IconX />
+                  {user.usuarioAtivo === 1 ? (
+                    <IconX onClick={() => handleDeactivateUser(user.id)} style={{ cursor: 'pointer' }} />
+                  ) : (
+                    <IconCheck onClick={() => handleActivateUser(user.id)} style={{ cursor: 'pointer', color: 'green' }} />
+                  )}
                   <IconEdit />
                 </TableCell>
               </TableRow>
