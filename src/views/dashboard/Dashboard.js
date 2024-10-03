@@ -25,7 +25,7 @@ const Dashboard = () => {
           <Grid item xs={12} lg={12}>
             <EventosIgreja />
           </Grid>
-          <Grid item xs={8} lg={8}>
+          <Grid item xs={12} lg={8}>
             <EntradaSaida />
           </Grid>
           <Grid item xs={12} lg={4}>
