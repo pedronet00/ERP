@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const MissoesList = () => {
   
+  const [missoes, setMissoes] = useState([]);
+  const navigate = useNavigate(); // Inicializar o navegador
+
+  // Função para buscar missões da API
+  const fetchMissoes = async () => {
+    try {
+      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/missoes');
+      setMissoes(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar missões:", error);
+    }
+  };
+
+  // Usar o useEffect para chamar a API quando o componente for montado
+  useEffect(() => {
+    fetchMissoes();
+  }, []);
 
   // Função do botão de novo usuário (você pode ajustar conforme necessário)
   const handleNewUser = () => {
-    alert('Função de criar novo usuário ainda não implementada!');
+    navigate('/missoes/create');
   };
 
   return (
@@ -33,38 +51,22 @@ const MissoesList = () => {
           </tr>
         </thead>
         <tbody>
-            <tr key="1">
-              <td>1</td>
-              <td>Missão Batista de Presidente Bernardes</td>
-              <td>Presidente Bernardes</td>
-              <td>15</td>
-              <td>Pastor Luiz Antônio</td>
-              <td><IconX/><IconEdit/></td>
-            </tr>  
-            <tr key="2">
-              <td>2</td>
-              <td>Missão Batista de Álvares Machado</td>
-              <td>Álvares Machado</td>
-              <td>30</td>
-              <td>Pastor Humberto Sedano</td>
-              <td><IconX/><IconEdit/></td>
-            </tr>  
-            <tr key="1">
-              <td>3</td>
-              <td>Missão Batista de Pirapozinho</td>
-              <td>Pirapozinho</td>
-              <td>12</td>
-              <td>Pastor Wilson Martins</td>
-              <td><IconX/><IconEdit/></td>
-            </tr>  
-            <tr key="1">
-              <td>4</td>
-              <td>Missão Batista de Regente Feijó</td>
-              <td>Regente Feijó</td>
-              <td>6</td>
-              <td>Pastor Israel Siqueira</td>
-              <td><IconX/><IconEdit/></td>
-            </tr>  
+          {missoes.length > 0 ? (
+            missoes.map((missao) => (
+              <tr key={missao.id}>
+                <td>{missao.id}</td>
+                <td>{missao.nomeMissao}</td>
+                <td>{missao.cidadeMissao}</td>
+                <td>{missao.quantidadeMembros}</td>
+                <td>{missao.pastorTitular}</td>
+                <td><IconX/><IconEdit/></td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3">Nenhum departamento encontrado</td>
+            </tr>
+          )} 
         </tbody>
       </table>
     </div>
