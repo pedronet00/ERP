@@ -29,7 +29,7 @@ const Router = [
     element: <FullLayout />,
     children: [
       { path: '/', element: <Navigate to="/dashboard" /> },
-      { path: '/dashboard', exact: true, element: <PrivateRoute><Dashboard /></PrivateRoute> },
+      { path: '/dashboard', exact: true, element: <Dashboard /> },
       { path: '/sample-page', exact: true, element: <PrivateRoute><SamplePage /></PrivateRoute> },
       { path: '/icons', exact: true, element: <PrivateRoute><Icons /></PrivateRoute> },
       { path: '/ui/typography', exact: true, element: <PrivateRoute><TypographyPage /></PrivateRoute> },
