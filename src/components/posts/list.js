@@ -3,49 +3,48 @@ import axios from 'axios';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import {
-  Typography, Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Chip
+    Typography, Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Chip
 } from '@mui/material';
 
-const MissoesList = () => {
-  
-  const [missoes, setMissoes] = useState([]);
+
+const PostList = () => {
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate(); // Inicializar o navegador
 
-  // Função para buscar missões da API
-  const fetchMissoes = async () => {
+  // Função para buscar departamentos da API
+  const fetchPosts = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/missoes');
-      setMissoes(response.data);
+      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/post');
+      setPosts(response.data);
     } catch (error) {
-      console.error("Erro ao buscar missões:", error);
+      console.error("Erro ao buscar departamentos:", error);
     }
   };
 
   // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
-    fetchMissoes();
+    fetchPosts();
   }, []);
 
-  // Função do botão de novo usuário (você pode ajustar conforme necessário)
   const handleNewUser = () => {
-    navigate('/missoes/create');
+    navigate('/departament/create');
   };
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Missões</h2>
+        <h2>Lista de Posts</h2>
       </div>
 
       <div className="d-flex justify-content-between">
         <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Nova Missão</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Post</button>
       </div>
 
       <Table sx={{ marginTop: '2%' }}>
@@ -53,27 +52,32 @@ const MissoesList = () => {
     <TableRow>
       <TableCell>
         <Typography variant="subtitle2" fontWeight={600}>
-          ID
+          Título
         </Typography>
       </TableCell>
       <TableCell>
         <Typography variant="subtitle2" fontWeight={600}>
-          Nome
+          Autor
         </Typography>
       </TableCell>
       <TableCell>
         <Typography variant="subtitle2" fontWeight={600}>
-          Cidade
+          Data de Criação
         </Typography>
       </TableCell>
       <TableCell>
         <Typography variant="subtitle2" fontWeight={600}>
-          Membros
+          Data de Publicação
         </Typography>
       </TableCell>
       <TableCell>
         <Typography variant="subtitle2" fontWeight={600}>
-          Pastor titular
+          Tipo do Post
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="subtitle2" fontWeight={600}>
+          Status do Post
         </Typography>
       </TableCell>
       <TableCell align="right">
@@ -84,23 +88,28 @@ const MissoesList = () => {
     </TableRow>
   </TableHead>
   <TableBody>
-    {missoes.length > 0 ? (
-      missoes.map((missao) => (
-        <TableRow key={missao.id}>
+    {posts.length > 0 ? (
+      posts.map((post) => (
+        <TableRow key={post.id}>
           <TableCell>
-            <Typography variant="body2">{missao.id}</Typography>
+            <Typography variant="body2">{post.tituloPost}</Typography>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{missao.nomeMissao}</Typography>
+            <Typography variant="body2">{post.autor.name}</Typography>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{missao.cidadeMissao}</Typography>
+            <Typography variant="body2">{post.created_at}</Typography>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{missao.quantidadeMembros}</Typography>
+            <Typography variant="body2">{post.dataPost}</Typography>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{missao.pastorTitular}</Typography>
+            <Typography variant="body2">{post.tipo.tipoPost}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">
+              {post.statusPost === 1 ? 'Ativo' : 'Inativo'}
+            </Typography>
           </TableCell>
           <TableCell align="right">
             <IconX />
@@ -110,7 +119,7 @@ const MissoesList = () => {
       ))
     ) : (
       <TableRow>
-        <TableCell colSpan={6} align="center">
+        <TableCell colSpan={7} align="center">
           <Typography variant="body2">Nenhum departamento encontrado</Typography>
         </TableCell>
       </TableRow>
@@ -122,4 +131,4 @@ const MissoesList = () => {
   );
 };
 
-export default MissoesList;
+export default PostList;

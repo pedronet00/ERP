@@ -21,6 +21,8 @@ const DepartmentCreate = Loadable(lazy(() => import('../components/departamentos
 const UserList = Loadable(lazy(() => import('../components/users/list')));
 const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
 const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
+const MissoesCreate = Loadable(lazy(() => import('../components/missoes/create')));
+const PostList = Loadable(lazy(() => import('../components/posts/list')));
 
 
 const Router = [
@@ -28,18 +30,20 @@ const Router = [
     path: '/',
     element: <FullLayout />,
     children: [
-      { path: '/', element: <Navigate to="/dashboard" /> },
-      { path: '/dashboard', exact: true, element: <PrivateRoute><Dashboard /></PrivateRoute> },
-      { path: '/sample-page', exact: true, element: <PrivateRoute><SamplePage /></PrivateRoute> },
-      { path: '/icons', exact: true, element: <PrivateRoute><Icons /></PrivateRoute> },
-      { path: '/ui/typography', exact: true, element: <PrivateRoute><TypographyPage /></PrivateRoute> },
-      { path: '/ui/shadow', exact: true, element: <PrivateRoute><Shadow /></PrivateRoute> },
+      { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
+      { path: '/dashboard', exact: true, element: <PrivateRoute requiredLevel={1}><Dashboard /></PrivateRoute> },
+      { path: '/sample-page', exact: true, element: <PrivateRoute requiredLevel={3}><SamplePage /></PrivateRoute> },
+      { path: '/icons', exact: true, element: <PrivateRoute requiredLevel={3}><Icons /></PrivateRoute> },
+      { path: '/ui/typography', exact: true, element: <PrivateRoute requiredLevel={3}><TypographyPage /></PrivateRoute> },
+      { path: '/ui/shadow', exact: true, element: <PrivateRoute requiredLevel={3}><Shadow /></PrivateRoute> },
       { path: '*', element: <Navigate to="/auth/404" /> },
-      { path: '/user/create', element: <PrivateRoute><UserCreate /></PrivateRoute> },
-      { path: '/users', element: <PrivateRoute><UserList /></PrivateRoute> },
-      { path: '/departaments', element: <PrivateRoute><DepartmentList /></PrivateRoute> },
-      { path: '/departament/create', element: <PrivateRoute><DepartmentCreate /></PrivateRoute> },
-      { path: '/missoes', element: <PrivateRoute><MissoesList /></PrivateRoute> },
+      { path: '/user/create', element: <PrivateRoute requiredLevel={4}><UserCreate /></PrivateRoute> },
+      { path: '/users', element: <PrivateRoute requiredLevel={3}><UserList /></PrivateRoute> },
+      { path: '/departaments', element: <PrivateRoute requiredLevel={2}><DepartmentList /></PrivateRoute> },
+      { path: '/departament/create', element: <PrivateRoute requiredLevel={4}><DepartmentCreate /></PrivateRoute> },
+      { path: '/missoes', element: <PrivateRoute requiredLevel={2}><MissoesList /></PrivateRoute> },
+      { path: '/missoes/create', element: <PrivateRoute requiredLevel={4}><MissoesCreate /></PrivateRoute> },
+      { path: '/posts', element: <PrivateRoute requiredLevel={1}><PostList /></PrivateRoute> },
     ],
   },
   {
@@ -53,5 +57,6 @@ const Router = [
     ],
   },
 ];
+
 
 export default Router;

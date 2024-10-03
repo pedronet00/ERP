@@ -1,10 +1,18 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const PrivateRoute = ({ children }) => {
-    const isAuthenticated = !!localStorage.getItem('email'); // Verifica se o email está presente
+const PrivateRoute = ({ children, requiredLevel }) => {
+  const isAuthenticated = !!localStorage.getItem('email');
+  const nivelUsuario = parseInt(localStorage.getItem('nivelUsuario'), 10);
+  const navigate = useNavigate();
 
-    return isAuthenticated ? children : <Navigate to="/auth/login" />;
+  useEffect(() => {
+    if (!isAuthenticated || (requiredLevel && nivelUsuario < requiredLevel)) {
+      navigate('/auth/login');
+    }
+  }, [isAuthenticated, navigate, requiredLevel, nivelUsuario]);
+
+  return isAuthenticated && (!requiredLevel || nivelUsuario >= requiredLevel) ? children : null;
 };
 
 export default PrivateRoute;
