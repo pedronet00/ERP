@@ -65,11 +65,11 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem component={Link} to="/settings" onClick={handleClose2}>
           <ListItemIcon>
             <IconSettings width={20} />
           </ListItemIcon>
-          <ListItemText>Configurações</ListItemText>
+          <ListItemText primary="Configurações" />
         </MenuItem>
         
         <Box mt={1} py={1} px={2}>
