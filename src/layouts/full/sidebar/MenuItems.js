@@ -50,7 +50,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Recursos',
     icon: IconStar,
-    href: '/ui/shadow',
+    href: '/recursos',
     allowedLevels: [3, 4], // Permitido para níveis 3 e 4
   },
   {

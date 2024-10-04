@@ -5,7 +5,7 @@ import { Typography, Box, Select, MenuItem, Button, FormControl, Table,
     TableHead,
     TableRow,
     TextField, Tabs, Tab, AppBar, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
-import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
+import { IconMinus, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
 
 const RecursosList = () => {
@@ -49,7 +49,7 @@ const RecursosList = () => {
         Recursos da Primeira Igreja Batista de Presidente Prudente
       </Typography>
 
-      <AppBar position="static" color="default">
+      <AppBar position="static" style={{marginTop: '2%'}} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
           <Tab label="Comida" />
           <Tab label="Ensino" />
@@ -64,84 +64,153 @@ const RecursosList = () => {
 
       {activeTab === 0 && (
         <Box mt={3}>
-          <Table sx={{ marginTop: '2%' }}>
+            <Table sx={{ marginTop: '2%' }}>
                 <TableHead>
-                <TableRow>
-                    <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        ID
-                    </Typography>
-                    </TableCell>
-                    <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        Nome
-                    </Typography>
-                    </TableCell>
-                    <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        Cidade
-                    </Typography>
-                    </TableCell>
-                    <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        Membros
-                    </Typography>
-                    </TableCell>
-                    <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        Pastor titular
-                    </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                    <Typography variant="subtitle2" fontWeight={600}>
-                        Ações
-                    </Typography>
-                    </TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow key='1'>
+                    <TableRow>
                         <TableCell>
-                        <Typography variant="body2">1</Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            ID
+                        </Typography>
                         </TableCell>
                         <TableCell>
-                        <Typography variant="body2">Teste</Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Nome
+                        </Typography>
                         </TableCell>
                         <TableCell>
-                        <Typography variant="body2">Teste</Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Tipo
+                        </Typography>
                         </TableCell>
                         <TableCell>
-                        <Typography variant="body2">Teste</Typography>
-                        </TableCell>
-                        <TableCell>
-                        <Typography variant="body2">Teste</Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Quantidade
+                        </Typography>
                         </TableCell>
                         <TableCell align="right">
-                        <IconX />
-                        <IconEdit />
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Ações
+                        </Typography>
                         </TableCell>
                     </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow key='1'>
+                            <TableCell>
+                            <Typography variant="body2">1</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Arroz Branco 5kg</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Não perecível</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">20</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                            <IconMinus />
+                            <IconPlus />
+                            </TableCell>
+                        </TableRow>
                 </TableBody>
             </Table>
         </Box>
       )}
 
-      {/* {activeTab === 2 && (
+       {activeTab === 1 && (
         <Box mt={3}>
-          <Typography variant="h6">Tema</Typography>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
-            Selecione o tema de cores que deseja usar.
-          </Typography>
-          <FormControl fullWidth>
-            <Select value={theme} onChange={(e) => setTheme(e.target.value)}>
-              <MenuItem value="light">Claro</MenuItem>
-              <MenuItem value="dark">Escuro</MenuItem>
-            </Select>
-          </FormControl>
+          <Table sx={{ marginTop: '2%' }}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            ID
+                        </Typography>
+                        </TableCell>
+                        <TableCell>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Nome
+                        </Typography>
+                        </TableCell>
+                        <TableCell>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Tipo
+                        </Typography>
+                        </TableCell>
+                        <TableCell>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Quantidade
+                        </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            Ações
+                        </Typography>
+                        </TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow key='1'>
+                            <TableCell>
+                            <Typography variant="body2">1</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Revista Nova Vida em Cristo I</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Revista</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">40</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                            <IconMinus />
+                            <IconPlus />
+                            </TableCell>
+                        </TableRow>
+                        <TableRow key='2'>
+                            <TableCell>
+                            <Typography variant="body2">2</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Revista Nova Vida em Cristo II</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Revista</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">20</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                            <IconMinus />
+                            <IconPlus />
+                            </TableCell>
+                        </TableRow>
+                        <TableRow key='3'>
+                            <TableCell>
+                            <Typography variant="body2">3</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Comentário expositivo evangelho segundo Lucas</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">Livro</Typography>
+                            </TableCell>
+                            <TableCell>
+                            <Typography variant="body2">1</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                            <IconMinus />
+                            <IconPlus />
+                            </TableCell>
+                        </TableRow>
+                </TableBody>
+            </Table>
         </Box>
       )}
 
-      {activeTab === 3 && (
+      {/* {activeTab === 3 && (
         <Box mt={3}>
           <Typography variant="h6">Notificações</Typography>
           <Typography variant="body2" color="textSecondary" gutterBottom>
@@ -189,13 +258,13 @@ const RecursosList = () => {
             )
           )}
         </Box>
-      )} */}
+      )}} */}
 
       <hr />
 
       <Box textAlign="center" mt={4}>
         <Button variant="contained" color="primary" onClick={handleSaveSettings}>
-          Salvar Configurações
+          Salvar
         </Button>
       </Box>
     </div>
