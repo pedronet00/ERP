@@ -7,18 +7,31 @@ import { Typography, Box, Select, MenuItem, Button, FormControl, Table,
     TextField, Tabs, Tab, AppBar, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import { IconMinus, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const RecursosList = () => {
   
   const [activeTab, setActiveTab] = useState(0);
+  const [categoriaRecurso, setCategoriaRecurso] = useState([]);
+
+  const fetchCategoriaRecurso = async () => {
+    try {
+      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso');
+      setCategoriaRecurso(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar categorias de recursos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoriaRecurso();
+  }, []);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
   const handleSaveSettings = () => {
-    
-    
     Swal.fire({
       title: 'Configurações Salvas!',
       text: 'As suas configurações foram salvas com sucesso.',
@@ -58,16 +71,20 @@ const RecursosList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo Recurso</button>
       </div>
 
+      
+
       <AppBar position="static" style={{marginTop: '2%'}} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
-          <Tab label="Comida" />
-          <Tab label="Ensino" />
+          {categoriaRecurso.map((categoria) =>(
+            <Tab label={categoria.categoriaRecurso} />
+          ))}
+          {/* <Tab label="Ensino" />
           <Tab label="Escritório" />
           <Tab label="Limpeza" />
           <Tab label="Móveis" />
           <Tab label="Promoção" />
           <Tab label="Tecnologia" />
-          <Tab label="Outros" />
+          <Tab label="Outros" /> */}
         </Tabs>
       </AppBar>
 
