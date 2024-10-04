@@ -165,22 +165,27 @@ const DepartmentList = () => {
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
-            <TableCell>
+            <TableCell align="center">
+              <Typography variant="subtitle2" fontWeight={600}>
+                ID
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Título
               </Typography>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Texto
               </Typography>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Status
               </Typography>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
               </Typography>
@@ -191,13 +196,16 @@ const DepartmentList = () => {
           {filteredDepartments.length > 0 ? (
             filteredDepartments.map((department) => (
               <TableRow key={department.id}>
-                <TableCell>
+                <TableCell align="center">
+                  <Typography variant="body2">{department.id}</Typography>
+                </TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{department.tituloDepartamento}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{department.textoDepartamento}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">
                     {department.statusDepartamento === 1 ? 'Ativo' : 'Inativo'}
                   </Typography>
