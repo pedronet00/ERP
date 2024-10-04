@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const MissaoCreate = () => {
   const [nomeMissao, setNomeMissao] = useState('');
@@ -12,10 +13,10 @@ const MissaoCreate = () => {
     e.preventDefault();
 
     const novaMissao = {
-        nomeMissao,
-        quantidadeMembros,
-        cidadeMissao,
-        pastorTitular
+      nomeMissao,
+      quantidadeMembros,
+      cidadeMissao,
+      pastorTitular
     };
 
     axios.post('https://apoleon.com.br/api-estagio/public/api/missoes', novaMissao)
@@ -49,56 +50,66 @@ const MissaoCreate = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Criar Nova Missão</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="nomeMissao" className="form-label">Nome da missão</label>
-          <input
-            type="text"
-            className="form-control"
-            id="nomeMissao"
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Criar Nova Missão
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Nome da missão"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={nomeMissao}
             onChange={(e) => setNomeMissao(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="quantidadeMembros" className="form-label">Quantidade de membros</label>
-          <input
+          
+          <TextField
+            label="Quantidade de membros"
             type="number"
-            className="form-control"
-            id="quantidadeMembros"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={quantidadeMembros}
             onChange={(e) => setQuantidadeMembros(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="cidadeMissao" className="form-label">Cidade da missão</label>
-          <input
-            type="text"
-            className="form-control"
-            id="cidadeMissao"
+
+          <TextField
+            label="Cidade da missão"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={cidadeMissao}
             onChange={(e) => setCidadeMissao(e.target.value)}
-            required 
+            required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="pastorTitular" className="form-label">Pastor titular</label>
-          <input
+
+          <TextField
+            label="Pastor titular (ID)"
             type="number"
-            className="form-control"
-            id="pastorTitular"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={pastorTitular}
             onChange={(e) => setPastorTitular(e.target.value)}
             required
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Criar missão</button>
-      </form>
-    </div>
+
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ marginTop: 2 }}
+          >
+            Criar Missão
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 };
 

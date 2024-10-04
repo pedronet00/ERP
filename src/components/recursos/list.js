@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'; 
 import { Typography, Box, Tabs, Tab, AppBar, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
+import { IconMinus, IconPlus, IconTrash, IconClipboard } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const RecursosList = () => {
   const [activeTab, setActiveTab] = useState(''); // Inicia com uma aba vazia
   const [categoriaRecursoList, setCategoriaRecursoList] = useState([]);
   const [categoriaRecurso, setCategoriaRecurso] = useState('');
   const [recursosList, setRecursosList] = useState([]); // Lista de recursos
+  const navigate = useNavigate();
 
   // Função para buscar categorias de recursos
   const fetchCategoriaRecurso = async () => {
@@ -66,11 +68,20 @@ const RecursosList = () => {
       });
   };
 
+  const handleNewUser = () => {
+    navigate('/recursos/create');
+  };
+
   return (
     <div style={{ maxWidth: '100%', padding: '20px' }}>
       <Typography variant="h4" gutterBottom>
         Recursos da Primeira Igreja Batista de Presidente Prudente
       </Typography>
+
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
+      </div>
 
       <AppBar position="static" style={{ marginTop: '2%' }} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
@@ -107,6 +118,7 @@ const RecursosList = () => {
                       <TableCell align="right">
                         <IconMinus />
                         <IconPlus />
+                        <IconTrash />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -164,9 +164,6 @@ const UserList = () => {
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>ID</Typography>
-            </TableCell>
-            <TableCell>
               <Typography variant="subtitle2" fontWeight={600}>Nome</Typography>
             </TableCell>
             <TableCell>
@@ -187,9 +184,6 @@ const UserList = () => {
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
-                  <Typography variant="body2">{user.id}</Typography>
-                </TableCell>
                 <TableCell>
                   <Typography variant="body2">{user.name}</Typography>
                 </TableCell>

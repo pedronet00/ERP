@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const CriarDepartamento = () => {
   const [tituloDepartamento, setTituloDepartamento] = useState('');
@@ -46,45 +47,56 @@ const CriarDepartamento = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Criar Novo Departamento</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="tituloDepartamento" className="form-label">Título do Departamento</label>
-          <input
-            type="text"
-            className="form-control"
-            id="tituloDepartamento"
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Criar Novo Departamento
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Título do Departamento"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={tituloDepartamento}
             onChange={(e) => setTituloDepartamento(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="textoDepartamento" className="form-label">Texto do Departamento</label>
-          <textarea
-            className="form-control"
-            id="textoDepartamento"
+
+          <TextField
+            label="Texto do Departamento"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={5}
+            margin="normal"
             value={textoDepartamento}
             onChange={(e) => setTextoDepartamento(e.target.value)}
-            rows="5"
             required
-          ></textarea>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="imgDepartamento" className="form-label">Imagem URL do Departamento</label>
-          <input
-            type="text"
-            className="form-control"
-            id="imgDepartamento"
+          />
+
+          <TextField
+            label="Imagem URL do Departamento"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={imgDepartamento}
             onChange={(e) => setImgDepartamento(e.target.value)}
-            required 
+            required
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Criar Departamento</button>
-      </form>
-    </div>
+
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ marginTop: 2 }}
+          >
+            Criar Departamento
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 };
 
