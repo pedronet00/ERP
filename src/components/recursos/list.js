@@ -77,7 +77,7 @@ const RecursosList = () => {
           {categoriaRecursoList.map((categoria) => (
             <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
           ))}
-                    <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
+            <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
 
         </Tabs>
       </AppBar>
@@ -104,7 +104,7 @@ const RecursosList = () => {
                     <TableRow key={recurso.id}>
                       <TableCell><Typography variant="body2">{recurso.id}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
-                      <TableCell><Typography variant="body2">{recurso.tipoRecurso}</Typography></TableCell>
+                      <TableCell><Typography variant="body2">{recurso.tipo.tipoRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
                       <TableCell align="right">
                         <IconMinus />
