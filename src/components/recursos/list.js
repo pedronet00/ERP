@@ -1,36 +1,34 @@
 import React, { useState, useEffect } from 'react'; 
-import { Typography, Box, Tabs, Tab, AppBar, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Typography, Box, Tabs, Tab, AppBar, Table, TableBody, TableCell, TableHead, TableRow, IconButton } from '@mui/material';
 import { IconMinus, IconPlus, IconTrash, IconClipboard } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const RecursosList = () => {
-  const [activeTab, setActiveTab] = useState(''); // Inicia com uma aba vazia
+  const [activeTab, setActiveTab] = useState('');
   const [categoriaRecursoList, setCategoriaRecursoList] = useState([]);
   const [categoriaRecurso, setCategoriaRecurso] = useState('');
-  const [recursosList, setRecursosList] = useState([]); // Lista de recursos
+  const [recursosList, setRecursosList] = useState([]);
   const navigate = useNavigate();
 
-  // Função para buscar categorias de recursos
   const fetchCategoriaRecurso = async () => {
     try {
       const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso');
       setCategoriaRecursoList(response.data);
 
       if (response.data.length > 0) {
-        setActiveTab(response.data[0].categoriaRecurso); // Define a primeira categoria como ativa
+        setActiveTab(response.data[0].categoriaRecurso);
       }
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
     }
   };
 
-  // Função para buscar recursos
   const fetchRecursos = async () => {
     try {
       const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/recurso');
-      setRecursosList(response.data); // Armazena os recursos obtidos
+      setRecursosList(response.data);
     } catch (error) {
       console.error("Erro ao buscar recursos:", error);
     }
@@ -47,20 +45,13 @@ const RecursosList = () => {
 
   const handleNewCategory = (e) => {
     e.preventDefault();
-
-    const novaCategoriaRecursoObject = {
-      categoriaRecurso,
-    };
+    const novaCategoriaRecursoObject = { categoriaRecurso };
 
     axios.post('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso', novaCategoriaRecursoObject)
       .then(() => {
-        Swal.fire(
-          'Categoria criada!',
-          'A categoria foi criada com sucesso.',
-          'success'
-        );
-        setCategoriaRecurso(''); // Limpa os campos
-        fetchCategoriaRecurso(); // Atualiza a lista de categorias
+        Swal.fire('Categoria criada!', 'A categoria foi criada com sucesso.', 'success');
+        setCategoriaRecurso('');
+        fetchCategoriaRecurso();
       })
       .catch((error) => {
         const errorMessage = error.response?.data?.error || 'Houve um problema ao criar a categoria de recurso.';
@@ -70,6 +61,28 @@ const RecursosList = () => {
 
   const handleNewUser = () => {
     navigate('/recursos/create');
+  };
+
+  // Função para incrementar a quantidade do recurso
+  const handleIncrease = async (recurso) => {
+    try {
+      await axios.patch(`https://apoleon.com.br/api-estagio/public/api/recurso/${recurso.id}/aumentarQuantidade`);
+      fetchRecursos(); // Recarregar a lista de recursos
+    } catch (error) {
+      Swal.fire('Erro!', 'Houve um problema ao aumentar a quantidade do recurso.', 'error');
+    }
+  };
+
+  // Função para decrementar a quantidade do recurso
+  const handleDecrease = async (recurso) => {
+    if (recurso.quantidadeRecurso > 0) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/recurso/${recurso.id}/diminuirQuantidade`);
+        fetchRecursos(); // Recarregar a lista de recursos
+      } catch (error) {
+        Swal.fire('Erro!', 'Houve um problema ao diminuir a quantidade do recurso.', 'error');
+      }
+    }
   };
 
   return (
@@ -88,12 +101,10 @@ const RecursosList = () => {
           {categoriaRecursoList.map((categoria) => (
             <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
           ))}
-            <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
-
+          <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
         </Tabs>
       </AppBar>
 
-      {/* Renderiza a tabela se a aba ativa for uma categoria existente */}
       {categoriaRecursoList.map((categoria) => (
         activeTab === categoria.categoriaRecurso && (
           <Box key={categoria.categoriaRecurso} mt={3}>
@@ -107,18 +118,17 @@ const RecursosList = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Filtra e exibe os recursos que pertencem à categoria da aba ativa */}
                 {recursosList
-                  .filter((recurso) => recurso.categoriaRecurso === categoria.id) // Filtra pelo nome da categoria
+                  .filter((recurso) => recurso.categoriaRecurso === categoria.id)
                   .map((recurso) => (
                     <TableRow key={recurso.id}>
                       <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.tipo.tipoRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
                       <TableCell align="right">
-                        <IconMinus />
-                        <IconPlus />
-                        <IconTrash />
+                        <IconButton onClick={() => handleDecrease(recurso)}><IconMinus /></IconButton>
+                        <IconButton onClick={() => handleIncrease(recurso)}><IconPlus /></IconButton>
+                        <IconButton><IconTrash style={{ color: "#ff4c4c" }} /></IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -128,7 +138,6 @@ const RecursosList = () => {
         )
       ))}
 
-      {/* Renderiza o formulário de nova categoria se a aba ativa for "novaCategoria" */}
       {activeTab === "novaCategoria" && (
         <div className="container" style={{ marginTop: '2%' }}>
           <h4>Criar nova Categoria de Recurso</h4>
