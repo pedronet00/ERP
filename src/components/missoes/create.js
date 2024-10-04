@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const MissaoCreate = () => {
   const [nomeMissao, setNomeMissao] = useState('');
   const [quantidadeMembros, setQuantidadeMembros] = useState('');
   const [cidadeMissao, setCidadeMissao] = useState('');
   const [pastorTitular, setPastorTitular] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,8 +52,15 @@ const MissaoCreate = () => {
       });
   };
 
+  const handleGoBack = () => {
+      navigate(-1); // Volta para a tela anterior
+  };
+
   return (
     <Container maxWidth="sm">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+      </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
           Criar Nova Missão

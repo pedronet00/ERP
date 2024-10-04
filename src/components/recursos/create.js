@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { TextField, MenuItem, Button, Container, Typography, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const RecursosCreate = () => {
   const [nomeRecurso, setNomeRecurso] = useState('');
@@ -10,7 +12,8 @@ const RecursosCreate = () => {
   const [quantidadeRecurso, setQuantidadeRecurso] = useState(''); // Estado para quantidade
   const [categoriaRecursoList, setCategoriaRecursoList] = useState([]);
   const [tipoRecursoList, setTipoRecursoList] = useState([]);
-
+  const navigate = useNavigate();
+  
   // Listando categorias de recursos
   const fetchCategoriaRecurso = async () => {
     try {
@@ -77,8 +80,15 @@ const RecursosCreate = () => {
       });
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // Volta para a tela anterior
+  };
+
   return (
     <Container maxWidth="sm">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+      </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
           Criar novo recurso

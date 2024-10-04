@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TextField, Button, Container, Typography, Box, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const CreateUser = ({ onUserCreated }) => {
   const [name, setName] = useState('');
@@ -10,6 +12,7 @@ const CreateUser = ({ onUserCreated }) => {
   const [dataNascimentoUsuario, setDataNascimentoUsuario] = useState('');
   const [imgUsuario, setImgUsuario] = useState('');
   const [niveisUsuarios, setNiveisUsuarios] = useState([]); // Para armazenar os níveis de usuários
+  const navigate = useNavigate();
 
   // Função para buscar níveis de usuários
   useEffect(() => {
@@ -47,9 +50,16 @@ const CreateUser = ({ onUserCreated }) => {
     }
   };
 
+  const handleGoBack = () => {
+      navigate(-1); // Volta para a tela anterior
+  };
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ marginTop: 4 }}>
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+      </div>
         <Typography variant="h4" gutterBottom>
           Criar Novo Usuário
         </Typography>
