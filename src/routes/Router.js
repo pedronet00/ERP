@@ -51,7 +51,7 @@ const Router = [
       { path: '/settings', element: <PrivateRoute requiredLevel={1}><Settings /></PrivateRoute> },
       { path: '/recursos', element: <PrivateRoute requiredLevel={1}><RecursosList /></PrivateRoute> },
       { path: '/recursos/create', element: <PrivateRoute requiredLevel={1}><RecursosCreate /></PrivateRoute> },
-      { path: '/relatorio', element: <PrivateRoute requiredLevel={1}><ReportIndex /></PrivateRoute> },
+      
     ],
   },
   {
@@ -62,6 +62,13 @@ const Router = [
       { path: '/auth/register', element: <Register /> },
       { path: '/auth/login', element: <Login /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
+    ],
+  },
+  {
+    path: '/relatorio',
+    element: <BlankLayout />,
+    children: [
+      { path: '/relatorio', element: <PrivateRoute requiredLevel={1}><ReportIndex /></PrivateRoute> },
     ],
   },
 ];

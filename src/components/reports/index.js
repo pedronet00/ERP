@@ -1,7 +1,6 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
-import { IconMinus, IconPrinter, IconPlus, IconTrash, IconClipboard } from '@tabler/icons-react';
-
+import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Card, CardContent, Grid } from '@mui/material';
+import { IconPrinter } from '@tabler/icons-react';
 
 const Relatorio = () => {
     const dados = [
@@ -15,19 +14,63 @@ const Relatorio = () => {
     };
 
     return (
-        <Paper className="relatorio">
+        <Paper className="relatorio" style={{ width: '80%', margin: 'auto', backgroundColor: 'rgb(4 5 6)' }}>
+            <Typography variant="h4" gutterBottom style={{ textAlign: 'center', padding: '5% 0 0 0' }}>
+                Relatório de Membros da Primeira Igreja Batista de Presidente Prudente
+            </Typography>
+            <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
+                Membros cadastrados entre 20/08/2024 e 04/10/2024
+            </Typography>
             <IconButton onClick={handlePrint} aria-label="imprimir">
                 <IconPrinter />
             </IconButton>
-            <TableContainer>
+            
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={4} display="flex">
+                    <Card sx={{ flexGrow: 1, margin: '16px', boxShadow: 3 }}>
+                        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <Typography variant="h5" component="div">
+                                Quantidade de novos registros: <span style={{ fontWeight: 'bold' }}>20</span>
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Lorem ipsum sit dolor amet
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} sm={4} display="flex">
+                    <Card sx={{ flexGrow: 1, margin: '16px', boxShadow: 3 }}>
+                        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <Typography variant="h5" component="div">
+                                Média de idade: <span style={{ fontWeight: 'bold' }}>39 anos</span>
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Lorem ipsum sit dolor amet
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} sm={4} display="flex">
+                    <Card sx={{ flexGrow: 1, margin: '16px', boxShadow: 3 }}>
+                        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <Typography variant="h5" component="div">
+                                Mês com mais registros: <span style={{ fontWeight: 'bold' }}>Setembro</span>
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Lorem ipsum sit dolor amet
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            <TableContainer style={{ width: '80%', margin: 'auto' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Coluna 1</TableCell>
-                            <TableCell>Coluna 2</TableCell>
-                            <TableCell>Coluna 3</TableCell>
-                            <TableCell>Coluna 4</TableCell>
-                            <TableCell>Coluna 5</TableCell>
+                            <TableCell>Nome</TableCell>
+                            <TableCell>Idade</TableCell>
+                            <TableCell>Data de Cadastro</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -36,8 +79,6 @@ const Relatorio = () => {
                                 <TableCell>{linha.coluna1}</TableCell>
                                 <TableCell>{linha.coluna2}</TableCell>
                                 <TableCell>{linha.coluna3}</TableCell>
-                                <TableCell>{linha.coluna4}</TableCell>
-                                <TableCell>{linha.coluna5}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
