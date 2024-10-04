@@ -133,7 +133,7 @@ const MissoesList = () => {
                 </TableCell>
                 <TableCell align="right">
                   <IconX />
-                  <IconEdit />
+                  <IconEdit onClick={() => navigate(`/missoes/edit/${missao.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
                 </TableCell>
               </TableRow>
             ))
