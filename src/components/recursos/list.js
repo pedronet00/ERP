@@ -89,7 +89,6 @@ const RecursosList = () => {
             <Table sx={{ marginTop: '2%' }}>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2" fontWeight={600}>ID</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Nome</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Tipo</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Quantidade</Typography></TableCell>
@@ -102,7 +101,6 @@ const RecursosList = () => {
                   .filter((recurso) => recurso.categoriaRecurso === categoria.id) // Filtra pelo nome da categoria
                   .map((recurso) => (
                     <TableRow key={recurso.id}>
-                      <TableCell><Typography variant="body2">{recurso.id}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.tipo.tipoRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
