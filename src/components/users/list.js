@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Typography,
   Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +17,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Button,
 } from '@mui/material';
 
 const UserList = () => {
@@ -172,19 +172,19 @@ const UserList = () => {
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Nome</Typography>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Email</Typography>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Data de Nascimento</Typography>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Status</Typography>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Ações</Typography>
             </TableCell>
           </TableRow>
@@ -193,26 +193,54 @@ const UserList = () => {
           {paginatedUsers.length > 0 ? (
             paginatedUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{user.name}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{user.email}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{user.dataNascimentoUsuario}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography variant="body2">{user.usuarioAtivo === 1 ? "Ativo" : "Inativo"}</Typography>
                 </TableCell>
-                <TableCell align="right">
-                  {user.usuarioAtivo === 1 ? (
-                    <IconX onClick={() => handleDeactivateUser(user.id)} style={{ cursor: 'pointer', color: 'red' }} />
-                  ) : (
-                    <IconCheck onClick={() => handleActivateUser(user.id)} style={{ cursor: 'pointer', color: 'green' }} />
-                  )}
-                  <IconEdit onClick={() => navigate(`/user/edit/${user.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
+                <TableCell align="center">
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    {user.usuarioAtivo === 1 ? (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDeactivateUser(user.id)}
+                        startIcon={<IconX />}
+                        size="small"
+                      >
+                        Desativar
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleActivateUser(user.id)}
+                        startIcon={<IconCheck />}
+                        size="small"
+                      >
+                        Ativar
+                      </Button>
+                    )}
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => navigate(`/user/edit/${user.id}`)}
+                      startIcon={<IconEdit />}
+                      size="small"
+                    >
+                      Editar
+                    </Button>
+                  </Box>
                 </TableCell>
+
               </TableRow>
             ))
           ) : (

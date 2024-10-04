@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Chip,
+  Button,
   TextField,
   Select,
   MenuItem,
@@ -201,21 +202,42 @@ const DepartmentList = () => {
                     {department.statusDepartamento === 1 ? 'Ativo' : 'Inativo'}
                   </Typography>
                 </TableCell>
-                <TableCell align="right">
-                  {department.statusDepartamento === 1 ? (
-                    <IconX
-                      onClick={() => handleDeactivateDepartment(department.id)}
-                      style={{ cursor: 'pointer', color: 'red' }}
-                    />
-                  ) : (
-                    <IconCheck
-                      onClick={() => handleActivateDepartment(department.id)}
-                      style={{ cursor: 'pointer', color: 'green' }}
-                    />
-                  )}
-                  <IconEdit onClick={() => navigate(`/departament/edit/${department.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
+                <TableCell align="center">
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    {department.statusDepartamento === 1 ? (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDeactivateDepartment(department.id)}
+                        startIcon={<IconX />}
+                        size="small"
+                      >
+                        Desativar
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleActivateDepartment(department.id)}
+                        startIcon={<IconCheck />}
+                        size="small"
+                      >
+                        Ativar
+                      </Button>
+                    )}
 
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => navigate(`/departament/edit/${department.id}`)}
+                      startIcon={<IconEdit />}
+                      size="small"
+                    >
+                      Editar
+                    </Button>
+                  </Box>
                 </TableCell>
+
               </TableRow>
             ))
           ) : (
