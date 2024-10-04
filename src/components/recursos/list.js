@@ -193,7 +193,7 @@ const RecursosList = () => {
                             </TableCell>
                             <TableCell>
                             <Typography variant="body2">Comentário expositivo evangelho segundo Lucas</Typography>
-                            </TableCell>
+                            </TableCell> 
                             <TableCell>
                             <Typography variant="body2">Livro</Typography>
                             </TableCell>
