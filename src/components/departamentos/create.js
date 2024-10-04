@@ -1,57 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CriarDepartamento = () => {
+  const { departmentId } = useParams(); // Obtenha o ID do departamento da URL
   const [tituloDepartamento, setTituloDepartamento] = useState('');
   const [textoDepartamento, setTextoDepartamento] = useState('');
   const [imgDepartamento, setImgDepartamento] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // Função para buscar os detalhes do departamento se estiver editando
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      if (departmentId) {
+        try {
+          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/departamentos/${departmentId}`);
+          const departamento = response.data.departamento; // Acesse os dados do departamento corretamente
+          
+          // Defina os estados com os dados do departamento
+          setTituloDepartamento(departamento.tituloDepartamento);
+          setTextoDepartamento(departamento.textoDepartamento);
+          setImgDepartamento(departamento.imgDepartamento);
+        } catch (error) {
+          console.error("Erro ao buscar detalhes do departamento:", error);
+          Swal.fire(
+            'Erro!',
+            'Não foi possível buscar os detalhes do departamento.',
+            'error'
+          );
+        }
+      }
+    };
+
+    fetchDepartment();
+  }, [departmentId]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const novoDepartamento = {
+    const departamentoData = {
       tituloDepartamento,
       textoDepartamento,
       imgDepartamento,
     };
 
-    axios.post('https://apoleon.com.br/api-estagio/public/api/departamentos', novoDepartamento)
-      .then(() => {
+    try {
+      if (departmentId) {
+        // Se departmentId estiver presente, atualize o departamento
+        await axios.put(`https://apoleon.com.br/api-estagio/public/api/departamentos/${departmentId}`, departamentoData);
+        Swal.fire(
+          'Departamento Atualizado!',
+          'O departamento foi atualizado com sucesso.',
+          'success'
+        );
+      } else {
+        // Se não houver departmentId, crie um novo departamento
+        await axios.post('https://apoleon.com.br/api-estagio/public/api/departamentos', departamentoData);
         Swal.fire(
           'Departamento Criado!',
           'O departamento foi criado com sucesso.',
           'success'
         );
-        // Limpa os campos após o sucesso
-        setTituloDepartamento('');
-        setTextoDepartamento('');
-        setImgDepartamento('');
-      })
-      .catch((error) => {
-        if (error.response && error.response.data.error) {
-          Swal.fire(
-            'Erro!',
-            error.response.data.error,
-            'error'
-          );
-        } else {
-          Swal.fire(
-            'Erro!',
-            'Houve um problema ao criar o departamento.',
-            'error'
-          );
-        }
-      });
+      }
+
+      // Limpa os campos após o sucesso
+      setTituloDepartamento('');
+      setTextoDepartamento('');
+      setImgDepartamento('');
+      navigate('/departaments'); // Navegue de volta para a lista de departamentos
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        Swal.fire(
+          'Erro!',
+          error.response.data.error,
+          'error'
+        );
+      } else {
+        Swal.fire(
+          'Erro!',
+          'Houve um problema ao criar ou atualizar o departamento.',
+          'error'
+        );
+      }
+    }
   };
 
   const handleGoBack = () => {
     navigate(-1); // Volta para a tela anterior
-};
+  };
 
   return (
     <Container maxWidth="sm">
@@ -60,7 +99,7 @@ const CriarDepartamento = () => {
       </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
-          Criar Novo Departamento
+          {departmentId ? 'Editar Departamento' : 'Criar Novo Departamento'}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -102,7 +141,7 @@ const CriarDepartamento = () => {
             fullWidth
             sx={{ marginTop: 2 }}
           >
-            Criar Departamento
+            {departmentId ? 'Atualizar Departamento' : 'Criar Departamento'}
           </Button>
         </form>
       </Box>

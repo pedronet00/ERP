@@ -46,6 +46,7 @@ const Router = [
       { path: '/users', element: <PrivateRoute requiredLevel={3}><UserList /></PrivateRoute> },
       { path: '/departaments', element: <PrivateRoute requiredLevel={2}><DepartmentList /></PrivateRoute> },
       { path: '/departament/create', element: <PrivateRoute requiredLevel={4}><DepartmentCreate /></PrivateRoute> },
+      { path: '/departament/edit/:departmentId', element: <PrivateRoute requiredLevel={4}><DepartmentCreate /></PrivateRoute> },
       { path: '/missoes', element: <PrivateRoute requiredLevel={2}><MissoesList /></PrivateRoute> },
       { path: '/missoes/create', element: <PrivateRoute requiredLevel={4}><MissoesCreate /></PrivateRoute> },
       { path: '/posts', element: <PrivateRoute requiredLevel={1}><PostList /></PrivateRoute> },

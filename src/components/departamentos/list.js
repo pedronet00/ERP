@@ -213,7 +213,8 @@ const DepartmentList = () => {
                       style={{ cursor: 'pointer', color: 'green' }}
                     />
                   )}
-                  <IconEdit />
+                  <IconEdit onClick={() => navigate(`/departament/edit/${department.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
+
                 </TableCell>
               </TableRow>
             ))
