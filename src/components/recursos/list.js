@@ -5,30 +5,42 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 
 const RecursosList = () => {
-  const [activeTab, setActiveTab] = useState(0); // Pode ser número ou string
+  const [activeTab, setActiveTab] = useState(''); // Inicia com uma aba vazia
   const [categoriaRecursoList, setCategoriaRecursoList] = useState([]);
   const [categoriaRecurso, setCategoriaRecurso] = useState('');
+  const [recursosList, setRecursosList] = useState([]); // Lista de recursos
 
+  // Função para buscar categorias de recursos
   const fetchCategoriaRecurso = async () => {
     try {
       const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso');
       setCategoriaRecursoList(response.data);
 
       if (response.data.length > 0) {
-        // Define a primeira categoria como ativa, com base no id
-        setActiveTab(response.data[0].id);
+        setActiveTab(response.data[0].categoriaRecurso); // Define a primeira categoria como ativa
       }
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
     }
   };
 
+  // Função para buscar recursos
+  const fetchRecursos = async () => {
+    try {
+      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/recurso');
+      setRecursosList(response.data); // Armazena os recursos obtidos
+    } catch (error) {
+      console.error("Erro ao buscar recursos:", error);
+    }
+  };
+
   useEffect(() => {
     fetchCategoriaRecurso();
+    fetchRecursos();
   }, []);
 
   const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue); // Aqui ele pode ser "novaCategoria" ou o ID numérico
+    setActiveTab(newValue);
   };
 
   const handleNewCategory = (e) => {
@@ -45,23 +57,12 @@ const RecursosList = () => {
           'A categoria foi criada com sucesso.',
           'success'
         );
-        // Limpa os campos após o sucesso
-        setCategoriaRecurso('');
+        setCategoriaRecurso(''); // Limpa os campos
+        fetchCategoriaRecurso(); // Atualiza a lista de categorias
       })
       .catch((error) => {
-        if (error.response && error.response.data.error) {
-          Swal.fire(
-            'Erro!',
-            error.response.data.error,
-            'error'
-          );
-        } else {
-          Swal.fire(
-            'Erro!',
-            'Houve um problema ao criar a categoria de recurso.',
-            'error'
-          );
-        }
+        const errorMessage = error.response?.data?.error || 'Houve um problema ao criar a categoria de recurso.';
+        Swal.fire('Erro!', errorMessage, 'error');
       });
   };
 
@@ -74,74 +75,50 @@ const RecursosList = () => {
       <AppBar position="static" style={{ marginTop: '2%' }} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
           {categoriaRecursoList.map((categoria) => (
-            <Tab key={categoria.id} label={categoria.categoriaRecurso} value={categoria.id} />
+            <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
           ))}
-          {/* Alterar o value para "novaCategoria" como string */}
-          <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
+                    <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
+
         </Tabs>
       </AppBar>
 
-      {/* Renderizar a tabela se a aba ativa for uma categoria existente */}
+      {/* Renderiza a tabela se a aba ativa for uma categoria existente */}
       {categoriaRecursoList.map((categoria) => (
-        activeTab === categoria.id && (
-          <Box key={categoria.id} mt={3}>
+        activeTab === categoria.categoriaRecurso && (
+          <Box key={categoria.categoriaRecurso} mt={3}>
             <Table sx={{ marginTop: '2%' }}>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                      ID
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                      Nome
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                      Tipo
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" fontWeight={600}>
-                      Quantidade
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="subtitle2" fontWeight={600}>
-                      Ações
-                    </Typography>
-                  </TableCell>
+                  <TableCell><Typography variant="subtitle2" fontWeight={600}>ID</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2" fontWeight={600}>Nome</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2" fontWeight={600}>Tipo</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2" fontWeight={600}>Quantidade</Typography></TableCell>
+                  <TableCell align="right"><Typography variant="subtitle2" fontWeight={600}>Ações</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Adicione o conteúdo da tabela conforme necessário */}
-                <TableRow key="1">
-                  <TableCell>
-                    <Typography variant="body2">1</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">Exemplo Recurso</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">Tipo Exemplo</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">10</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <IconMinus />
-                    <IconPlus />
-                  </TableCell>
-                </TableRow>
+                {/* Filtra e exibe os recursos que pertencem à categoria da aba ativa */}
+                {recursosList
+                  .filter((recurso) => recurso.categoriaRecurso === categoria.id) // Filtra pelo nome da categoria
+                  .map((recurso) => (
+                    <TableRow key={recurso.id}>
+                      <TableCell><Typography variant="body2">{recurso.id}</Typography></TableCell>
+                      <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
+                      <TableCell><Typography variant="body2">{recurso.tipoRecurso}</Typography></TableCell>
+                      <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
+                      <TableCell align="right">
+                        <IconMinus />
+                        <IconPlus />
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </Box>
         )
       ))}
 
-      {/* Renderizar o formulário de nova categoria se a aba ativa for "novaCategoria" */}
+      {/* Renderiza o formulário de nova categoria se a aba ativa for "novaCategoria" */}
       {activeTab === "novaCategoria" && (
         <div className="container" style={{ marginTop: '2%' }}>
           <h4>Criar nova Categoria de Recurso</h4>
@@ -166,4 +143,3 @@ const RecursosList = () => {
 };
 
 export default RecursosList;
-
