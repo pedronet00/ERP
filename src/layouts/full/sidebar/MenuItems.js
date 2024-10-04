@@ -84,7 +84,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Atas de Cultos',
     icon: IconScript,
-    href: '/ui/shadow',
+    href: '/atas',
     allowedLevels: [3, 4], // Permitido para níveis 3 e 4
   },
   {
