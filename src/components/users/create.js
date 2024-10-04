@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { TextField, Button, Container, Typography, Box, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
 const CreateUser = ({ onUserCreated }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [nivelUsuario, setNivelUsuario] = useState(1);
+  const [nivelUsuario, setNivelUsuario] = useState('');
   const [dataNascimentoUsuario, setDataNascimentoUsuario] = useState('');
   const [imgUsuario, setImgUsuario] = useState('');
+  const [niveisUsuarios, setNiveisUsuarios] = useState([]); // Para armazenar os níveis de usuários
+
+  // Função para buscar níveis de usuários
+  useEffect(() => {
+    const fetchNiveisUsuarios = async () => {
+      try {
+        const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/nivelUsuario');
+        setNiveisUsuarios(response.data); // Assumindo que os dados vêm como um array de níveis de usuários
+      } catch (error) {
+        console.error("Erro ao buscar níveis de usuários:", error);
+      }
+    };
+
+    fetchNiveisUsuarios();
+  }, []);
 
   // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
@@ -32,72 +48,94 @@ const CreateUser = ({ onUserCreated }) => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Criar Novo Usuário</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Nome</label>
-          <input
-            type="text"
-            className="form-control"
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Criar Novo Usuário
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Nome"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input
+
+          <TextField
+            label="Email"
             type="email"
-            className="form-control"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Senha</label>
-          <input
+
+          <TextField
+            label="Senha"
             type="password"
-            className="form-control"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Nível de Usuário</label>
-          <input
-            type="number"
-            className="form-control"
-            value={nivelUsuario}
-            onChange={(e) => setNivelUsuario(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Data de Nascimento</label>
-          <input
+
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel id="nivelUsuario-label">Nível de Usuário</InputLabel>
+            <Select
+              labelId="nivelUsuario-label"
+              id="nivelUsuario"
+              value={nivelUsuario}
+              onChange={(e) => setNivelUsuario(e.target.value)}
+              label="Nível de Usuário"
+            >
+              <MenuItem value="">
+                <em>Selecione um nível</em>
+              </MenuItem>
+              {niveisUsuarios.map((nivel) => (
+                <MenuItem key={nivel.id} value={nivel.id}>
+                  {nivel.nivelUsuario}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Data de Nascimento"
             type="date"
-            className="form-control"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={dataNascimentoUsuario}
             onChange={(e) => setDataNascimentoUsuario(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Imagem do Usuário (URL ou nome)</label>
-          <input
-            type="text"
-            className="form-control"
+
+          <TextField
+            label="Imagem do Usuário (URL ou nome)"
+            variant="outlined"
+            fullWidth
+            margin="normal"
             value={imgUsuario}
             onChange={(e) => setImgUsuario(e.target.value)}
             required
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Criar Usuário</button>
-      </form>
-    </div>
+
+          <Button variant="contained" color="primary" type="submit" fullWidth sx={{ marginTop: 2 }}>
+            Criar Usuário
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 };
 
