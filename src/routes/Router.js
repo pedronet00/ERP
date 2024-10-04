@@ -42,6 +42,7 @@ const Router = [
       { path: '/ui/shadow', exact: true, element: <PrivateRoute requiredLevel={3}><Shadow /></PrivateRoute> },
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/user/create', element: <PrivateRoute requiredLevel={4}><UserCreate /></PrivateRoute> },
+      { path: '/user/edit/:userId', element: <PrivateRoute requiredLevel={4}><UserCreate /></PrivateRoute> },
       { path: '/users', element: <PrivateRoute requiredLevel={3}><UserList /></PrivateRoute> },
       { path: '/departaments', element: <PrivateRoute requiredLevel={2}><DepartmentList /></PrivateRoute> },
       { path: '/departament/create', element: <PrivateRoute requiredLevel={4}><DepartmentCreate /></PrivateRoute> },

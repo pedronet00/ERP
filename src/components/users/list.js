@@ -202,7 +202,7 @@ const UserList = () => {
                   ) : (
                     <IconCheck onClick={() => handleActivateUser(user.id)} style={{ cursor: 'pointer', color: 'green' }} />
                   )}
-                  <IconEdit />
+                  <IconEdit onClick={() => navigate(`/user/edit/${user.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
                 </TableCell>
               </TableRow>
             ))
