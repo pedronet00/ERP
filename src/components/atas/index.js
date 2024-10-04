@@ -23,7 +23,7 @@ const AtasList = () => {
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 </Typography>
                 <object
-                    data="https://web.toledoprudente.edu.br/sistemas/imagens/documentosoficiais/20/edital-proadm-n-0524--matricula-presencial-ads-125.pdf" // Link para o PDF
+                    data="https://pibprudente.org.br/wp-content/uploads/2024/10/06-10-24.pdf" // Link para o PDF
                     type="application/pdf"
                     width="100%"
                     height="200px"

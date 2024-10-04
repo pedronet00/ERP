@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2'; // Certifique-se de importar Swal
+import Swal from 'sweetalert2';
 import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -16,6 +16,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Button,
 } from '@mui/material';
 
 const UserList = () => {
@@ -23,6 +24,8 @@ const UserList = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [usersPerPage] = useState(5);
   const navigate = useNavigate();
 
   // Função para buscar usuários da API
@@ -129,6 +132,12 @@ const UserList = () => {
     }
   };
 
+  // Calcular usuários a serem exibidos na página atual
+  const startIndex = currentPage * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  const maxPages = Math.ceil(filteredUsers.length / usersPerPage);
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -181,8 +190,8 @@ const UserList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
+          {paginatedUsers.length > 0 ? (
+            paginatedUsers.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>
                   <Typography variant="body2">{user.name}</Typography>
@@ -215,6 +224,27 @@ const UserList = () => {
           )}
         </TableBody>
       </Table>
+
+      {/* Navegação de Paginação */}
+      <Box display="flex" justifyContent="center" marginTop={2}>
+        <Button
+          variant="contained"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+          disabled={currentPage === 0}
+        >
+          Anterior
+        </Button>
+        <Typography variant="h6" style={{ margin: '0 16px' }}>
+          {currentPage + 1} / {maxPages}
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, maxPages - 1))}
+          disabled={currentPage === maxPages - 1}
+        >
+          Próximo
+        </Button>
+      </Box>
     </div>
   );
 };
