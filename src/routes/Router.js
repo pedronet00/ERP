@@ -26,6 +26,7 @@ const PostList = Loadable(lazy(() => import('../components/posts/list')));
 const Settings = Loadable(lazy(() => import('../components/settings/index')));
 const RecursosList = Loadable(lazy(() => import('../components/recursos/list')));
 const RecursosCreate = Loadable(lazy(() => import('../components/recursos/create')));
+const ReportIndex = Loadable(lazy(() => import('../components/reports/index')));
 
 
 const Router = [
@@ -50,6 +51,7 @@ const Router = [
       { path: '/settings', element: <PrivateRoute requiredLevel={1}><Settings /></PrivateRoute> },
       { path: '/recursos', element: <PrivateRoute requiredLevel={1}><RecursosList /></PrivateRoute> },
       { path: '/recursos/create', element: <PrivateRoute requiredLevel={1}><RecursosCreate /></PrivateRoute> },
+      { path: '/relatorio', element: <PrivateRoute requiredLevel={1}><ReportIndex /></PrivateRoute> },
     ],
   },
   {

@@ -1,6 +1,6 @@
 import {
   IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar
+  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -57,7 +57,14 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Finanças',
     icon: IconFileDollar,
-    href: '/ui/shadow',
+    href: '/financas',
+    allowedLevels: [3, 4], // Permitido para níveis 3 e 4
+  },
+  {
+    id: uniqueId(),
+    title: 'Relatórios',
+    icon: IconFileAnalytics,
+    href: '/financas',
     allowedLevels: [3, 4], // Permitido para níveis 3 e 4
   },
   

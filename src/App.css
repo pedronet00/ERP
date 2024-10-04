@@ -1,0 +1,22 @@
+@media print {
+    /* Oculta a sidebar */
+    .sidebar,
+    .mainwrapper .sidebar {
+        display: none !important; /* Use !important para garantir que o estilo seja aplicado */
+    }
+
+    /* Exibe apenas o conteúdo principal */
+    .mainwrapper > * {
+        display: none !important; /* Oculta todos os outros elementos dentro do mainwrapper */
+    }
+
+    /* Mantém o conteúdo da página visível durante a impressão */
+    .mainwrapper > .page-wrapper {
+        display: block !important; /* Exibe o conteúdo principal da página */
+    }
+
+    /* Adiciona alguma formatação para a impressão */
+    @page {
+        margin: 20mm;
+    }
+}
