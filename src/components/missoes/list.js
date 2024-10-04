@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
   Typography, Box,
   Table,
@@ -10,34 +11,32 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Button,
 } from '@mui/material';
 
 const MissoesList = () => {
   const [missoes, setMissoes] = useState([]);
-  const [filteredMissoes, setFilteredMissoes] = useState([]); // Estado para as missões filtradas
-  const [filterNome, setFilterNome] = useState(''); // Filtro para nome
-  const [filterCidade, setFilterCidade] = useState(''); // Filtro para cidade
-  const navigate = useNavigate(); // Inicializar o navegador
+  const [filteredMissoes, setFilteredMissoes] = useState([]);
+  const [filterNome, setFilterNome] = useState('');
+  const [filterCidade, setFilterCidade] = useState('');
+  const navigate = useNavigate();
 
-  // Função para buscar missões da API
   const fetchMissoes = async () => {
     try {
       const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/missoes');
       setMissoes(response.data);
-      setFilteredMissoes(response.data); // Iniciar missões filtradas com todas as missões
+      setFilteredMissoes(response.data);
     } catch (error) {
-      console.error("Erro ao buscar missões:", error);
+      console.error('Erro ao buscar missões:', error);
     }
   };
 
-  // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
     fetchMissoes();
   }, []);
 
-  // Função de filtragem
   useEffect(() => {
-    const filtered = missoes.filter((missao) => 
+    const filtered = missoes.filter((missao) =>
       missao.nomeMissao.toLowerCase().startsWith(filterNome.toLowerCase()) &&
       missao.cidadeMissao.toLowerCase().startsWith(filterCidade.toLowerCase())
     );
@@ -48,13 +47,75 @@ const MissoesList = () => {
     navigate('/missoes/create');
   };
 
+  const ativarMissao = async (id) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja ativar esta missão?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, ativar."
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/missoes/${id}/ativar`);
+        fetchMissoes(); // Recarrega as missões após ativar
+        Swal.fire({
+          title: "Ativada!",
+          text: "A missão foi ativada com sucesso.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao ativar a missão:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao ativar a missão.",
+          icon: "error"
+        });
+      }
+    }
+  };
+  
+  const desativarMissao = async (id) => {
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Deseja desativar esta missão?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, desativar."
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/missoes/${id}/desativar`);
+        fetchMissoes(); // Recarrega as missões após desativar
+        Swal.fire({
+          title: "Desativada!",
+          text: "A missão foi desativada com sucesso.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Erro ao desativar a missão:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Ocorreu um erro ao desativar a missão.",
+          icon: "error"
+        });
+      }
+    }
+  };
+  
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Missões</h2>
       </div>
 
-      {/* Campos de filtro */}
       <Box mb={3} display="flex" gap={2}>
         <TextField
           label="Filtrar por Nome"
@@ -77,35 +138,35 @@ const MissoesList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
       </div>
 
-      <Table sx={{ marginTop: '2%' }}>
+      <Table sx={{ marginTop: '2%' }} >
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
+              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 ID
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
+              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 Nome
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
+              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 Cidade
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
+              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 Membros
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
+              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 Pastor titular
               </Typography>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
               </Typography>
@@ -117,24 +178,56 @@ const MissoesList = () => {
             filteredMissoes.map((missao) => (
               <TableRow key={missao.id}>
                 <TableCell>
-                  <Typography variant="body2">{missao.id}</Typography>
+                  <Typography align="center" variant="body2">{missao.id}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">{missao.nomeMissao}</Typography>
+                  <Typography align="center" variant="body2">{missao.nomeMissao}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">{missao.cidadeMissao}</Typography>
+                  <Typography align="center" variant="body2">{missao.cidadeMissao}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">{missao.quantidadeMembros}</Typography>
+                  <Typography align="center" variant="body2">{missao.quantidadeMembros}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">{missao.pastorTitular}</Typography>
+                  <Typography align="center" variant="body2">{missao.pastorTitular}</Typography>
                 </TableCell>
-                <TableCell align="right">
-                  <IconX />
-                  <IconEdit onClick={() => navigate(`/missoes/edit/${missao.id}`)} style={{ cursor: 'pointer', color: 'blue' }} />
+                <TableCell align="center">
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    {missao.statusMissao == 1 ? (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => desativarMissao(missao.id)}
+                        startIcon={<IconX />}
+                        size="small"
+                      >
+                        Desativar
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => ativarMissao(missao.id)}
+                        startIcon={<IconCheck />}
+                        size="small"
+                      >
+                        Ativar
+                      </Button>
+                    )}
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => navigate(`/missoes/edit/${missao.id}`)}
+                      startIcon={<IconEdit />}
+                      size="small"
+                    >
+                      Editar
+                    </Button>
+                  </Box>
                 </TableCell>
+
               </TableRow>
             ))
           ) : (
