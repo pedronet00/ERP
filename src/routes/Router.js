@@ -28,6 +28,7 @@ const RecursosList = Loadable(lazy(() => import('../components/recursos/list')))
 const RecursosCreate = Loadable(lazy(() => import('../components/recursos/create')));
 const ReportIndex = Loadable(lazy(() => import('../components/reports/index')));
 const AtasList = Loadable(lazy(() => import('../components/atas/index')));
+const EventosCreate = Loadable(lazy(() => import('../components/eventos/create')));
 
 
 const Router = [
@@ -56,6 +57,7 @@ const Router = [
       { path: '/recursos', element: <PrivateRoute requiredLevel={1}><RecursosList /></PrivateRoute> },
       { path: '/recursos/create', element: <PrivateRoute requiredLevel={1}><RecursosCreate /></PrivateRoute> },
       { path: '/atas', element: <PrivateRoute requiredLevel={1}><AtasList /></PrivateRoute> },
+      { path: '/eventos/create', element: <PrivateRoute requiredLevel={1}><EventosCreate /></PrivateRoute> },
       
     ],
   },

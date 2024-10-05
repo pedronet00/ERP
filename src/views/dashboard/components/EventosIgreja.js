@@ -8,6 +8,7 @@ import {
     TableRow,
     Chip
 } from '@mui/material';
+import { IconPlus } from '@tabler/icons-react'; // IconCheck adicionado
 import DashboardCard from '../../../components/shared/DashboardCard';
 
 const EventosIgreja = () => {
@@ -58,6 +59,7 @@ const EventosIgreja = () => {
 
     return (
         <DashboardCard title="Eventos da igreja">
+            <button className="btn btn-primary"><IconPlus/>Novo evento</button>
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
                     aria-label="simple table"
