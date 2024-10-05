@@ -140,7 +140,7 @@ const EventosIgreja = () => {
                                                         fontSize: "13px",
                                                     }}
                                                 >
-                                                    Local: {evento.localEvento}
+                                                    {evento.local.nomeLocal}
                                                 </Typography>
                                             </Box>
                                         </Box>
