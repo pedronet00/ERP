@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Typography, Box,
     Table,
@@ -10,49 +10,53 @@ import {
 } from '@mui/material';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const products = [
-    {
-        id: "1",
-        titulo: "Churrasco 15 de Novembro",
-        publico: "Igreja",
-        data: "15/11/2024",
-        priority: "Alta",
-        pbg: "error.main",
-        orcamento: "1.5",
-    },
-    {
-        id: "2",
-        titulo: "Aniversário da Igreja",
-        publico: "Igreja",
-        data: "20/11/2024",
-        priority: "Média",
-        pbg: "secondary.main",
-        orcamento: "24.5",
-    },
-    {
-        id: "3",
-        titulo: "Natal",
-        publico: "Igreja",
-        data: "24/12/2024",
-        priority: "Média",
-        pbg: "success.main",
-        orcamento: "12.8",
-    },
-    {
-        id: "4",
-        titulo: "Nirav Joshi",
-        publico: "Frontend Engineer",
-        data: "Hosting Press HTML",
-        priority: "Crítica",
-        pbg: "success.main",
-        orcamento: "2.4",
-    },
-];
-
-
 const EventosIgreja = () => {
-    return (
+    const [eventos, setEventos] = useState([]);
 
+    // Função para buscar os eventos da API
+    const fetchEventos = async () => {
+        try {
+            const response = await fetch('https://apoleon.com.br/api-estagio/public/api/eventos');
+            const data = await response.json();
+            setEventos(data); // Salva os eventos na state
+        } catch (error) {
+            console.error('Erro ao buscar os eventos:', error);
+        }
+    };
+
+    // useEffect para chamar a função quando o componente carregar
+    useEffect(() => {
+        fetchEventos();
+    }, []);
+
+    // Função para definir a cor de background com base na prioridade
+    const getPriorityColor = (prioridade) => {
+        if (prioridade === 1 || prioridade === 2) {
+            return "success.main";  // Verde para prioridades 1 ou 2
+        } else if (prioridade === 3) {
+            return "secondary.main";  // Cinza para prioridade 3
+        } else if (prioridade === 4) {
+            return "error.main";  // Vermelho para prioridade 4
+        }
+    };
+
+    // Função para definir o nome da prioridade
+    const getPriorityName = (prioridade) => {
+        switch (prioridade) {
+            case 1:
+                return "Baixa";
+            case 2:
+                return "Média";
+            case 3:
+                return "Alta";
+            case 4:
+                return "Crítica";
+            default:
+                return "Desconhecida";
+        }
+    };
+
+    return (
         <DashboardCard title="Eventos da igreja">
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
@@ -92,61 +96,69 @@ const EventosIgreja = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((product) => (
-                            <TableRow key={product.titulo}>
-                                <TableCell>
-                                    <Typography
-                                        sx={{
-                                            fontSize: "15px",
-                                            fontWeight: "500",
-                                        }}
-                                    >
-                                        {product.id}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Box>
-                                            <Typography variant="subtitle2" fontWeight={600}>
-                                                {product.titulo}
-                                            </Typography>
-                                            <Typography
-                                                color="textSecondary"
-                                                sx={{
-                                                    fontSize: "13px",
-                                                }}
-                                            >
-                                                {product.publico}
-                                            </Typography>
+                        {eventos.length > 0 ? (
+                            eventos.map((evento) => (
+                                <TableRow key={evento.id}>
+                                    <TableCell>
+                                        <Typography
+                                            sx={{
+                                                fontSize: "15px",
+                                                fontWeight: "500",
+                                            }}
+                                        >
+                                            {evento.id}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Box>
+                                                <Typography variant="subtitle2" fontWeight={600}>
+                                                    {evento.nomeEvento}
+                                                </Typography>
+                                                <Typography
+                                                    color="textSecondary"
+                                                    sx={{
+                                                        fontSize: "13px",
+                                                    }}
+                                                >
+                                                    Local: {evento.localEvento}
+                                                </Typography>
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                        {product.data}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Chip
-                                        sx={{
-                                            px: "4px",
-                                            backgroundColor: product.pbg,
-                                            color: "#fff",
-                                        }}
-                                        size="small"
-                                        label={product.priority}
-                                    ></Chip>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Typography variant="h6">${product.orcamento}k</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                                            {new Date(evento.dataEvento).toLocaleDateString()}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Chip
+                                            sx={{
+                                                px: "4px",
+                                                backgroundColor: getPriorityColor(evento.prioridadeEvento),
+                                                color: "#fff",
+                                            }}
+                                            size="small"
+                                            label={getPriorityName(evento.prioridadeEvento)}
+                                        ></Chip>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Typography variant="h6">R$ {parseFloat(evento.orcamentoEvento).toFixed(2)}</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={5} align="center">
+                                    <Typography variant="subtitle2">Nenhum evento encontrado</Typography>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        )}
                     </TableBody>
                 </Table>
             </Box>
