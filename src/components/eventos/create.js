@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -10,7 +10,7 @@ import {
   FormControl,
   MenuItem
 } from '@mui/material';
-import {IconArrowLeft} from '@tabler/icons-react'; // Importe seu ícone de voltar
+import { IconArrowLeft } from '@tabler/icons-react'; // Importe seu ícone de voltar
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -25,12 +25,28 @@ const CadastrarEvento = () => {
     orcamentoEvento: '',
   });
 
+  const [locais, setLocais] = useState([]); // Estado para armazenar os locais
+
   const prioridades = [
     { value: 1, label: 'Baixa' },
     { value: 2, label: 'Média' },
     { value: 3, label: 'Alta' },
     { value: 4, label: 'Crítica' },
   ];
+
+  // Função para buscar os locais da API
+  useEffect(() => {
+    const fetchLocais = async () => {
+      try {
+        const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/locais');
+        setLocais(response.data); // Armazena os locais no estado
+      } catch (error) {
+        console.error('Erro ao buscar os locais:', error);
+      }
+    };
+
+    fetchLocais(); // Chama a função ao montar o componente
+  }, []);
 
   const handleGoBack = () => {
     navigate(-1); // Navega para a página anterior
@@ -104,16 +120,22 @@ const CadastrarEvento = () => {
             required
           />
 
-          <TextField
-            label="Local do Evento"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            name="localEvento"
-            value={formData.localEvento}
-            onChange={handleChange}
-            required
-          />
+          {/* Select de Local do Evento */}
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel>Local do Evento</InputLabel>
+            <Select
+              label="Local do Evento"
+              name="localEvento"
+              value={formData.localEvento}
+              onChange={handleChange}
+            >
+              {locais.map((local) => (
+                <MenuItem key={local.id} value={local.id}>
+                  {local.nomeLocal}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <TextField
             label="Data do Evento"
@@ -130,22 +152,21 @@ const CadastrarEvento = () => {
             required
           />
 
-            <FormControl fullWidth margin="normal" required>
-                <InputLabel>Prioridade do Evento</InputLabel>
-                <Select
-                    label="Prioridade do Evento"
-                    name="prioridadeEvento"
-                    value={formData.prioridadeEvento}
-                    onChange={handleChange}
-                >
-                    {prioridades.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel>Prioridade do Evento</InputLabel>
+            <Select
+              label="Prioridade do Evento"
+              name="prioridadeEvento"
+              value={formData.prioridadeEvento}
+              onChange={handleChange}
+            >
+              {prioridades.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <TextField
             label="Orçamento do Evento"
