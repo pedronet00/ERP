@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-    Typography, Box,
+    Typography, 
+    Box,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-    Chip
+    Chip,
+    Button
 } from '@mui/material';
-import { IconPlus } from '@tabler/icons-react'; // IconCheck adicionado
+import { IconPlus, IconEdit } from '@tabler/icons-react'; // IconCheck adicionado
 import DashboardCard from '../../../components/shared/DashboardCard';
 
 const EventosIgreja = () => {
     const [eventos, setEventos] = useState([]);
+    const navigate = useNavigate();
 
     // Função para buscar os eventos da API
     const fetchEventos = async () => {
@@ -57,15 +61,18 @@ const EventosIgreja = () => {
         }
     };
 
+    const handleNewEvent = () => {
+        navigate('/eventos/create');
+    }
     return (
         <DashboardCard title="Eventos da igreja">
-            <button className="btn btn-primary"><IconPlus/>Novo evento</button>
+            <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus/>Novo evento</button>
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
                     aria-label="simple table"
                     sx={{
                         whiteSpace: "nowrap",
-                        mt: 2
+                        mt: 3
                     }}
                 >
                     <TableHead>
@@ -90,9 +97,14 @@ const EventosIgreja = () => {
                                     Prioridade
                                 </Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center">
                                 <Typography variant="subtitle2" fontWeight={600}>
                                     Orçamento
+                                </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ flex: 1 }}>
+                                <Typography variant="subtitle2" fontWeight={600}>
+                                    Ações
                                 </Typography>
                             </TableCell>
                         </TableRow>
@@ -149,8 +161,43 @@ const EventosIgreja = () => {
                                             label={getPriorityName(evento.prioridadeEvento)}
                                         ></Chip>
                                     </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="center">
                                         <Typography variant="h6">R$ {parseFloat(evento.orcamentoEvento).toFixed(2)}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center" >
+                                        <Box display="flex" flexDirection="column" gap={1}>
+                                            {/* {department.statusDepartamento === 1 ? (
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={() => handleDeactivateDepartment(department.id)}
+                                                startIcon={<IconX />}
+                                                size="small"
+                                            >
+                                                Desativar
+                                            </Button>
+                                            ) : (
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                onClick={() => handleActivateDepartment(department.id)}
+                                                startIcon={<IconCheck />}
+                                                size="small"
+                                            >
+                                                Ativar
+                                            </Button>
+                                            )} */}
+
+                                            <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => navigate(`/departament/edit/${evento.id}`)}
+                                            startIcon={<IconEdit />}
+                                            size="small"
+                                            >
+                                            Editar
+                                            </Button>
+                                        </Box>
                                     </TableCell>
                                 </TableRow>
                             ))
