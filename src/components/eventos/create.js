@@ -11,21 +11,21 @@ import {
   MenuItem
 } from '@mui/material';
 import { IconArrowLeft } from '@tabler/icons-react'; // Importe seu ícone de voltar
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const CadastrarEvento = () => {
-  const navigate = useNavigate(); // Usado para a navegação ao clicar no botão Voltar
-  const [formData, setFormData] = useState({
-    nomeEvento: '',
-    descricaoEvento: '',
-    localEvento: '',
-    dataEvento: '',
-    prioridadeEvento: '',
-    orcamentoEvento: '',
-  });
+  const navigate = useNavigate();
+  const { eventId } = useParams();
 
-  const [locais, setLocais] = useState([]); // Estado para armazenar os locais
+  const [nomeEvento, setNomeEvento] = useState("");
+  const [descricaoEvento, setDescricaoEvento] = useState("");
+  const [localEvento, setLocalEvento] = useState("");
+  const [dataEvento, setDataEvento] = useState("");
+  const [prioridadeEvento, setPrioridadeEvento] = useState("");
+  const [orcamentoEvento, setOrcamentoEvento] = useState("");
+  const [locais, setLocais] = useState([]);
 
   const prioridades = [
     { value: 1, label: 'Baixa' },
@@ -34,53 +34,97 @@ const CadastrarEvento = () => {
     { value: 4, label: 'Crítica' },
   ];
 
-  // Função para buscar os locais da API
   useEffect(() => {
     const fetchLocais = async () => {
       try {
         const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/locais');
-        setLocais(response.data); // Armazena os locais no estado
+        setLocais(response.data);
       } catch (error) {
         console.error('Erro ao buscar os locais:', error);
       }
     };
 
-    fetchLocais(); // Chama a função ao montar o componente
+    fetchLocais();
   }, []);
 
+  useEffect(() => {
+    const fetchEvento = async () => {
+      if (eventId) {
+        try {
+          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/eventos/${eventId}`);
+          const evento = response.data; // Aqui você já tem o objeto evento
+  
+          console.log(evento); // Verifique a estrutura aqui
+  
+          // Atribui os dados retornados aos estados corretamente
+          setNomeEvento(evento.evento.nomeEvento || '');
+          setDescricaoEvento(evento.evento.descricaoEvento || '');
+          setLocalEvento(evento.evento.localEvento || ''); // Local do evento é um id, ajuste conforme necessário
+          setDataEvento(evento.evento.dataEvento || '');
+          setPrioridadeEvento(evento.evento.prioridadeEvento || '');
+          setOrcamentoEvento(evento.evento.orcamentoEvento || '');
+        } catch (error) {
+          console.error('Erro ao buscar o evento:', error);
+        }
+      }
+    };
+  
+    fetchEvento();
+  }, [eventId]);
+  
+
+
   const handleGoBack = () => {
-    navigate(-1); // Navega para a página anterior
+    navigate(-1);
   };
 
-  // Função para lidar com mudanças nos campos do formulário
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Função para enviar os dados do formulário para a API
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = {
+      nomeEvento,
+      descricaoEvento,
+      localEvento,
+      dataEvento,
+      prioridadeEvento,
+      orcamentoEvento,
+    };
+
     try {
-      const response = await axios.post(
-        'https://apoleon.com.br/api-estagio/public/api/eventos',
-        formData
-      );
-      console.log('Evento cadastrado com sucesso:', response.data);
-      // Limpa o formulário após o sucesso
-      setFormData({
-        nomeEvento: '',
-        descricaoEvento: '',
-        localEvento: '',
-        dataEvento: '',
-        prioridadeEvento: '',
-        orcamentoEvento: '',
-      });
+      if (eventId) {
+        const response = await axios.put(
+          `https://apoleon.com.br/api-estagio/public/api/eventos/${eventId}`,
+          formData
+        );
+        Swal.fire(
+          'Evento atualizado!',
+          'O evento foi atualizado com sucesso.',
+          'success'
+        );
+
+        setNomeEvento('');
+        setDescricaoEvento('');
+        setLocalEvento('');
+        setDataEvento('');
+        setPrioridadeEvento('');
+        setOrcamentoEvento('');
+
+        navigate('/');
+      } else {
+        const response = await axios.post(
+          'https://apoleon.com.br/api-estagio/public/api/eventos',
+          formData
+        );
+        console.log('Evento cadastrado com sucesso:', response.data);
+      }
+      // Limpa os campos após salvar
+      setNomeEvento('');
+      setDescricaoEvento('');
+      setLocalEvento('');
+      setDataEvento('');
+      setPrioridadeEvento('');
+      setOrcamentoEvento('');
     } catch (error) {
-      console.error('Erro ao cadastrar o evento:', error);
+      console.error('Erro ao salvar o evento:', error);
     }
   };
 
@@ -93,7 +137,7 @@ const CadastrarEvento = () => {
       </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
-          Cadastrar Evento
+          {eventId ? 'Editar Evento' : 'Cadastrar Evento'}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -101,9 +145,8 @@ const CadastrarEvento = () => {
             variant="outlined"
             fullWidth
             margin="normal"
-            name="nomeEvento"
-            value={formData.nomeEvento}
-            onChange={handleChange}
+            value={nomeEvento}
+            onChange={(e) => setNomeEvento(e.target.value)}
             required
           />
 
@@ -114,9 +157,8 @@ const CadastrarEvento = () => {
             multiline
             rows={5}
             margin="normal"
-            name="descricaoEvento"
-            value={formData.descricaoEvento}
-            onChange={handleChange}
+            value={descricaoEvento}
+            onChange={(e) => setDescricaoEvento(e.target.value)}
             required
           />
 
@@ -125,10 +167,13 @@ const CadastrarEvento = () => {
             <InputLabel>Local do Evento</InputLabel>
             <Select
               label="Local do Evento"
-              name="localEvento"
-              value={formData.localEvento}
-              onChange={handleChange}
+              value={localEvento}
+              onChange={(e) => setLocalEvento(e.target.value)}
+              displayEmpty // Permite um valor vazio
             >
+              <MenuItem value="" disabled>
+                Selecione um local
+              </MenuItem>
               {locais.map((local) => (
                 <MenuItem key={local.id} value={local.id}>
                   {local.nomeLocal}
@@ -143,9 +188,8 @@ const CadastrarEvento = () => {
             fullWidth
             margin="normal"
             type="date"
-            name="dataEvento"
-            value={formData.dataEvento}
-            onChange={handleChange}
+            value={dataEvento}
+            onChange={(e) => setDataEvento(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
@@ -156,10 +200,13 @@ const CadastrarEvento = () => {
             <InputLabel>Prioridade do Evento</InputLabel>
             <Select
               label="Prioridade do Evento"
-              name="prioridadeEvento"
-              value={formData.prioridadeEvento}
-              onChange={handleChange}
+              value={prioridadeEvento}
+              onChange={(e) => setPrioridadeEvento(e.target.value)}
+              displayEmpty // Permite um valor vazio
             >
+              <MenuItem value="" disabled>
+                Selecione a prioridade
+              </MenuItem>
               {prioridades.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
@@ -173,10 +220,9 @@ const CadastrarEvento = () => {
             variant="outlined"
             fullWidth
             margin="normal"
-            name="orcamentoEvento"
             type="number"
-            value={formData.orcamentoEvento}
-            onChange={handleChange}
+            value={orcamentoEvento}
+            onChange={(e) => setOrcamentoEvento(e.target.value)}
             required
           />
 
@@ -187,7 +233,7 @@ const CadastrarEvento = () => {
             fullWidth
             sx={{ marginTop: 2 }}
           >
-            Cadastrar Evento
+            {eventId ? 'Atualizar Evento' : 'Cadastrar Evento'}
           </Button>
         </form>
       </Box>
@@ -196,3 +242,4 @@ const CadastrarEvento = () => {
 };
 
 export default CadastrarEvento;
+

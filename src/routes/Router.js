@@ -58,6 +58,7 @@ const Router = [
       { path: '/recursos/create', element: <PrivateRoute requiredLevel={1}><RecursosCreate /></PrivateRoute> },
       { path: '/atas', element: <PrivateRoute requiredLevel={1}><AtasList /></PrivateRoute> },
       { path: '/eventos/create', element: <PrivateRoute requiredLevel={1}><EventosCreate /></PrivateRoute> },
+      { path: '/eventos/edit/:eventId', element: <PrivateRoute requiredLevel={1}><EventosCreate /></PrivateRoute> },
       
     ],
   },
