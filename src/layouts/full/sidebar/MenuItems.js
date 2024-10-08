@@ -1,6 +1,6 @@
 import {
   IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics
+  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics, IconMapPin, IconPackage, IconChartArrowsVertical
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -99,6 +99,24 @@ const Menuitems = [
   {
     navlabel: true,
     subheader: 'Outros',
+  },
+  {
+    id: uniqueId(),
+    title: 'Locais',
+    icon: IconMapPin,
+    href: '/locais',
+  },
+  {
+    id: uniqueId(),
+    title: 'Tipo de Recurso',
+    icon: IconPackage,
+    href: '/tiposRecursos',
+  },
+  {
+    id: uniqueId(),
+    title: 'Níveis de Usuário',
+    icon: IconChartArrowsVertical,
+    href: '/niveisUsuarios',
   },
   {
     id: uniqueId(),
