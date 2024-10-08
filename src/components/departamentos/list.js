@@ -56,7 +56,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
+        await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
         // Atualizar a lista de departamentos após a ativação
         fetchDepartments();
         Swal.fire({
@@ -88,7 +88,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
+        await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
         // Atualizar a lista de departamentos após a desativação
         fetchDepartments();
         Swal.fire({

@@ -89,7 +89,7 @@ const UserList = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/deactivateUser/${userId}`);
+        await axios.patch(`http://localhost:8000/api/deactivateUser/${userId}`);
         // Atualizar a lista de usuários após a desativação
         fetchUsers();
         Swal.fire({
@@ -121,7 +121,7 @@ const UserList = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/activateUser/${userId}`);
+        await axios.patch(`http://localhost:8000/api/activateUser/${userId}`);
         // Atualizar a lista de usuários após a ativação
         fetchUsers();
         Swal.fire({
