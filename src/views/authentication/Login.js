@@ -1,14 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Box, Card, Stack, Typography } from '@mui/material';
+import { Grid, Box, Card, Stack, Typography, TextField, Button } from '@mui/material';
+import axios from 'axios';
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
 import Logo from 'src/layouts/full/shared/logo/Logo';
-import AuthLogin from './auth/AuthLogin';
 
-const Login2 = () => {
-  
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/login', {
+        email,
+        password,
+      });
+
+      console.log(response.data); // Aqui você pode usar a resposta conforme necessário
+      localStorage.setItem('token', response.data.token); // Armazenar o token
+
+      // Redirecionar ou realizar outras ações após o login bem-sucedido
+      // window.location.href = '/home'; // Exemplo de redirecionamento
+
+    } catch (err) {
+      console.error(err.response.data);
+      setError(err.response.data.message || 'Erro ao fazer login');
+    }
+  };
+
   return (
     <PageContainer title="Login" description="this is Login page">
       <Box
@@ -41,20 +66,51 @@ const Login2 = () => {
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Logo />
               </Box>
-              <AuthLogin
-                subtext={
-                  <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={1}>
-                    Sistema Gerenciador da Primeira Igreja Batista de Presidente Prudente
+
+              {/* Formulário de Login */}
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Email"
+                  margin="normal"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Senha"
+                  type="password"
+                  margin="normal"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                {error && (
+                  <Typography color="error" variant="body2" align="center">
+                    {error}
                   </Typography>
-                }
-                subtitle={
-                  <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
-                    <Typography color="textSecondary" variant="h6" fontWeight="500" textAlign="center">
-                      <i>"Porque dele, por Ele e para Ele são todas as coisas. Glórias, pois, à Ele eternamente. Amém!"</i><br/> Ro 11:36
-                    </Typography>
-                  </Stack>
-                }
-              />
+                )}
+                <Button fullWidth variant="contained" color="primary" type="submit">
+                  Login
+                </Button>
+              </form>
+
+              {/* Subtexto e Citação */}
+              <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={1}>
+                Sistema Gerenciador da Primeira Igreja Batista de Presidente Prudente
+              </Typography>
+              <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
+                <Typography color="textSecondary" variant="h6" fontWeight="500" textAlign="center">
+                  <i>
+                    "Porque dele, por Ele e para Ele são todas as coisas. Glórias, pois, à Ele
+                    eternamente. Amém!"
+                  </i>
+                  <br /> Ro 11:36
+                </Typography>
+              </Stack>
             </Card>
           </Grid>
         </Grid>
@@ -63,4 +119,4 @@ const Login2 = () => {
   );
 };
 
-export default Login2;
+export default Login;
