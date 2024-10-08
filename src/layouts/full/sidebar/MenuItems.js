@@ -5,7 +5,9 @@ import {
 
 import { uniqueId } from 'lodash';
 
+const idCliente = localStorage.getItem('idCliente'); 
 
+console.log("ID DO CLIENTE: " + idCliente);
 
 const Menuitems = [
   {

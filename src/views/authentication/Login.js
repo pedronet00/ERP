@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Box, Card, Stack, Typography, TextField, Button } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
@@ -11,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,10 +25,10 @@ const Login = () => {
       });
 
       console.log(response.data); // Aqui você pode usar a resposta conforme necessário
-      localStorage.setItem('token', response.data.token); // Armazenar o token
+      // localStorage.setItem('token', response.data.token); // Armazenar o token
+      localStorage.setItem('idCliente', response.data.user.id); // Armazenar o token
 
-      // Redirecionar ou realizar outras ações após o login bem-sucedido
-      // window.location.href = '/home'; // Exemplo de redirecionamento
+      navigate('/');
 
     } catch (err) {
       console.error(err.response.data);
