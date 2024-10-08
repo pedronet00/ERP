@@ -62,7 +62,7 @@ const QuantidadeMembros = () => {
   const seriescolumnchart = [38, 40, 25];
 
   return (
-    <DashboardCard title="Quantidade de membros">
+    <DashboardCard title="Quantidade de membros PIBPP">
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={7} sm={7}>
