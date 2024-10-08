@@ -12,13 +12,14 @@ const MissaoEdit = () => {
   const [cidadeMissao, setCidadeMissao] = useState('');
   const [pastorTitular, setPastorTitular] = useState('');
   const navigate = useNavigate();
+  const idCliente = localStorage.getItem('idCliente'); 
 
   // Função para buscar os detalhes da missão se estiver editando
   useEffect(() => {
     const fetchMissao = async () => {
       if (missaoId) {
         try {
-          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/missoes/${missaoId}`);
+          const response = await axios.get(`http://localhost:8000/api/missoes/${missaoId}`);
           const missao = response.data.missao; // Acesse os dados da missão
           
           // Defina os estados com os dados da missão
@@ -43,12 +44,13 @@ const MissaoEdit = () => {
       quantidadeMembros,
       cidadeMissao,
       pastorTitular,
+      idCliente
     };
 
     try {
       if (missaoId) {
         // Se missaoId estiver presente, atualize a missão
-        await axios.put(`https://apoleon.com.br/api-estagio/public/api/missoes/${missaoId}`, missaoData);
+        await axios.put(`http://localhost:8000/api/missoes/${missaoId}`, missaoData);
         Swal.fire(
           'Missão Atualizada!',
           'A missão foi atualizada com sucesso.',
@@ -56,7 +58,7 @@ const MissaoEdit = () => {
         );
       } else {
         // Se não houver missaoId, crie uma nova missão
-        await axios.post('https://apoleon.com.br/api-estagio/public/api/missoes', missaoData);
+        await axios.post('http://localhost:8000/api/missoes', missaoData);
         Swal.fire(
           'Missão Criada!',
           'A missão foi criada com sucesso.',

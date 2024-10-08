@@ -11,22 +11,16 @@ const CriarDepartamento = () => {
   const [textoDepartamento, setTextoDepartamento] = useState('');
   const [imgDepartamento, setImgDepartamento] = useState('');
   const navigate = useNavigate();
-
-  const getSubdomain = () => {
-    const hostname = window.location.hostname;
-    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
-    return subdomain;
-  };
-
+  const idCliente = localStorage.getItem('idCliente'); 
   
-  const subdomain = getSubdomain();
+
 
   // Função para buscar os detalhes do departamento se estiver editando
   useEffect(() => {
     const fetchDepartment = async () => {
       if (departmentId) {
         try {
-          const response = await axios.get(`http://${subdomain}.localhost:8000/api/departamentos/${departmentId}`);
+          const response = await axios.get(`http://localhost:8000/api/departamentos/${departmentId}`);
           const departamento = response.data.departamento; // Acesse os dados do departamento corretamente
           
           // Defina os estados com os dados do departamento
@@ -54,12 +48,13 @@ const CriarDepartamento = () => {
       tituloDepartamento,
       textoDepartamento,
       imgDepartamento,
+      idCliente
     };
 
     try {
       if (departmentId) {
         // Se departmentId estiver presente, atualize o departamento
-        await axios.put(`http://${subdomain}.localhost:8000/api/departamentos/${departmentId}`, departamentoData);
+        await axios.put(`http://localhost:8000/api/departamentos/${departmentId}`, departamentoData);
         Swal.fire(
           'Departamento Atualizado!',
           'O departamento foi atualizado com sucesso.',
@@ -67,7 +62,7 @@ const CriarDepartamento = () => {
         );
       } else {
         // Se não houver departmentId, crie um novo departamento
-        await axios.post(`http://${subdomain}.localhost:8000/api/departamentos`, departamentoData);
+        await axios.post(`http://localhost:8000/api/departamentos`, departamentoData);
         Swal.fire(
           'Departamento Criado!',
           'O departamento foi criado com sucesso.',

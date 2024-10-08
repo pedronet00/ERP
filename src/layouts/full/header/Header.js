@@ -11,6 +11,7 @@ const Header = (props) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
+  const razaoSocial = localStorage.getItem('razaoSocial'); 
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
@@ -56,8 +57,8 @@ const Header = (props) => {
             }),
           }}
         >
-          <Badge variant="dot" color="primary">
-            <IconBellRinging size="21" stroke="1.5" />
+          <Badge color="primary">
+            {razaoSocial}
           </Badge>
 
         </IconButton>

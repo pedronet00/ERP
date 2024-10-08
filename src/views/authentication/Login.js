@@ -27,6 +27,7 @@ const Login = () => {
       console.log(response.data); // Aqui você pode usar a resposta conforme necessário
       // localStorage.setItem('token', response.data.token); // Armazenar o token
       localStorage.setItem('idCliente', response.data.user.id); // Armazenar o token
+      localStorage.setItem('razaoSocial', response.data.user.razaoSocialCliente); // Armazenar o token
 
       navigate('/');
 

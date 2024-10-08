@@ -21,6 +21,7 @@ const PageWrapper = styled('div')(() => ({
   backgroundColor: 'transparent',
 }));
 
+
 const FullLayout = () => {
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);

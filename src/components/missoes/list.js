@@ -23,7 +23,9 @@ const MissoesList = () => {
 
   const fetchMissoes = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/missoes');
+      const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
+      const apiUrl = `http://localhost:8000/api/missoes?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+      const response = await axios.get(apiUrl);// Alterado para HTTP
       setMissoes(response.data);
       setFilteredMissoes(response.data);
     } catch (error) {
@@ -60,7 +62,7 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/missoes/${id}/ativar`);
+        await axios.patch(`localhost:8000/api/missoes/${id}/ativar`);
         fetchMissoes(); // Recarrega as missões após ativar
         Swal.fire({
           title: "Ativada!",
@@ -91,7 +93,7 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/missoes/${id}/desativar`);
+        await axios.patch(`localhost:8000/api/missoes/${id}/desativar`);
         fetchMissoes(); // Recarrega as missões após desativar
         Swal.fire({
           title: "Desativada!",

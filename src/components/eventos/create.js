@@ -26,6 +26,7 @@ const CadastrarEvento = () => {
   const [prioridadeEvento, setPrioridadeEvento] = useState("");
   const [orcamentoEvento, setOrcamentoEvento] = useState("");
   const [locais, setLocais] = useState([]);
+  const idCliente = localStorage.getItem('idCliente'); 
 
   const prioridades = [
     { value: 1, label: 'Baixa' },
@@ -37,7 +38,8 @@ const CadastrarEvento = () => {
   useEffect(() => {
     const fetchLocais = async () => {
       try {
-        const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/locais');
+        const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
         setLocais(response.data);
       } catch (error) {
         console.error('Erro ao buscar os locais:', error);
@@ -51,10 +53,9 @@ const CadastrarEvento = () => {
     const fetchEvento = async () => {
       if (eventId) {
         try {
-          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/eventos/${eventId}`);
+          const response = await axios.get(`http://localhost:8000/api/eventos/${eventId}`);
           const evento = response.data; // Aqui você já tem o objeto evento
   
-          console.log(evento); // Verifique a estrutura aqui
   
           // Atribui os dados retornados aos estados corretamente
           setNomeEvento(evento.evento.nomeEvento || '');
@@ -87,12 +88,13 @@ const CadastrarEvento = () => {
       dataEvento,
       prioridadeEvento,
       orcamentoEvento,
+      idCliente
     };
 
     try {
       if (eventId) {
         const response = await axios.put(
-          `https://apoleon.com.br/api-estagio/public/api/eventos/${eventId}`,
+          `http://localhost:8000/api/eventos/${eventId}`,
           formData
         );
         Swal.fire(
@@ -111,7 +113,7 @@ const CadastrarEvento = () => {
         navigate('/');
       } else {
         const response = await axios.post(
-          'https://apoleon.com.br/api-estagio/public/api/eventos',
+          'http://localhost:8000/api/eventos',
           formData
         );
         console.log('Evento cadastrado com sucesso:', response.data);

@@ -28,26 +28,16 @@ const UserList = () => {
   const [usersPerPage] = useState(5);
   const navigate = useNavigate();
 
-  // Função para buscar usuários da API
-  const getSubdomain = () => {
-    const hostname = window.location.hostname;
-    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
-    return subdomain;
-  };
-
   
-  const subdomain = getSubdomain();
 
-  const apiUrl = `http://${subdomain}.localhost:8000/api/user`; // Monta a URL com o subdomínio
-
-  console.log("API URL:", apiUrl);
 
   // Função para buscar usuários da API
   const fetchUsers = async () => {
     try {
-      const apiUrl = `http://${subdomain}.localhost:8000/api/user`; // Monta a URL com o subdomínio
+      const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
+      const apiUrl = `http://localhost:8000/api/user?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
       const response = await axios.get(apiUrl);
-
+  
       setUsers(response.data);
       setFilteredUsers(response.data);
     } catch (error) {

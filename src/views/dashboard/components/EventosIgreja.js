@@ -13,17 +13,19 @@ import {
 } from '@mui/material';
 import { IconPlus, IconEdit } from '@tabler/icons-react'; // IconCheck adicionado
 import DashboardCard from '../../../components/shared/DashboardCard';
+import axios from 'axios';
 
 const EventosIgreja = () => {
     const [eventos, setEventos] = useState([]);
     const navigate = useNavigate();
+    const idCliente = localStorage.getItem('idCliente'); 
 
     // Função para buscar os eventos da API
     const fetchEventos = async () => {
         try {
-            const response = await fetch('https://apoleon.com.br/api-estagio/public/api/eventos');
-            const data = await response.json();
-            setEventos(data); // Salva os eventos na state
+            const apiUrl = `http://localhost:8000/api/eventos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const response = await axios.get(apiUrl);
+setEventos(response.data); // Salva os eventos na state
         } catch (error) {
             console.error('Erro ao buscar os eventos:', error);
         }

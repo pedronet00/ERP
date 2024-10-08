@@ -1,13 +1,15 @@
 import {
   IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics, IconHeartHandshake
+  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
 
+const razaoSocial = localStorage.getItem('razaoSocial'); 
 const idCliente = localStorage.getItem('idCliente'); 
 
-console.log("ID DO CLIENTE: " + idCliente);
+console.log('RAZAO SOCIAL: ' + razaoSocial)
+console.log('idCliente: ' + idCliente)
 
 const Menuitems = [
   {
@@ -42,13 +44,6 @@ const Menuitems = [
     title: 'Missões',
     icon: IconTargetArrow,
     href: '/missoes',
-  },
-  {
-    id: uniqueId(),
-    title: 'Dízimos',
-    icon: IconHeartHandshake,
-    href: '/dizimos',
-    allowedLevels: [2, 3, 4], // Permitido para níveis 3 e 4
   },
   {
     id: uniqueId(),

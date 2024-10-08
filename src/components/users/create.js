@@ -14,17 +14,13 @@ const CreateUser = ({ onUserCreated }) => {
   const [dataNascimentoUsuario, setDataNascimentoUsuario] = useState('');
   const [imgUsuario, setImgUsuario] = useState('');
   const [niveisUsuarios, setNiveisUsuarios] = useState([]);
+  const idCliente = localStorage.getItem('idCliente'); 
+
+
   const [oldPassword, setOldPassword] = useState(''); // Armazena a senha antiga
   const navigate = useNavigate();
 
-  const getSubdomain = () => {
-    const hostname = window.location.hostname;
-    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
-    return subdomain;
-  };
-
   
-  const subdomain = getSubdomain();
 
 
 
@@ -32,7 +28,7 @@ const CreateUser = ({ onUserCreated }) => {
   useEffect(() => {
     const fetchNiveisUsuarios = async () => {
       try {
-        const response = await axios.get(`http://${subdomain}.localhost:8000/api/nivelUsuario`);
+        const response = await axios.get(`http://localhost:8000/api/nivelUsuario`);
         setNiveisUsuarios(response.data);
       } catch (error) {
         console.error("Erro ao buscar níveis de usuários:", error);
@@ -77,6 +73,7 @@ const CreateUser = ({ onUserCreated }) => {
       nivelUsuario,
       dataNascimentoUsuario,
       imgUsuario,
+      idCliente
     };
 
     try {
