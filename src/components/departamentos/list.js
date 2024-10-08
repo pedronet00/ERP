@@ -42,6 +42,8 @@ const DepartmentList = () => {
     }
   };
 
+  
+
   // Função para ativar departamento
   const handleActivateDepartment = async (departmentId) => {
     const result = await Swal.fire({
