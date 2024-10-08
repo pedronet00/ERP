@@ -26,10 +26,20 @@ const DepartmentList = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const navigate = useNavigate();
 
+  const getSubdomain = () => {
+    const hostname = window.location.hostname;
+    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
+    return subdomain;
+  };
+
+  
+  const subdomain = getSubdomain();
+
+
   // Função para buscar departamentos da API
   const fetchDepartments = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/departamentos');
+      const response = await axios.get(`http://${subdomain}.localhost:8000/api/departamentos`); // Alterado para HTTP
       setDepartments(response.data);
       setFilteredDepartments(response.data); // Inicialmente, mostrar todos os departamentos
     } catch (error) {
@@ -51,7 +61,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/departamento/${departmentId}/ativar`);
+        await axios.patch(`${subdomain}.localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
         // Atualizar a lista de departamentos após a ativação
         fetchDepartments();
         Swal.fire({
@@ -83,7 +93,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/departamento/${departmentId}/desativar`);
+        await axios.patch(`${subdomain}.localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
         // Atualizar a lista de departamentos após a desativação
         fetchDepartments();
         Swal.fire({

@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importando o Swal para alertas
 
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 
@@ -25,20 +26,38 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
         setError(''); // Limpa mensagens de erro anteriores
 
         try {
-            const response = await axios.post('https://apoleon.com.br/api-estagio/public/api/login', {
-                email,
-                password,
+            const response = await axios.post('http://localhost:8000/api/login', {
+                emailCliente: email,
+                passwordCliente: password,
             });
 
             if (response.status === 200) {
-                const nivelUsuario = response.data.nivelUsuario; // Supondo que o nível do usuário vem na resposta
+                const subdominio = response.data.subdominio;
+
+                // Armazenando email no localStorage (caso necessário)
                 localStorage.setItem('email', email);
-                localStorage.setItem('nivelUsuario', nivelUsuario);
-                navigate('/'); // Redireciona para a página inicial
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login realizado com sucesso!',
+                    text: `Redirecionando para ${subdominio}...`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+
+                // Redireciona o usuário para o subdomínio retornado pela API
+                setTimeout(() => {
+                    window.location.href = `http://${subdominio}`;
+                }, 2000); // Aguarda 2 segundos antes do redirecionamento
             }
         } catch (error) {
             setError('Email ou senha incorretos.');
             console.error('Erro ao fazer login:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao fazer login',
+                text: 'Email ou senha incorretos.',
+            });
         }
     };
 
@@ -59,13 +78,13 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                             variant="subtitle1"
                             fontWeight={600}
                             component="label"
-                            htmlFor="username"
+                            htmlFor="email"
                             mb="5px"
                         >
                             Email
                         </Typography>
                         <CustomTextField
-                            id="username"
+                            id="email"
                             variant="outlined"
                             fullWidth
                             value={email}
@@ -125,8 +144,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                 {error && <Typography color="error">{error}</Typography>}
                 {subtitle}
             </form>
-
-            
         </>
     );
 };

@@ -12,12 +12,21 @@ const CriarDepartamento = () => {
   const [imgDepartamento, setImgDepartamento] = useState('');
   const navigate = useNavigate();
 
+  const getSubdomain = () => {
+    const hostname = window.location.hostname;
+    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
+    return subdomain;
+  };
+
+  
+  const subdomain = getSubdomain();
+
   // Função para buscar os detalhes do departamento se estiver editando
   useEffect(() => {
     const fetchDepartment = async () => {
       if (departmentId) {
         try {
-          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/departamentos/${departmentId}`);
+          const response = await axios.get(`http://${subdomain}.localhost:8000/api/departamentos/${departmentId}`);
           const departamento = response.data.departamento; // Acesse os dados do departamento corretamente
           
           // Defina os estados com os dados do departamento
@@ -50,7 +59,7 @@ const CriarDepartamento = () => {
     try {
       if (departmentId) {
         // Se departmentId estiver presente, atualize o departamento
-        await axios.put(`https://apoleon.com.br/api-estagio/public/api/departamentos/${departmentId}`, departamentoData);
+        await axios.put(`http://${subdomain}.localhost:8000/api/departamentos/${departmentId}`, departamentoData);
         Swal.fire(
           'Departamento Atualizado!',
           'O departamento foi atualizado com sucesso.',
@@ -58,7 +67,7 @@ const CriarDepartamento = () => {
         );
       } else {
         // Se não houver departmentId, crie um novo departamento
-        await axios.post('https://apoleon.com.br/api-estagio/public/api/departamentos', departamentoData);
+        await axios.post(`http://${subdomain}.localhost:8000/api/departamentos`, departamentoData);
         Swal.fire(
           'Departamento Criado!',
           'O departamento foi criado com sucesso.',

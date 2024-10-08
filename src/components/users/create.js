@@ -17,11 +17,22 @@ const CreateUser = ({ onUserCreated }) => {
   const [oldPassword, setOldPassword] = useState(''); // Armazena a senha antiga
   const navigate = useNavigate();
 
+  const getSubdomain = () => {
+    const hostname = window.location.hostname;
+    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
+    return subdomain;
+  };
+
+  
+  const subdomain = getSubdomain();
+
+
+
   // Função para buscar níveis de usuários
   useEffect(() => {
     const fetchNiveisUsuarios = async () => {
       try {
-        const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/nivelUsuario');
+        const response = await axios.get(`http://${subdomain}.localhost:8000/api/nivelUsuario`);
         setNiveisUsuarios(response.data);
       } catch (error) {
         console.error("Erro ao buscar níveis de usuários:", error);
@@ -36,7 +47,7 @@ const CreateUser = ({ onUserCreated }) => {
     const fetchUser = async () => {
       if (userId) {
         try {
-          const response = await axios.get(`https://apoleon.com.br/api-estagio/public/api/user/${userId}`);
+          const response = await axios.get(`http://${subdomain}.localhost:8000/api/user/${userId}`);
           const user = response.data.user; // Acesse a propriedade user
   
           // Agora acesse as propriedades corretamente
@@ -71,7 +82,7 @@ const CreateUser = ({ onUserCreated }) => {
     try {
       if (userId) {
         // Se userId estiver presente, atualize o usuário
-        await axios.put(`https://apoleon.com.br/api-estagio/public/api/user/${userId}`, userData)
+        await axios.put(`http://${subdomain}.localhost:8000/api/user/${userId}`, userData)
         .then(() => {
           Swal.fire(
             'Usuário atualizado!',
@@ -80,7 +91,7 @@ const CreateUser = ({ onUserCreated }) => {
           )});
       } else {
         // Se não houver userId, crie um novo usuário
-        await axios.post('https://apoleon.com.br/api-estagio/public/api/user', userData)
+        await axios.post(`http://${subdomain}.localhost:8000/api/user`, userData)
         .then(() => {
           Swal.fire(
             'Usuário criado!',

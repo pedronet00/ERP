@@ -29,15 +29,33 @@ const UserList = () => {
   const navigate = useNavigate();
 
   // Função para buscar usuários da API
+  const getSubdomain = () => {
+    const hostname = window.location.hostname;
+    const subdomain = hostname.split('.')[0]; // Assumindo que o subdomínio é a primeira parte do hostname
+    return subdomain;
+  };
+
+  
+  const subdomain = getSubdomain();
+
+  const apiUrl = `http://${subdomain}.localhost:8000/api/user`; // Monta a URL com o subdomínio
+
+  console.log("API URL:", apiUrl);
+
+  // Função para buscar usuários da API
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/user');
+      const apiUrl = `http://${subdomain}.localhost:8000/api/user`; // Monta a URL com o subdomínio
+      const response = await axios.get(apiUrl);
+
       setUsers(response.data);
       setFilteredUsers(response.data);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
     }
   };
+
+  
 
   // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
