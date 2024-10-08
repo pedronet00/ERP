@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Box, Card, Stack, Typography, TextField, Button } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importando o Swal para alertas
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
@@ -28,11 +29,21 @@ const Login = () => {
       // localStorage.setItem('token', response.data.token); // Armazenar o token
       localStorage.setItem('idCliente', response.data.user.id); // Armazenar o token
       localStorage.setItem('razaoSocial', response.data.user.razaoSocialCliente); // Armazenar o token
-
+      Swal.fire({
+        icon: 'success',
+        title: 'Login realizado com sucesso!',
+        text: `Redirecionando para dashboard...`,
+        timer: 2000,
+        showConfirmButton: false,
+    });
       navigate('/');
 
     } catch (err) {
-      console.error(err.response.data);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao fazer login!',
+          text: 'Email ou senha incorretos.',
+        });
       setError(err.response.data.message || 'Erro ao fazer login');
     }
   };

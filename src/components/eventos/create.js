@@ -173,9 +173,7 @@ const CadastrarEvento = () => {
               onChange={(e) => setLocalEvento(e.target.value)}
               displayEmpty // Permite um valor vazio
             >
-              <MenuItem value="" disabled>
-                Selecione um local
-              </MenuItem>
+              
               {locais.map((local) => (
                 <MenuItem key={local.id} value={local.id}>
                   {local.nomeLocal}
@@ -206,9 +204,7 @@ const CadastrarEvento = () => {
               onChange={(e) => setPrioridadeEvento(e.target.value)}
               displayEmpty // Permite um valor vazio
             >
-              <MenuItem value="" disabled>
-                Selecione a prioridade
-              </MenuItem>
+              
               {prioridades.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}

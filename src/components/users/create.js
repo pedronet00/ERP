@@ -129,15 +129,18 @@ const CreateUser = ({ onUserCreated }) => {
           {userId ? 'Editar Usuário' : 'Criar Novo Usuário'}
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
-            label="Nome"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+        <TextField
+          label="Nome"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          inputProps={{
+            maxLength: 45, // Define o limite de caracteres
+          }}
+        />
           <TextField
             label="Email"
             type="email"
