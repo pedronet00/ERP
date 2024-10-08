@@ -29,6 +29,8 @@ const RecursosCreate = Loadable(lazy(() => import('../components/recursos/create
 const ReportIndex = Loadable(lazy(() => import('../components/reports/index')));
 const AtasList = Loadable(lazy(() => import('../components/atas/index')));
 const EventosCreate = Loadable(lazy(() => import('../components/eventos/create')));
+const CadastroDizimo = Loadable(lazy(() => import('../components/dizimos/create')));
+const DizimoList = Loadable(lazy(() => import('../components/dizimos/list')));
 
 
 const Router = [
@@ -59,6 +61,9 @@ const Router = [
       { path: '/atas', element: <PrivateRoute requiredLevel={1}><AtasList /></PrivateRoute> },
       { path: '/eventos/create', element: <PrivateRoute requiredLevel={1}><EventosCreate /></PrivateRoute> },
       { path: '/eventos/edit/:eventId', element: <PrivateRoute requiredLevel={1}><EventosCreate /></PrivateRoute> },
+      { path: '/dizimos/create', element: <PrivateRoute requiredLevel={1}><CadastroDizimo /></PrivateRoute> },
+      { path: '/dizimos/edit/:id', element: <PrivateRoute requiredLevel={1}><CadastroDizimo /></PrivateRoute> },
+      { path: '/dizimos', element: <PrivateRoute requiredLevel={1}><DizimoList /></PrivateRoute> },
       
     ],
   },

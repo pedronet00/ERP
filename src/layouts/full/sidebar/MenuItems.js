@@ -50,7 +50,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Dízimos',
     icon: IconHeartHandshake,
-    href: '/missoes',
+    href: '/dizimos',
     allowedLevels: [2, 3, 4], // Permitido para níveis 3 e 4
   },
   {
