@@ -191,7 +191,7 @@ const EventosIgreja = () => {
                                             <Button
                                             variant="contained"
                                             color="primary"
-                                            onClick={() => navigate(`/departament/edit/${evento.id}`)}
+                                            onClick={() => navigate(`/eventos/edit/${evento.id}`)}
                                             startIcon={<IconEdit />}
                                             size="small"
                                             >
