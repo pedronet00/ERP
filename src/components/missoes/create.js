@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, Box, Autocomplete } from '@mui/material'; // Adicione Autocomplete
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
@@ -9,8 +9,9 @@ const MissaoEdit = () => {
   const { missaoId } = useParams(); // Obtenha o ID da missão da URL
   const [nomeMissao, setNomeMissao] = useState('');
   const [quantidadeMembros, setQuantidadeMembros] = useState('');
-  const [cidadeMissao, setCidadeMissao] = useState('');
+  const [cidadeMissao, setCidadeMissao] = useState(''); // Campo para cidade
   const [pastorTitular, setPastorTitular] = useState('');
+  const [cidades, setCidades] = useState([]); // Lista de cidades
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente'); 
 
@@ -35,6 +36,24 @@ const MissaoEdit = () => {
 
     fetchMissao();
   }, [missaoId]);
+
+  // Função para buscar cidades ao digitar
+  const fetchCidades = async (query) => {
+    if (query.length < 3) return; // Buscar cidades apenas após 3 caracteres
+    try {
+      const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
+      const allCidades = response.data.map(cidade => cidade.nome);
+      
+      // Filtrar as cidades com base na query digitada
+      const filteredCidades = allCidades.filter(cidade =>
+        cidade.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      setCidades(filteredCidades);
+    } catch (error) {
+      console.error('Erro ao buscar cidades:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,14 +143,25 @@ const MissaoEdit = () => {
             required
           />
 
-          <TextField
-            label="Cidade da missão"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={cidadeMissao}
-            onChange={(e) => setCidadeMissao(e.target.value)}
-            required
+          {/* Autocomplete para cidades */}
+          <Autocomplete
+            freeSolo
+            options={cidades}
+            inputValue={cidadeMissao}
+            onInputChange={(event, newInputValue) => {
+              setCidadeMissao(newInputValue);
+              fetchCidades(newInputValue); // Buscar cidades ao digitar
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Cidade da missão"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
+              />
+            )}
           />
 
           <TextField
