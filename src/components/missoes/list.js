@@ -192,7 +192,7 @@ const MissoesList = () => {
                   <Typography align="center" variant="body2">{missao.quantidadeMembros}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography align="center" variant="body2">{missao.pastorTitular}</Typography>
+                  <Typography align="center" variant="body2">{missao.pastor_titular.name}</Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
