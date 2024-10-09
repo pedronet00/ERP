@@ -13,11 +13,13 @@ const RecursosCreate = () => {
   const [categoriaRecursoList, setCategoriaRecursoList] = useState([]);
   const [tipoRecursoList, setTipoRecursoList] = useState([]);
   const navigate = useNavigate();
+  const idCliente = localStorage.getItem('idCliente'); 
   
   // Listando categorias de recursos
   const fetchCategoriaRecurso = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso');
+        const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
       setCategoriaRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
@@ -27,7 +29,8 @@ const RecursosCreate = () => {
   // Listando tipos de recursos
   const fetchTipoRecurso = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/tipoRecurso');
+      const apiUrl = `http://localhost:8000/api/tipoRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
       setTipoRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar tipos de recursos:", error);
@@ -48,9 +51,10 @@ const RecursosCreate = () => {
       categoriaRecurso,
       tipoRecurso,
       quantidadeRecurso,
+      idCliente
     };
 
-    axios.post('https://apoleon.com.br/api-estagio/public/api/recurso', novoRecurso)
+    axios.post('http://localhost:8000/api/recurso', novoRecurso)
       .then(() => {
         Swal.fire(
           'Recurso criado!',

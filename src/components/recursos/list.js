@@ -11,15 +11,13 @@ const RecursosList = () => {
   const [categoriaRecurso, setCategoriaRecurso] = useState('');
   const [recursosList, setRecursosList] = useState([]);
   const navigate = useNavigate();
+  const idCliente = localStorage.getItem('idCliente'); 
 
   const fetchCategoriaRecurso = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso');
+        const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
       setCategoriaRecursoList(response.data);
-
-      if (response.data.length > 0) {
-        setActiveTab(response.data[0].categoriaRecurso);
-      }
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
     }
@@ -27,7 +25,8 @@ const RecursosList = () => {
 
   const fetchRecursos = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/recurso');
+        const apiUrl = `http://localhost:8000/api/recurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
       setRecursosList(response.data);
     } catch (error) {
       console.error("Erro ao buscar recursos:", error);
@@ -45,9 +44,9 @@ const RecursosList = () => {
 
   const handleNewCategory = (e) => {
     e.preventDefault();
-    const novaCategoriaRecursoObject = { categoriaRecurso };
+    const novaCategoriaRecursoObject = { categoriaRecurso, idCliente };
 
-    axios.post('https://apoleon.com.br/api-estagio/public/api/categoriaRecurso', novaCategoriaRecursoObject)
+    axios.post('http://localhost:8000/api/categoriaRecurso', novaCategoriaRecursoObject)
       .then(() => {
         Swal.fire('Categoria criada!', 'A categoria foi criada com sucesso.', 'success');
         setCategoriaRecurso('');
@@ -66,7 +65,7 @@ const RecursosList = () => {
   // Função para incrementar a quantidade do recurso
   const handleIncrease = async (recurso) => {
     try {
-      await axios.patch(`https://apoleon.com.br/api-estagio/public/api/recurso/${recurso.id}/aumentarQuantidade`);
+      await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/aumentarQuantidade`);
       fetchRecursos(); // Recarregar a lista de recursos
     } catch (error) {
       Swal.fire('Erro!', 'Houve um problema ao aumentar a quantidade do recurso.', 'error');
@@ -77,7 +76,7 @@ const RecursosList = () => {
   const handleDecrease = async (recurso) => {
     if (recurso.quantidadeRecurso > 0) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/recurso/${recurso.id}/diminuirQuantidade`);
+        await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/diminuirQuantidade`);
         fetchRecursos(); // Recarregar a lista de recursos
       } catch (error) {
         Swal.fire('Erro!', 'Houve um problema ao diminuir a quantidade do recurso.', 'error');

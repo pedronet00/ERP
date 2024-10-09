@@ -33,6 +33,8 @@ const CadastroDizimo = Loadable(lazy(() => import('../components/dizimos/create'
 const DizimoList = Loadable(lazy(() => import('../components/dizimos/list')));
 const CriarLocal = Loadable(lazy(() => import('../components/locais/create')));
 const ListaLocais = Loadable(lazy(() => import('../components/locais/list')));
+const CriarTipoRecurso = Loadable(lazy(() => import('../components/tipo_recurso/create')));
+const ListaTiposRecursos = Loadable(lazy(() => import('../components/tipo_recurso/list')));
 
 
 const Router = [
@@ -68,6 +70,8 @@ const Router = [
       { path: '/dizimos', element: <PrivateRoute requiredLevel={1}><DizimoList /></PrivateRoute> },
       { path: '/locais/create', element: <PrivateRoute requiredLevel={1}><CriarLocal /></PrivateRoute> },
       { path: '/locais', element: <PrivateRoute requiredLevel={1}><ListaLocais /></PrivateRoute> },
+      { path: '/tipoRecursos/create', element: <PrivateRoute requiredLevel={1}><CriarTipoRecurso /></PrivateRoute> },
+      { path: '/tipoRecursos', element: <PrivateRoute requiredLevel={1}><ListaTiposRecursos /></PrivateRoute> },
       
     ],
   },
