@@ -60,7 +60,7 @@ const MissaoEdit = () => {
       
       // Filtrar as cidades com base na query digitada
       const filteredCidades = allCidades.filter(cidade =>
-        cidade.toLowerCase().includes(query.toLowerCase())
+        cidade.toLowerCase().startsWith(query.toLowerCase())
       );
       
       setCidades(filteredCidades);

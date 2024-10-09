@@ -28,7 +28,8 @@ const CreateUser = ({ onUserCreated }) => {
   useEffect(() => {
     const fetchNiveisUsuarios = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/nivelUsuario`);
+      const apiUrl = `http://localhost:8000/api/nivelUsuario?idCliente=${idCliente}`; // URL com idCliente como parâmetro
+      const response = await axios.get(apiUrl);
         setNiveisUsuarios(response.data);
       } catch (error) {
         console.error("Erro ao buscar níveis de usuários:", error);
