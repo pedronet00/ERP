@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { TextField, Button, Container, Typography, Box, Autocomplete } from '@mui/material'; // Adicione Autocomplete
+import { TextField, Button, Container, Typography, Box, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'; // Adicione Autocomplete
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
@@ -12,8 +12,21 @@ const MissaoEdit = () => {
   const [cidadeMissao, setCidadeMissao] = useState(''); // Campo para cidade
   const [pastorTitular, setPastorTitular] = useState('');
   const [cidades, setCidades] = useState([]); // Lista de cidades
+
+  const [users, setUsers] = useState([]); // Lista de usuários
   const navigate = useNavigate();
-  const idCliente = localStorage.getItem('idCliente'); 
+  const idCliente = localStorage.getItem('idCliente');
+
+  // Função para buscar os usuários
+  const fetchUsers = async () => {
+    try {
+      const apiUrl = `http://localhost:8000/api/user?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+      const response = await axios.get(apiUrl);
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+    }
+  };
 
   // Função para buscar os detalhes da missão se estiver editando
   useEffect(() => {
@@ -35,6 +48,7 @@ const MissaoEdit = () => {
     };
 
     fetchMissao();
+    fetchUsers(); // Chama a função para buscar usuários
   }, [missaoId]);
 
   // Função para buscar cidades ao digitar
@@ -164,16 +178,20 @@ const MissaoEdit = () => {
             )}
           />
 
-          <TextField
-            label="Pastor titular (ID)"
-            type="number"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={pastorTitular}
-            onChange={(e) => setPastorTitular(e.target.value)}
-            required
-          />
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="pastor-titular-label">Pastor Titular</InputLabel>
+              <Select
+                labelId="pastor-titular-label"
+                value={pastorTitular}
+                onChange={(e) => setPastorTitular(e.target.value)}
+              >
+                {users.map((user) => (
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.name} {/* Supondo que o usuário tenha um campo 'nome' */}
+                  </MenuItem>
+                ))}
+              </Select>
+          </FormControl>
 
           <Button
             variant="contained"
