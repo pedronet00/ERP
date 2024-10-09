@@ -24,11 +24,14 @@ const DizimoList = () => {
   const [searchTitle, setSearchTitle] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const navigate = useNavigate();
+  
+  const idCliente = localStorage.getItem('idCliente'); 
 
   // Função para buscar dízimos da API
   const fetchDizimos = async () => {
     try {
-      const response = await axios.get('https://apoleon.com.br/api-estagio/public/api/dizimos');
+        const apiUrl = `http://localhost:8000/api/dizimos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+        const response = await axios.get(apiUrl);
       setDizimos(response.data);
       setFilteredDizimos(response.data); // Inicialmente, mostrar todos os dízimos
     } catch (error) {
@@ -50,7 +53,7 @@ const DizimoList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/dizimo/${dizimoId}/ativar`);
+        await axios.patch(`http://localhost:8000/api/dizimo/${dizimoId}/ativar`);
         // Atualizar a lista de dízimos após a ativação
         fetchDizimos();
         Swal.fire({
@@ -82,7 +85,7 @@ const DizimoList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`https://apoleon.com.br/api-estagio/public/api/dizimo/${dizimoId}/desativar`);
+        await axios.patch(`http://localhost:8000/api/dizimo/${dizimoId}/desativar`);
         // Atualizar a lista de dízimos após a desativação
         fetchDizimos();
         Swal.fire({

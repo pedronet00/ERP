@@ -64,7 +64,7 @@ const CriarTipoRecurso = () => {
 
       // Limpa o campo após o sucesso
       setTipoRecurso('');
-      navigate('/tipoRecursos'); // Navegue de volta para a lista de tipos de recursos
+      navigate('/tiposRecursos'); // Navegue de volta para a lista de tipos de recursos
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(

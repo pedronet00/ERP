@@ -10,6 +10,7 @@ const CadastroDizimo = () => {
   const [turnoCulto, setTurnoCulto] = useState(0); // 0 ou 1
   const [valorArrecadado, setValorArrecadado] = useState('');
   const navigate = useNavigate();
+  const idCliente = localStorage.getItem('idCliente'); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const CadastroDizimo = () => {
       dataCulto,
       turnoCulto,
       valorArrecadado,
+      idCliente
     };
 
     try {

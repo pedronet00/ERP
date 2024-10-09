@@ -71,7 +71,7 @@ const Router = [
       { path: '/locais/create', element: <PrivateRoute requiredLevel={1}><CriarLocal /></PrivateRoute> },
       { path: '/locais', element: <PrivateRoute requiredLevel={1}><ListaLocais /></PrivateRoute> },
       { path: '/tipoRecursos/create', element: <PrivateRoute requiredLevel={1}><CriarTipoRecurso /></PrivateRoute> },
-      { path: '/tipoRecursos', element: <PrivateRoute requiredLevel={1}><ListaTiposRecursos /></PrivateRoute> },
+      { path: '/tiposRecursos', element: <PrivateRoute requiredLevel={1}><ListaTiposRecursos /></PrivateRoute> },
       
     ],
   },

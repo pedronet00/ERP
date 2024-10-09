@@ -1,6 +1,6 @@
 import {
   IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics, IconMapPin, IconPackage, IconChartArrowsVertical
+  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics, IconMapPin, IconPackage, IconChartArrowsVertical, IconHeartHandshake
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -50,6 +50,12 @@ const Menuitems = [
     title: 'Recursos',
     icon: IconStar,
     href: '/recursos',
+  },
+  {
+    id: uniqueId(),
+    title: 'Dízimos',
+    icon: IconHeartHandshake,
+    href: '/dizimos',
   },
   {
     id: uniqueId(),
