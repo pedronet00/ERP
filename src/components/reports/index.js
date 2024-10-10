@@ -4,17 +4,18 @@ import axios from 'axios';
 
 const Relatorio = () => {
     const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-
+    const [reportData, setReportData] = useState({});
+    
     // Função para buscar os usuários da API
     const fetchUsers = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/user?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/userReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await axios.get(apiUrl);
     
-            setUsers(response.data); // Armazena os usuários
-            setFilteredUsers(response.data); // Armazena os usuários filtrados (se necessário)
+            // Armazena os usuários a partir do campo 'usuarios'
+            setUsers(response.data.usuarios); 
+            setReportData(response.data); // Armazena os dados do relatório
         } catch (error) {
             console.error("Erro ao buscar usuários:", error);
         }
@@ -42,29 +43,78 @@ const Relatorio = () => {
                 <IconPrinter />
             </IconButton>
 
-            <TableContainer style={{ width: '80%', margin: 'auto' }}>
+
+            <Grid container spacing={1} style={{ marginTop: '20px', width: '80%', margin: 'auto' }}>
+                <Grid item xs={12}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuarios}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários ativos:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosAtivos}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários inativos:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosInativos}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários comuns:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosComuns}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários líderes:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosLideres}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários pastores:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosPastores}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} style={{marginTop: '5%'}}>
+                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                        <Typography variant="h6">Quantidade de usuários administrador:</Typography>
+                        <Typography variant="h5">{reportData.qtdeUsuariosAdm}</Typography>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+
+            <TableContainer style={{ width: '80%', margin: '2% auto' }}>
                 <Table sx={{ borderCollapse: 'collapse', textAlign: 'center' }}>
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Nome</TableCell>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de nascimento</TableCell>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Nível do usuário</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de Cadastro</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de cadastro</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Status do usuário</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.length > 0 ? (
                             users.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.name}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.dataNascimentoUsuario}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.nivel_usuario.nivelUsuario}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.name}</TableCell> {/* Corrigido */}
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.dataNascimentoUsuario}</TableCell> {/* Corrigido */}
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.nivel_usuario?.nivelUsuario || "N/A"}</TableCell> {/* Corrigido */}
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.usuarioAtivo === 0 ? "Inativo" : "Ativo"}</TableCell>
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={4} align="center" sx={{ border: '1px solid black' }}>
+                                <TableCell colSpan={5} align="center" sx={{ border: '1px solid black' }}>
                                     Nenhum usuário encontrado.
                                 </TableCell>
                             </TableRow>
