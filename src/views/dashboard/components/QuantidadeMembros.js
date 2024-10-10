@@ -9,10 +9,12 @@ import DashboardCard from '../../../components/shared/DashboardCard';
 const QuantidadeMembros = () => {
 
   const [quantidadeMembros, setQuantidadeMembros] = useState(0); // Inicializa com 0 ou null
+  const idCliente = localStorage.getItem('idCliente'); 
+  const razaoSocial = localStorage.getItem('razaoSocial'); 
 
   const fetchQuantidadeUsuarios = async () => {
       try {
-          const response = await fetch('https://apoleon.com.br/api-estagio/public/api/userCount');
+          const response = await fetch(`http://localhost:8000/api/userCount?idCliente=${idCliente}`);
           const data = await response.json();
           setQuantidadeMembros(data.quantidade_usuarios); // Acessa a chave correta
       } catch (error) {
@@ -80,7 +82,7 @@ const QuantidadeMembros = () => {
   const seriescolumnchart = [38, 40, 25];
 
   return (
-    <DashboardCard title="Quantidade de membros PIBPP">
+    <DashboardCard title={`Membros de ${razaoSocial}`}>
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={7} sm={7}>
