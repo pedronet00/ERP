@@ -52,6 +52,10 @@ const MissoesList = () => {
     navigate('/missoes/create');
   };
 
+  const handleReport = () => {
+    navigate('/relatorio/missoes');
+  };
+
   const ativarMissao = async (id) => {
     const result = await Swal.fire({
       title: "Tem certeza?",
@@ -143,7 +147,7 @@ const MissoesList = () => {
       </Box>
 
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
       </div>
 
