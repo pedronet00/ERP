@@ -38,6 +38,7 @@ const CriarTipoRecurso = Loadable(lazy(() => import('../components/tipo_recurso/
 const ListaTiposRecursos = Loadable(lazy(() => import('../components/tipo_recurso/list')));
 const CriarNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuarios/create')));
 const ListaNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuarios/list')));
+const UserReport = Loadable(lazy(() => import('../components/users/report.js')));
 
 
 const Router = [
@@ -45,39 +46,70 @@ const Router = [
     path: '/',
     element: <FullLayout />,
     children: [
+
+      // Dashboard
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
+
+      // Usuários
+      { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
+      { path: '/user/create', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
+      { path: '/user/edit/:userId', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
+
+      // Departamentos
+      { path: '/departaments', element: <PrivateRoute ><DepartmentList /></PrivateRoute> },
+      { path: '/departament/create', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
+      { path: '/departament/edit/:departmentId', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
+
+      // Missões
+      { path: '/missoes', element: <PrivateRoute ><MissoesList /></PrivateRoute> },
+      { path: '/missoes/create', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
+      { path: '/missoes/edit/:missaoId', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
+
+      // Recursos
+      { path: '/recursos', element: <PrivateRoute ><RecursosList /></PrivateRoute> },
+      { path: '/recursos/create', element: <PrivateRoute ><RecursosCreate /></PrivateRoute> },
+
+      // Eventos
+      { path: '/eventos/create', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
+      { path: '/eventos/edit/:eventId', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
+
+      // Dízimos
+      { path: '/dizimos/create', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
+      { path: '/dizimos/edit/:id', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
+      { path: '/dizimos', element: <PrivateRoute ><DizimoList /></PrivateRoute> },
+
+      // Locais
+      { path: '/locais/create', element: <PrivateRoute ><CriarLocal /></PrivateRoute> },
+      { path: '/locais', element: <PrivateRoute ><ListaLocais /></PrivateRoute> },
+
+      // Tipos de recursos
+      { path: '/tipoRecursos/create', element: <PrivateRoute ><CriarTipoRecurso /></PrivateRoute> },
+      { path: '/tiposRecursos', element: <PrivateRoute ><ListaTiposRecursos /></PrivateRoute> },
+
+      // Nível de usuário
+      { path: '/nivelUsuario/create', element: <PrivateRoute ><CriarNivelUsuario /></PrivateRoute> },
+      { path: '/nivelUsuario', element: <PrivateRoute ><ListaNivelUsuario /></PrivateRoute> },
+
+      // Settings
+      { path: '/settings', element: <PrivateRoute ><Settings /></PrivateRoute> },
+
+      // Posts
+      { path: '/posts', element: <PrivateRoute ><PostList /></PrivateRoute> },
+
+      // Atas
+      { path: '/atas', element: <PrivateRoute ><AtasList /></PrivateRoute> },
+
+      // Relatórios
+      { path: '/relatorios', element: <PrivateRoute ><ReportCreate /></PrivateRoute> },
+
+      // Outros
       { path: '/sample-page', exact: true, element: <PrivateRoute ><SamplePage /></PrivateRoute> },
       { path: '/icons', exact: true, element: <PrivateRoute ><Icons /></PrivateRoute> },
       { path: '/ui/typography', exact: true, element: <PrivateRoute ><TypographyPage /></PrivateRoute> },
       { path: '/ui/shadow', exact: true, element: <PrivateRoute ><Shadow /></PrivateRoute> },
       { path: '*', element: <Navigate to="/auth/404" /> },
-      { path: '/user/create', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
-      { path: '/user/edit/:userId', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
-      { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
-      { path: '/departaments', element: <PrivateRoute ><DepartmentList /></PrivateRoute> },
-      { path: '/departament/create', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
-      { path: '/departament/edit/:departmentId', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
-      { path: '/missoes', element: <PrivateRoute ><MissoesList /></PrivateRoute> },
-      { path: '/missoes/create', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
-      { path: '/missoes/edit/:missaoId', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
-      { path: '/posts', element: <PrivateRoute ><PostList /></PrivateRoute> },
-      { path: '/settings', element: <PrivateRoute ><Settings /></PrivateRoute> },
-      { path: '/recursos', element: <PrivateRoute ><RecursosList /></PrivateRoute> },
-      { path: '/recursos/create', element: <PrivateRoute ><RecursosCreate /></PrivateRoute> },
-      { path: '/atas', element: <PrivateRoute ><AtasList /></PrivateRoute> },
-      { path: '/eventos/create', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
-      { path: '/eventos/edit/:eventId', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
-      { path: '/dizimos/create', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
-      { path: '/dizimos/edit/:id', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
-      { path: '/dizimos', element: <PrivateRoute ><DizimoList /></PrivateRoute> },
-      { path: '/locais/create', element: <PrivateRoute ><CriarLocal /></PrivateRoute> },
-      { path: '/locais', element: <PrivateRoute ><ListaLocais /></PrivateRoute> },
-      { path: '/tipoRecursos/create', element: <PrivateRoute ><CriarTipoRecurso /></PrivateRoute> },
-      { path: '/tiposRecursos', element: <PrivateRoute ><ListaTiposRecursos /></PrivateRoute> },
-      { path: '/nivelUsuario/create', element: <PrivateRoute ><CriarNivelUsuario /></PrivateRoute> },
-      { path: '/nivelUsuario', element: <PrivateRoute ><ListaNivelUsuario /></PrivateRoute> },
-      { path: '/relatorios', element: <PrivateRoute ><ReportCreate /></PrivateRoute> },
+      
       
     ],
   },
@@ -96,6 +128,7 @@ const Router = [
     element: <BlankLayout />,
     children: [
       { path: '/relatorio', element: <PrivateRoute requiredLevel={1}><ReportIndex /></PrivateRoute> },
+      { path: '/relatorio/usuarios', element: <PrivateRoute ><UserReport /></PrivateRoute> },
     ],
   },
 ];
