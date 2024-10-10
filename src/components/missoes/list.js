@@ -152,11 +152,6 @@ const MissoesList = () => {
           <TableRow>
             <TableCell>
               <Typography align="center" variant="subtitle2" fontWeight={600}>
-                ID
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography align="center" variant="subtitle2" fontWeight={600}>
                 Nome
               </Typography>
             </TableCell>
@@ -186,9 +181,6 @@ const MissoesList = () => {
           {currentMissoes.length > 0 ? (
             currentMissoes.map((missao) => (
               <TableRow key={missao.id}>
-                <TableCell>
-                  <Typography align="center" variant="body2">{missao.id}</Typography>
-                </TableCell>
                 <TableCell>
                   <Typography align="center" variant="body2">{missao.nomeMissao}</Typography>
                 </TableCell>
