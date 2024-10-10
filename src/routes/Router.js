@@ -39,6 +39,7 @@ const ListaTiposRecursos = Loadable(lazy(() => import('../components/tipo_recurs
 const CriarNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuarios/create')));
 const ListaNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuarios/list')));
 const UserReport = Loadable(lazy(() => import('../components/users/report.js')));
+const DepartamentoReport = Loadable(lazy(() => import('../components/departamentos/report.js')));
 
 
 const Router = [
@@ -129,6 +130,7 @@ const Router = [
     children: [
       { path: '/relatorio', element: <PrivateRoute requiredLevel={1}><ReportIndex /></PrivateRoute> },
       { path: '/relatorio/usuarios', element: <PrivateRoute ><UserReport /></PrivateRoute> },
+      { path: '/relatorio/departamentos', element: <PrivateRoute ><DepartamentoReport /></PrivateRoute> },
     ],
   },
 ];

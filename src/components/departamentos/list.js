@@ -133,6 +133,10 @@ const DepartmentList = () => {
     navigate('/departament/create');
   };
 
+  const handleReport = () => {
+    navigate('/relatorio/departamentos');
+  };
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -164,7 +168,7 @@ const DepartmentList = () => {
       </Box>
 
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
+        <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
       </div>
 
