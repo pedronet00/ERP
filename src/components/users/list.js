@@ -17,6 +17,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Pagination, // Importando o componente de paginação
 } from '@mui/material';
 
 const UserList = () => {
@@ -24,12 +25,9 @@ const UserList = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // Alterado para 1 para melhor experiência
   const [usersPerPage] = useState(5);
   const navigate = useNavigate();
-
-  
-
 
   // Função para buscar usuários da API
   const fetchUsers = async () => {
@@ -44,8 +42,6 @@ const UserList = () => {
       console.error("Erro ao buscar usuários:", error);
     }
   };
-
-  
 
   // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
@@ -144,11 +140,10 @@ const UserList = () => {
     }
   };
 
-  // Calcular usuários a serem exibidos na página atual
-  const startIndex = currentPage * usersPerPage;
-  const endIndex = startIndex + usersPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
-  const maxPages = Math.ceil(filteredUsers.length / usersPerPage);
+  // Calcular usuários paginados
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const paginatedUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
     <div className="container mt-4">
@@ -177,8 +172,8 @@ const UserList = () => {
       </FormControl>
 
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo Usuário</button>
+        <Button variant="contained" color="primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</Button>
+        <Button variant="contained" color="success" onClick={handleNewUser}><IconPlus /> Novo Usuário</Button>
       </div>
 
       <Table sx={{ marginTop: '2%' }}>
@@ -252,12 +247,11 @@ const UserList = () => {
                     </Button>
                   </Box>
                 </TableCell>
-
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} align="center">
+              <TableCell colSpan={5} align="center">
                 <Typography variant="body2">Nenhum usuário encontrado</Typography>
               </TableCell>
             </TableRow>
@@ -265,25 +259,14 @@ const UserList = () => {
         </TableBody>
       </Table>
 
-      {/* Navegação de Paginação */}
+      {/* Paginação */}
       <Box display="flex" justifyContent="center" marginTop={2}>
-        <Button
-          variant="contained"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-          disabled={currentPage === 0}
-        >
-          Anterior
-        </Button>
-        <Typography variant="h6" style={{ margin: '0 16px' }}>
-          {currentPage + 1} / {maxPages}
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, maxPages - 1))}
-          disabled={currentPage === maxPages - 1}
-        >
-          Próximo
-        </Button>
+        <Pagination
+          count={Math.ceil(filteredUsers.length / usersPerPage)}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          color="primary"
+        />
       </Box>
     </div>
   );

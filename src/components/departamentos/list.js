@@ -16,7 +16,8 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl
+  FormControl,
+  Pagination  // Importação do componente de paginação
 } from '@mui/material';
 
 const DepartmentList = () => {
@@ -24,25 +25,22 @@ const DepartmentList = () => {
   const [filteredDepartments, setFilteredDepartments] = useState([]);
   const [searchTitle, setSearchTitle] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [page, setPage] = useState(1);  // Estado para controlar a página atual
+  const [rowsPerPage] = useState(5);    // Quantidade de departamentos por página (5)
   const navigate = useNavigate();
-
- 
-
 
   // Função para buscar departamentos da API
   const fetchDepartments = async () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
       const apiUrl = `http://localhost:8000/api/departamentos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-      const response = await axios.get(apiUrl);// Alterado para HTTP
+      const response = await axios.get(apiUrl); // Alterado para HTTP
       setDepartments(response.data);
       setFilteredDepartments(response.data); // Inicialmente, mostrar todos os departamentos
     } catch (error) {
       console.error("Erro ao buscar departamentos:", error);
     }
   };
-
-  
 
   // Função para ativar departamento
   const handleActivateDepartment = async (departmentId) => {
@@ -59,7 +57,6 @@ const DepartmentList = () => {
     if (result.isConfirmed) {
       try {
         await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
-        // Atualizar a lista de departamentos após a ativação
         fetchDepartments();
         Swal.fire({
           title: "Ativado!",
@@ -91,7 +88,6 @@ const DepartmentList = () => {
     if (result.isConfirmed) {
       try {
         await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
-        // Atualizar a lista de departamentos após a desativação
         fetchDepartments();
         Swal.fire({
           title: "Desativado!",
@@ -109,7 +105,6 @@ const DepartmentList = () => {
     }
   };
 
-  // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
     fetchDepartments();
   }, []);
@@ -124,10 +119,17 @@ const DepartmentList = () => {
     setFilteredDepartments(filtered);
   };
 
-  // Atualizar a filtragem quando os valores de busca ou status mudarem
   useEffect(() => {
     filterDepartments();
   }, [searchTitle, filterStatus, departments]);
+
+  // Função para mudar a página
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Filtrar os departamentos para a página atual
+  const paginatedDepartments = filteredDepartments.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewUser = () => {
     navigate('/departament/create');
@@ -176,11 +178,7 @@ const DepartmentList = () => {
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
-            <TableCell align="center">
-              <Typography variant="subtitle2" fontWeight={600}>
-                ID
-              </Typography>
-            </TableCell>
+            
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Título
@@ -204,12 +202,9 @@ const DepartmentList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredDepartments.length > 0 ? (
-            filteredDepartments.map((department) => (
+          {paginatedDepartments.length > 0 ? (
+            paginatedDepartments.map((department) => (
               <TableRow key={department.id}>
-                <TableCell align="center">
-                  <Typography variant="body2">{department.id}</Typography>
-                </TableCell>
                 <TableCell align="center">
                   <Typography variant="body2">{department.tituloDepartamento}</Typography>
                 </TableCell>
@@ -256,18 +251,27 @@ const DepartmentList = () => {
                     </Button>
                   </Box>
                 </TableCell>
-
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} align="center">
-                <Typography variant="body2">Nenhum departamento encontrado</Typography>
+              <TableCell colSpan={5} align="center">
+                <Typography variant="body1">Nenhum departamento encontrado</Typography>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+
+      {/* Paginação */}
+      <Box display="flex" justifyContent="center" marginTop={2}>
+        <Pagination
+          count={Math.ceil(filteredDepartments.length / rowsPerPage)}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Box>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
   TableRow,
   TextField,
   Button,
+  Pagination, // Importa o componente de Paginação
 } from '@mui/material';
 
 const MissoesList = () => {
@@ -19,13 +20,15 @@ const MissoesList = () => {
   const [filteredMissoes, setFilteredMissoes] = useState([]);
   const [filterNome, setFilterNome] = useState('');
   const [filterCidade, setFilterCidade] = useState('');
+  const [currentPage, setCurrentPage] = useState(1); // Estado da página atual
+  const [usersPerPage] = useState(5); // Número de missões por página
   const navigate = useNavigate();
 
   const fetchMissoes = async () => {
     try {
-      const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-      const apiUrl = `http://localhost:8000/api/missoes?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-      const response = await axios.get(apiUrl);// Alterado para HTTP
+      const idCliente = localStorage.getItem('idCliente');
+      const apiUrl = `http://localhost:8000/api/missoes?idCliente=${idCliente}`;
+      const response = await axios.get(apiUrl);
       setMissoes(response.data);
       setFilteredMissoes(response.data);
     } catch (error) {
@@ -62,8 +65,8 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`localhost:8000/api/missoes/${id}/ativar`);
-        fetchMissoes(); // Recarrega as missões após ativar
+        await axios.patch(`http://localhost:8000/api/missoes/${id}/ativar`); // Corrigido para incluir 'http://'
+        fetchMissoes();
         Swal.fire({
           title: "Ativada!",
           text: "A missão foi ativada com sucesso.",
@@ -93,8 +96,8 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`localhost:8000/api/missoes/${id}/desativar`);
-        fetchMissoes(); // Recarrega as missões após desativar
+        await axios.patch(`http://localhost:8000/api/missoes/${id}/desativar`); // Corrigido para incluir 'http://'
+        fetchMissoes();
         Swal.fire({
           title: "Desativada!",
           text: "A missão foi desativada com sucesso.",
@@ -110,7 +113,11 @@ const MissoesList = () => {
       }
     }
   };
-  
+
+  // Cálculos para paginação
+  const indexOfLastMission = currentPage * usersPerPage;
+  const indexOfFirstMission = indexOfLastMission - usersPerPage;
+  const currentMissoes = filteredMissoes.slice(indexOfFirstMission, indexOfLastMission);
 
   return (
     <div className="container mt-4">
@@ -140,7 +147,7 @@ const MissoesList = () => {
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
       </div>
 
-      <Table sx={{ marginTop: '2%' }} >
+      <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
             <TableCell>
@@ -176,8 +183,8 @@ const MissoesList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredMissoes.length > 0 ? (
-            filteredMissoes.map((missao) => (
+          {currentMissoes.length > 0 ? (
+            currentMissoes.map((missao) => (
               <TableRow key={missao.id}>
                 <TableCell>
                   <Typography align="center" variant="body2">{missao.id}</Typography>
@@ -241,6 +248,16 @@ const MissoesList = () => {
           )}
         </TableBody>
       </Table>
+
+      {/* Componente de Paginação */}
+      <Box display="flex" justifyContent="center" mt={3}>
+        <Pagination
+          count={Math.ceil(filteredMissoes.length / usersPerPage)}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          color="primary"
+        />
+      </Box>
     </div>
   );
 };
