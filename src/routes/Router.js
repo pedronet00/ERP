@@ -41,6 +41,7 @@ const ListaNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuar
 const UserReport = Loadable(lazy(() => import('../components/users/report.js')));
 const DepartamentoReport = Loadable(lazy(() => import('../components/departamentos/report.js')));
 const MissoesReport = Loadable(lazy(() => import('../components/missoes/report.js')));
+const RecursoReport = Loadable(lazy(() => import('../components/recursos/report.js')));
 
 
 const Router = [
@@ -133,6 +134,7 @@ const Router = [
       { path: '/relatorio/usuarios', element: <PrivateRoute ><UserReport /></PrivateRoute> },
       { path: '/relatorio/departamentos', element: <PrivateRoute ><DepartamentoReport /></PrivateRoute> },
       { path: '/relatorio/missoes', element: <PrivateRoute ><MissoesReport /></PrivateRoute> },
+      { path: '/relatorio/recursos', element: <PrivateRoute ><RecursoReport /></PrivateRoute> },
     ],
   },
 ];
