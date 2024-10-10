@@ -56,6 +56,10 @@ const UserList = () => {
     navigate('/user/create');
   };
 
+  const handleReport = () => {
+    navigate('/relatorio/usuarios');
+  };
+
   const handleFilterChange = () => {
     let filtered = users;
 
@@ -173,7 +177,7 @@ const UserList = () => {
       </FormControl>
 
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo Usuário</button>
       </div>
 
