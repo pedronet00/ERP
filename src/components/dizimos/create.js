@@ -1,41 +1,57 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem,  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CadastroDizimo = () => {
   const [dataCulto, setDataCulto] = useState('');
-  const [turnoCulto, setTurnoCulto] = useState(0); // 0 ou 1
+  const [turnoCulto, setTurnoCulto] = useState(null); // 0 ou 1
   const [valorArrecadado, setValorArrecadado] = useState('');
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente'); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const dizimoData = {
       dataCulto,
       turnoCulto,
       valorArrecadado,
       idCliente
     };
-
+  
     try {
-      await axios.post('https://apoleon.com.br/api-estagio/public/api/dizimos', dizimoData);
-      Swal.fire(
-        'Dízimo Cadastrado!',
-        'O dízimo foi cadastrado com sucesso.',
-        'success'
-      );
-
-      // Limpa os campos após o sucesso
-      setDataCulto('');
-      setTurnoCulto(0);
-      setValorArrecadado('');
-      navigate('/dizimos'); // Navegue de volta para a lista de dízimos
+      // Tenta enviar os dados para a API
+      const response = await axios.post('http://localhost:8000/api/dizimos', dizimoData);
+  
+      // Verifica se a resposta da API foi bem-sucedida (status 200)
+      if (response.status == 200) {
+        // Exibe o Swal de sucesso
+        Swal.fire(
+          'Dízimo cadastrado!',
+          'O dízimo foi cadastrado com sucesso.',
+          'success'
+        );
+  
+        // Limpa os campos após o sucesso
+        setDataCulto('');
+        setTurnoCulto(0);
+        setValorArrecadado('');
+  
+        // Navega de volta para a lista de dízimos
+        navigate('/dizimos');
+      } else {
+        // Caso a resposta não seja 200, trata como um erro
+        Swal.fire(
+          'Erro!',
+          'Houve um problema ao cadastrar o dízimo.',
+          'error'
+        );
+      }
     } catch (error) {
+      // Trata os erros que ocorrem na requisição
       if (error.response && error.response.data.error) {
         Swal.fire(
           'Erro!',
@@ -51,6 +67,8 @@ const CadastroDizimo = () => {
       }
     }
   };
+  
+  
 
   const handleGoBack = () => {
     navigate(-1); // Volta para a tela anterior
@@ -80,17 +98,21 @@ const CadastroDizimo = () => {
             }}
           />
 
-          <TextField
-            label="Turno do Culto (0 ou 1)"
-            variant="outlined"
-            type="number"
-            fullWidth
-            margin="normal"
-            value={turnoCulto}
-            onChange={(e) => setTurnoCulto(e.target.value)}
-            required
-            inputProps={{ min: 0, max: 1 }}
-          />
+          
+
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="turnoCulto">Turno do culto</InputLabel>
+              <Select
+                labelId="turnoCulto-label"
+                id="turnoCulto"
+                value={turnoCulto}
+                onChange={(e) => setTurnoCulto(e.target.value)}
+                label="Turno do Culto"
+              >
+                  <MenuItem value={0}>Manhã</MenuItem>
+                  <MenuItem value={1}>Noite</MenuItem>
+              </Select>
+            </FormControl>
 
           <TextField
             label="Valor Arrecadado"

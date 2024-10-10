@@ -64,7 +64,7 @@ const CriarNivelUsuario = () => {
 
       // Limpa o campo após o sucesso
       setNivelUsuario('');
-      navigate('/nivelUsuarios'); // Navegue de volta para a lista de tipos de recursos
+      navigate('/nivelUsuario'); // Navegue de volta para a lista de tipos de recursos
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(

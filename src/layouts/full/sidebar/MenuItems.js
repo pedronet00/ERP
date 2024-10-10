@@ -67,7 +67,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Relatórios',
     icon: IconFileAnalytics,
-    href: '/financas',
+    href: '/relatorios',
   },
   
   {
@@ -122,7 +122,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Níveis de Usuário',
     icon: IconChartArrowsVertical,
-    href: '/niveisUsuarios',
+    href: '/nivelUsuario',
   },
   {
     id: uniqueId(),
