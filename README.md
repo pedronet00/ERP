@@ -14,11 +14,14 @@
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas para as seguintes tarefas:
 
-- [x] API - Usuários
-- [x] API - Departamentos
-- [ ] API - Recursos
-- [ ] API - Finanças
-- [ ] API - Missões
+- [x] Usuários
+- [x] Departamentos
+- [x] Recursos
+- [x] Eventos
+- [x] Dízimos
+- [x] Missões
+- [ ] Relatórios    
+- [ ] Finanças
 
 ## 💻 Pré-requisitos
 
