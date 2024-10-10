@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';import { IconPrinter } from '@tabler/icons-react';
+import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
+import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserReport = () => {
     const [users, setUsers] = useState([]);
     const [reportData, setReportData] = useState({});
+    const navigate = useNavigate();
     
     // Função para buscar os usuários da API
     const fetchUsers = async () => {
@@ -31,19 +34,42 @@ const UserReport = () => {
         window.print();
     };
 
+    const handleGoBack = () => {
+        navigate(-1); // Volta para a tela anterior
+    };
+
     return (
         <Paper className="relatorio" style={{ width: '80%', margin: 'auto' }}>
+            {/* Estilos para ocultar itens na impressão */}
+            <style>
+                {`
+                @media print {
+                    .no-print {
+                        display: none !important;
+                    }
+                }
+                `}
+            </style>
+
+            {/* Botão de voltar */}
+            <div className="d-flex justify-content-between mb-3 no-print" style={{ marginTop: '2%' }}>
+                <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+            </div>
+            
+            {/* Título e informações do relatório */}
             <Typography variant="h4" gutterBottom style={{ textAlign: 'center', padding: '5% 0 0 0' }}>
                 Relatório de Membros da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
                 Membros cadastrados entre 20/08/2024 e 04/10/2024
             </Typography>
-            <IconButton onClick={handlePrint} aria-label="imprimir">
+
+            {/* Ícone de impressão */}
+            <IconButton onClick={handlePrint} aria-label="imprimir" className="no-print">
                 <IconPrinter />
             </IconButton>
 
-
+            {/* Estatísticas do relatório */}
             <Grid container spacing={1} style={{ marginTop: '20px', width: '80%', margin: 'auto' }}>
                 <Grid item xs={12}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
@@ -89,7 +115,7 @@ const UserReport = () => {
                 </Grid>
             </Grid>
 
-
+            {/* Tabela de usuários */}
             <TableContainer style={{ width: '80%', margin: '2% auto' }}>
                 <Table sx={{ borderCollapse: 'collapse', textAlign: 'center' }}>
                     <TableHead>
@@ -105,9 +131,9 @@ const UserReport = () => {
                         {users.length > 0 ? (
                             users.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.name}</TableCell> {/* Corrigido */}
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.dataNascimentoUsuario}</TableCell> {/* Corrigido */}
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.nivel_usuario?.nivelUsuario || "N/A"}</TableCell> {/* Corrigido */}
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.name}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.dataNascimentoUsuario}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.nivel_usuario?.nivelUsuario || "N/A"}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.usuarioAtivo === 0 ? "Inativo" : "Ativo"}</TableCell>
                                 </TableRow>
@@ -126,12 +152,12 @@ const UserReport = () => {
             {/* Área de assinaturas */}
             <Grid container style={{ marginTop: '50px', textAlign: 'center', padding: '50px' }} spacing={4}>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '2px solid black' }}>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
                     </Typography>
                     <Typography variant="body1">Pastor</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '2px solid black' }}>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
                     </Typography>
                     <Typography variant="body1">Secretária</Typography>
                 </Grid>

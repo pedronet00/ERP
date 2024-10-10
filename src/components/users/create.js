@@ -15,15 +15,10 @@ const CreateUser = ({ onUserCreated }) => {
   const [imgUsuario, setImgUsuario] = useState('');
   const [niveisUsuarios, setNiveisUsuarios] = useState([]);
   const idCliente = localStorage.getItem('idCliente'); 
-
-
   const [oldPassword, setOldPassword] = useState(''); // Armazena a senha antiga
   const navigate = useNavigate();
 
   
-
-
-
   // Função para buscar níveis de usuários
   useEffect(() => {
     const fetchNiveisUsuarios = async () => {
