@@ -64,9 +64,9 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Usuários',
-    icon: IconUsers,
-    href: '/users',
+    title: 'Finanças',
+    icon: IconFileDollar,
+    href: '/financas',
   },
   {
     id: uniqueId(),
@@ -82,15 +82,15 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Finanças',
-    icon: IconFileDollar,
-    href: '/financas',
-  },
-  {
-    id: uniqueId(),
     title: 'Relatórios',
     icon: IconFileAnalytics,
     href: '/relatorios',
+  },
+  {
+    id: uniqueId(),
+    title: 'Usuários',
+    icon: IconUsers,
+    href: '/users',
   },
   
   {

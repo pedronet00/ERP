@@ -23,7 +23,7 @@ const EventosIgreja = () => {
     // Função para buscar os eventos da API
     const fetchEventos = async () => {
         try {
-            const apiUrl = `http://localhost:8000/api/eventos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/proximosEventos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await axios.get(apiUrl);
 setEventos(response.data); // Salva os eventos na state
         } catch (error) {
@@ -67,7 +67,7 @@ setEventos(response.data); // Salva os eventos na state
         navigate('/eventos/create');
     }
     return (
-        <DashboardCard title="Eventos da igreja">
+        <DashboardCard title="Próximos eventos da igreja">
             <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus/>Novo evento</button>
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
@@ -104,11 +104,7 @@ setEventos(response.data); // Salva os eventos na state
                                     Orçamento
                                 </Typography>
                             </TableCell>
-                            <TableCell align="center" sx={{ flex: 1 }}>
-                                <Typography variant="subtitle2" fontWeight={600}>
-                                    Ações
-                                </Typography>
-                            </TableCell>
+                            
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -166,41 +162,7 @@ setEventos(response.data); // Salva os eventos na state
                                     <TableCell align="center">
                                         <Typography variant="h6">R$ {parseFloat(evento.orcamentoEvento).toFixed(2)}</Typography>
                                     </TableCell>
-                                    <TableCell align="center" >
-                                        <Box display="flex" flexDirection="column" gap={1}>
-                                            {/* {department.statusDepartamento === 1 ? (
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={() => handleDeactivateDepartment(department.id)}
-                                                startIcon={<IconX />}
-                                                size="small"
-                                            >
-                                                Desativar
-                                            </Button>
-                                            ) : (
-                                            <Button
-                                                variant="contained"
-                                                color="success"
-                                                onClick={() => handleActivateDepartment(department.id)}
-                                                startIcon={<IconCheck />}
-                                                size="small"
-                                            >
-                                                Ativar
-                                            </Button>
-                                            )} */}
-
-                                            <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() => navigate(`/eventos/edit/${evento.id}`)}
-                                            startIcon={<IconEdit />}
-                                            size="small"
-                                            >
-                                            Editar
-                                            </Button>
-                                        </Box>
-                                    </TableCell>
+                                    
                                 </TableRow>
                             ))
                         ) : (
