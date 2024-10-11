@@ -101,17 +101,26 @@ const RecursoReport = () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={6} style={{ marginTop: '5%' }}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Tipo de recurso mais frequente:</Typography>
-                        {/* <Typography variant="h5">{reportData.tipoMaisFrequente.tipoRecurso} ({reportData.tipoMaisFrequente.total})</Typography> */}
-                    </Paper>
-                </Grid>
-                <Grid item xs={6} style={{ marginTop: '5%' }}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Categoria de recurso mais frequente:</Typography>
-                        {/* <Typography variant="h5">{reportData.categoriaMaisFrequente.categoriaRecurso} ({reportData.categoriaMaisFrequente.total})</Typography> */}
-                    </Paper>
-                </Grid>
+    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+        <Typography variant="h6">Tipo de recurso mais frequente:</Typography>
+        <Typography variant="h5">
+            {reportData.tipoMaisFrequente && reportData.tipoMaisFrequente.tipo 
+                ? `${reportData.tipoMaisFrequente.tipo.tipoRecurso} (${reportData.tipoMaisFrequente.total})` 
+                : "Dados indisponíveis"}
+        </Typography>
+    </Paper>
+</Grid>
+<Grid item xs={6} style={{ marginTop: '5%' }}>
+    <Paper style={{ padding: '20px', textAlign: 'center' }}>
+        <Typography variant="h6">Categoria de recurso mais frequente:</Typography>
+        <Typography variant="h5">
+            {reportData.categoriaMaisFrequente && reportData.categoriaMaisFrequente.categoria 
+                ? `${reportData.categoriaMaisFrequente.categoria.categoriaRecurso} (${reportData.categoriaMaisFrequente.total})` 
+                : "Dados indisponíveis"}
+        </Typography>
+    </Paper>
+</Grid>
+
             </Grid>
 
             {/* Seções de recursos por categoria */}
