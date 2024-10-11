@@ -81,11 +81,6 @@ setEventos(response.data); // Salva os eventos na state
                         <TableRow>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Id
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="subtitle2" fontWeight={600}>
                                     Título
                                 </Typography>
                             </TableCell>
@@ -111,16 +106,7 @@ setEventos(response.data); // Salva os eventos na state
                         {eventos.length > 0 ? (
                             eventos.map((evento) => (
                                 <TableRow key={evento.id}>
-                                    <TableCell>
-                                        <Typography
-                                            sx={{
-                                                fontSize: "15px",
-                                                fontWeight: "500",
-                                            }}
-                                        >
-                                            {evento.id}
-                                        </Typography>
-                                    </TableCell>
+                                    
                                     <TableCell>
                                         <Box
                                             sx={{
