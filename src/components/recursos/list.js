@@ -62,6 +62,10 @@ const RecursosList = () => {
     navigate('/recursos/create');
   };
 
+  const handleReport = () => {
+    navigate('/relatorio/recursos');
+  };
+
   // Função para incrementar a quantidade do recurso
   const handleIncrease = async (recurso) => {
     try {
@@ -91,7 +95,7 @@ const RecursosList = () => {
       </Typography>
 
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
       </div>
 
