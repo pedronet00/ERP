@@ -18,7 +18,8 @@ import {
   IconHeartHandshake,
   IconSchool,
   IconChalkboard,
-  IconCalendarEvent
+  IconCalendarEvent,
+  IconBooks
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -44,6 +45,12 @@ const Menuitems = [
   {
     navlabel: true,
     subheader: 'Gerenciamento',
+  },
+  {
+    id: uniqueId(),
+    title: 'Acervo Virtual',
+    icon: IconBooks,
+    href: '/livros',
   },
   {
     id: uniqueId(),
