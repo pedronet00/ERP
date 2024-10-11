@@ -43,6 +43,8 @@ const DepartamentoReport = Loadable(lazy(() => import('../components/departament
 const MissoesReport = Loadable(lazy(() => import('../components/missoes/report.js')));
 const RecursoReport = Loadable(lazy(() => import('../components/recursos/report.js')));
 const EBDAulasList = Loadable(lazy(() => import('../components/aulas_ebd/list.js')));
+const EBDClassesList = Loadable(lazy(() => import('../components/classes_ebd/list.js')));
+const EBDClassesCreate = Loadable(lazy(() => import('../components/classes_ebd/create.js')));
 const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
 
 
@@ -56,10 +58,16 @@ const Router = [
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
 
-      // Usuários
-      { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
+      // Aulas da EBD
       { path: '/aulasEBD', element: <PrivateRoute ><EBDAulasList /></PrivateRoute> },
       { path: '/aulasEBD/create', element: <PrivateRoute ><EBDAulaCreate /></PrivateRoute> },
+
+      // Classes da EBD
+      { path: '/classesEBD', element: <PrivateRoute ><EBDClassesList /></PrivateRoute> },
+      { path: '/classesEBD/create', element: <PrivateRoute ><EBDClassesCreate /></PrivateRoute> },
+
+      // Usuários
+      { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
       { path: '/user/create', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
       { path: '/user/edit/:userId', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
 

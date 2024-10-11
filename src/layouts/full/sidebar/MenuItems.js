@@ -16,7 +16,8 @@ import {
   IconPackage, 
   IconChartArrowsVertical, 
   IconHeartHandshake,
-  IconSchool
+  IconSchool,
+  IconChalkboard
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -45,15 +46,27 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Usuários',
-    icon: IconUsers,
-    href: '/users',
-  },
-  {
-    id: uniqueId(),
     title: 'Departamentos',
     icon: IconCopy,
     href: '/departaments',
+  },
+  {
+    id: uniqueId(),
+    title: 'Dízimos',
+    icon: IconHeartHandshake,
+    href: '/dizimos',
+  },
+  {
+    id: uniqueId(),
+    title: 'EBD',
+    icon: IconSchool,
+    href: '/aulasEBD',
+  },
+  {
+    id: uniqueId(),
+    title: 'Usuários',
+    icon: IconUsers,
+    href: '/users',
   },
   {
     id: uniqueId(),
@@ -66,18 +79,6 @@ const Menuitems = [
     title: 'Recursos',
     icon: IconStar,
     href: '/recursos',
-  },
-  {
-    id: uniqueId(),
-    title: 'EBD',
-    icon: IconSchool,
-    href: '/aulasEBD',
-  },
-  {
-    id: uniqueId(),
-    title: 'Dízimos',
-    icon: IconHeartHandshake,
-    href: '/dizimos',
   },
   {
     id: uniqueId(),
@@ -133,6 +134,12 @@ const Menuitems = [
     title: 'Locais',
     icon: IconMapPin,
     href: '/locais',
+  },
+  {
+    id: uniqueId(),
+    title: 'Classes de EBD',
+    icon: IconChalkboard,
+    href: '/classesEBD',
   },
   {
     id: uniqueId(),
