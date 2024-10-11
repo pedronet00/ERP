@@ -17,7 +17,8 @@ import {
   IconChartArrowsVertical, 
   IconHeartHandshake,
   IconSchool,
-  IconChalkboard
+  IconChalkboard,
+  IconCalendarEvent
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -61,6 +62,12 @@ const Menuitems = [
     title: 'EBD',
     icon: IconSchool,
     href: '/aulasEBD',
+  },
+  {
+    id: uniqueId(),
+    title: 'Eventos',
+    icon: IconCalendarEvent,
+    href: '/eventos',
   },
   {
     id: uniqueId(),
