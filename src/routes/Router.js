@@ -42,6 +42,8 @@ const UserReport = Loadable(lazy(() => import('../components/users/report.js')))
 const DepartamentoReport = Loadable(lazy(() => import('../components/departamentos/report.js')));
 const MissoesReport = Loadable(lazy(() => import('../components/missoes/report.js')));
 const RecursoReport = Loadable(lazy(() => import('../components/recursos/report.js')));
+const EBDAulasList = Loadable(lazy(() => import('../components/aulas_ebd/list.js')));
+const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
 
 
 const Router = [
@@ -56,6 +58,8 @@ const Router = [
 
       // Usuários
       { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
+      { path: '/aulasEBD', element: <PrivateRoute ><EBDAulasList /></PrivateRoute> },
+      { path: '/aulasEBD/create', element: <PrivateRoute ><EBDAulaCreate /></PrivateRoute> },
       { path: '/user/create', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
       { path: '/user/edit/:userId', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
 

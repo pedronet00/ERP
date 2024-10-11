@@ -1,6 +1,22 @@
 import {
-  IconAperture, IconCopy, IconEyeDollar, IconFileDollar, IconLayoutDashboard, IconLogin, IconMoodHappy, IconStar, IconTarget, IconTargetArrow, IconTypography, IconUser, IconUserPlus,
-  IconUsers, IconBuildingChurch, IconScript, IconArticle, IconPencilStar, IconFileAnalytics, IconMapPin, IconPackage, IconChartArrowsVertical, IconHeartHandshake
+  IconAperture, 
+  IconCopy, 
+  IconFileDollar, 
+  IconLayoutDashboard, 
+  IconMoodHappy, 
+  IconStar, 
+  IconTargetArrow, 
+  IconUsers, 
+  IconBuildingChurch, 
+  IconScript, 
+  IconArticle, 
+  IconPencilStar, 
+  IconFileAnalytics, 
+  IconMapPin, 
+  IconPackage, 
+  IconChartArrowsVertical, 
+  IconHeartHandshake,
+  IconSchool
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -50,6 +66,12 @@ const Menuitems = [
     title: 'Recursos',
     icon: IconStar,
     href: '/recursos',
+  },
+  {
+    id: uniqueId(),
+    title: 'EBD',
+    icon: IconSchool,
+    href: '/aulasEBD',
   },
   {
     id: uniqueId(),
