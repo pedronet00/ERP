@@ -46,6 +46,8 @@ const EBDAulasList = Loadable(lazy(() => import('../components/aulas_ebd/list.js
 const EBDClassesList = Loadable(lazy(() => import('../components/classes_ebd/list.js')));
 const EBDClassesCreate = Loadable(lazy(() => import('../components/classes_ebd/create.js')));
 const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
+const CadastrarLivro = Loadable(lazy(() => import('../components/livros/create.js')));
+const ListaLivros = Loadable(lazy(() => import('../components/livros/list.js')));
 
 
 const Router = [
@@ -57,6 +59,10 @@ const Router = [
       // Dashboard
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
+
+      // Livros
+      { path: '/livros/create', element: <PrivateRoute ><CadastrarLivro /></PrivateRoute> },
+      { path: '/livros', element: <PrivateRoute ><ListaLivros /></PrivateRoute> },
 
       // Aulas da EBD
       { path: '/aulasEBD', element: <PrivateRoute ><EBDAulasList /></PrivateRoute> },
