@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar, Fab } from '@mui/material';
 import { IconArrowDownRight, IconCurrencyDollar } from '@tabler/icons-react';
 import DashboardCard from '../../../components/shared/DashboardCard';
+import axios from 'axios';
 
 const EntradasMensais = () => {
-  // chart color
+  // Estado para armazenar o saldo mensal
+  const [saldoMensal, setSaldoMensal] = useState(0);
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
   const secondarylight = '#f5fcff';
   const errorlight = '#fdede8';
 
-  // chart
+  // Chart options
   const optionscolumnchart = {
     chart: {
       type: 'area',
@@ -43,19 +45,36 @@ const EntradasMensais = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
+
   const seriescolumnchart = [
     {
       name: '',
       color: secondary,
-      data: [25, 66, 20, 40, 12, 58, 20],
+      data: [25, 66, 20, 40, 12, 58, 20], // Você pode substituir isso por dados reais quando disponível
     },
   ];
 
+  // Função para buscar o saldo mensal
+  const fetchSaldoMensal = async () => {
+    try {
+      const idCliente = localStorage.getItem('idCliente'); // Supondo que o idCliente é armazenado no localStorage
+      const response = await axios.get(`http://localhost:8000/api/financas/saldo-mensal?idCliente=${idCliente}`);
+      setSaldoMensal(parseFloat(response.data.saldoMensal)); // Convertendo string para número
+    } catch (error) {
+      console.error("Erro ao buscar saldo mensal:", error);
+    }
+  };
+
+  // useEffect para buscar o saldo mensal ao montar o componente
+  useEffect(() => {
+    fetchSaldoMensal();
+  }, []);
+
   return (
     <DashboardCard
-      title="Entradas mensais"
+      title="Saldo atual"
       action={
-        <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
+        <Fab color="secondary" size="medium" sx={{ color: '#ffffff' }}>
           <IconCurrencyDollar width={24} />
         </Fab>
       }
@@ -65,7 +84,7 @@ const EntradasMensais = () => {
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          R$ 50.820
+          R$ {saldoMensal.toFixed(2)} {/* Exibe o saldo mensal formatado */}
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>

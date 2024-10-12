@@ -23,22 +23,18 @@ const Dashboard = () => {
       <Box>
         <Grid container spacing={3}>
           <Grid item xs={12} lg={12}>
-            <EventosIgreja />
-          </Grid>
-          <Grid item xs={12} lg={8}>
-            <EntradaSaida />
-          </Grid>
-          <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <QuantidadeMembros />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <EntradasMensais />
               </Grid>
             </Grid>
           </Grid>
-          
+          <Grid item xs={12} lg={12}>
+            <EventosIgreja />
+          </Grid>
           <Grid item xs={12} lg={12}>
             <BalancoFiscal />
           </Grid>

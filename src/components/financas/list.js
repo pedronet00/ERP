@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react'; // IconCheck adicionado
+import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
 import { Container, Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, TextField, Select, MenuItem, InputLabel, FormControl, Chip, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,6 @@ const Financas = () => {
 
   const idCliente = localStorage.getItem('idCliente');  
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchFinancas = async () => {
@@ -64,6 +63,24 @@ const Financas = () => {
     navigate('/relatorio/departamentos');
   };
 
+  // Função para agrupar entradas e saídas por mês
+  const groupByMonth = (data) => {
+    return data.reduce((acc, item) => {
+      const [ano, mes] = item.data.split('-'); // Extrair ano e mês da data
+      const monthYear = `${new Date(ano, mes - 1).toLocaleString('pt-BR', { month: 'long' })} ${ano}`; // Formatar o mês e ano
+  
+      if (!acc[monthYear]) {
+        acc[monthYear] = [];
+      }
+      acc[monthYear].push(item);
+      return acc;
+    }, {});
+  };
+  
+
+  const groupedEntradas = groupByMonth(filteredData.entradas);
+  const groupedSaidas = groupByMonth(filteredData.saidas);
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ marginTop: 4 }}>
@@ -87,8 +104,6 @@ const Financas = () => {
             InputLabelProps={{ shrink: true }}
           />
 
-           
-
           <FormControl variant="outlined" sx={{ minWidth: 150 }}>
             <InputLabel>Categoria</InputLabel>
             <Select
@@ -106,79 +121,92 @@ const Financas = () => {
           </FormControl>
         </Box>
 
-            <div className="d-flex justify-content-between mb-3">
-                <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
-                <div>
-                    <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
-                    <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
-                </div>
-            </div>
+        <div className="d-flex justify-content-between mb-3">
+          <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
+          <div>
+            <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
+            <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
+          </div>
+        </div>
 
         {loading ? (
           <Typography variant="body1">Carregando...</Typography>
         ) : (
           <>
-            {/* Tabela de Entradas */}
-            <Typography variant="h6" gutterBottom style={{'backgroundColor': 'lightgreen','padding': '1%', 'color': 'white'}}>Entradas</Typography>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Descrição</TableCell>
-                  <TableCell>Data</TableCell>
-                  <TableCell>Categoria</TableCell>
-                  <TableCell>Valor</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredData.entradas.length > 0 ? (
-                  filteredData.entradas.map((entrada) => (
-                    <TableRow key={entrada.id}>
-                      <TableCell>{entrada.descricao}</TableCell>
-                      <TableCell>{entrada.data.split('-').reverse().join('/')}</TableCell>
-                      <TableCell>
-                        <Chip label={entrada.categoria === 1 ? 'Dízimo' : entrada.categoria === 2 ? 'Oferta' : 'Outros'} />
-                      </TableCell>
-                      <TableCell>R$ {entrada.valor}</TableCell>
+            {/* Tabela de Entradas por Mês */}
+            
+            {Object.keys(groupedEntradas).map(month => (
+              <div key={month}>
+                <Typography variant="h6" gutterBottom style={{'backgroundColor': 'lightgreen','padding': '1%', 'color': 'white'}}>
+                  Entradas de {month}
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Descrição</TableCell>
+                      <TableCell>Data</TableCell>
+                      <TableCell>Categoria</TableCell>
+                      <TableCell>Valor</TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4} align="center">Nenhuma entrada encontrada</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  </TableHead>
+                  <TableBody>
+                    {groupedEntradas[month].length > 0 ? (
+                      groupedEntradas[month].map((entrada) => (
+                        <TableRow key={entrada.id}>
+                          <TableCell>{entrada.descricao}</TableCell>
+                          <TableCell>{entrada.data.split('-').reverse().join('/')}</TableCell>
+                          <TableCell>
+                            <Chip label={entrada.categoria === 1 ? 'Dízimo' : entrada.categoria === 2 ? 'Oferta' : 'Outros'} />
+                          </TableCell>
+                          <TableCell>R$ {entrada.valor}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={4} align="center">Nenhuma entrada encontrada</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            ))}
 
-            {/* Tabela de Saídas */}
-            <Typography variant="h6" gutterBottom sx={{ marginTop: 4 }} style={{'backgroundColor': '#f58d8d','padding': '1%', 'color': 'white'}}>Saídas</Typography>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Descrição</TableCell>
-                  <TableCell>Data</TableCell>
-                  <TableCell>Categoria</TableCell>
-                  <TableCell>Valor</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredData.saidas.length > 0 ? (
-                  filteredData.saidas.map((saida) => (
-                    <TableRow key={saida.id}>
-                      <TableCell>{saida.descricao}</TableCell>
-                      <TableCell>{saida.data.split('-').reverse().join('/')}</TableCell>
-                      <TableCell>
-                        <Chip label={saida.categoria=== 1 ? 'Salários' : saida.categoria === 2 ? 'Manutenção' : saida.categoria === 3 ? 'Materiais' : 'Outros'}  />
-                      </TableCell>
-                      <TableCell>R$ {saida.valor}</TableCell>
+            {/* Tabela de Saídas por Mês */}
+            {Object.keys(groupedSaidas).map(month => (
+              <div key={month}>
+                <Typography variant="h6" gutterBottom sx={{ marginTop: 4 }} style={{'backgroundColor': '#f58d8d','padding': '1%', 'color': 'white'}}>
+                  Saídas de {month}
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Descrição</TableCell>
+                      <TableCell>Data</TableCell>
+                      <TableCell>Categoria</TableCell>
+                      <TableCell>Valor</TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4} align="center">Nenhuma saída encontrada</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  </TableHead>
+                  <TableBody>
+                    {groupedSaidas[month].length > 0 ? (
+                      groupedSaidas[month].map((saida) => (
+                        <TableRow key={saida.id}>
+                          <TableCell>{saida.descricao}</TableCell>
+                          <TableCell>{saida.data.split('-').reverse().join('/')}</TableCell>
+                          <TableCell>
+                            <Chip label={saida.categoria=== 1 ? 'Salários' : saida.categoria === 2 ? 'Manutenção' : saida.categoria === 3 ? 'Materiais' : 'Outros'}  />
+                          </TableCell>
+                          <TableCell>R$ {saida.valor}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={4} align="center">Nenhuma saída encontrada</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            ))}
           </>
         )}
       </Box>
