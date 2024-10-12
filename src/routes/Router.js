@@ -48,6 +48,7 @@ const EBDClassesCreate = Loadable(lazy(() => import('../components/classes_ebd/c
 const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
 const CadastrarLivro = Loadable(lazy(() => import('../components/livros/create.js')));
 const ListaLivros = Loadable(lazy(() => import('../components/livros/list.js')));
+const EventosList = Loadable(lazy(() => import('../components/eventos/list.js')));
 
 
 const Router = [
@@ -92,6 +93,7 @@ const Router = [
       { path: '/recursos/create', element: <PrivateRoute ><RecursosCreate /></PrivateRoute> },
 
       // Eventos
+      { path: '/eventos', element: <PrivateRoute ><EventosList /></PrivateRoute> },
       { path: '/eventos/create', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
       { path: '/eventos/edit/:eventId', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
 
