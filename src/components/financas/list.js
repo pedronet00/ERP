@@ -122,11 +122,8 @@ const Financas = () => {
         </Box>
 
         <div className="d-flex justify-content-between mb-3">
-          <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
-          <div>
-            <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
-            <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
-          </div>
+          <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
+          <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
         </div>
 
         {loading ? (
@@ -170,6 +167,7 @@ const Financas = () => {
                 </Table>
               </div>
             ))}
+            <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
 
             {/* Tabela de Saídas por Mês */}
             {Object.keys(groupedSaidas).map(month => (
