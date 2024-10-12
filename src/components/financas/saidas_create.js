@@ -19,7 +19,7 @@ const CadastrarSaida = () => {
       descricao,
       valor,
       data,
-      categoria_id: categoria,
+      categoria,
       idCliente
     };
 

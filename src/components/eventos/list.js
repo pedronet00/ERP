@@ -87,7 +87,7 @@ const EventList = () => {
       </Box>
 
       <div className="d-flex justify-content-between mb-3">
-        <Button variant="contained" color="primary" onClick={handleReport} startIcon={<IconClipboard />}>
+        <Button variant="contained" color="success" onClick={handleReport} startIcon={<IconClipboard />}>
           Gerar Relatório
         </Button>
         <Button variant="contained" color="primary" onClick={handleNewEvent} startIcon={<IconPlus />}>

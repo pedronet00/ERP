@@ -1,25 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, MenuItem } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
-
+import axios from 'axios';
 
 const BalancoFiscal = () => {
-
-    // select
-    const [month, setMonth] = React.useState('1');
-
-    const handleChange = (event) => {
-        setMonth(event.target.value);
-    };
+    const [entradasPorMes, setEntradasPorMes] = useState([]);
+    const [saidasPorMes, setSaidasPorMes] = useState([]);
+    const [meses, setMeses] = useState([]);
 
     // chart color
     const theme = useTheme();
     const primary = theme.palette.primary.main;
     const secondary = theme.palette.secondary.main;
 
-    // chart
+    // chart options
     const optionscolumnchart = {
         chart: {
             type: 'bar',
@@ -41,13 +37,12 @@ const BalancoFiscal = () => {
                 borderRadiusWhenStacked: 'all',
             },
         },
-
         stroke: {
             show: true,
             width: 5,
             lineCap: "butt",
             colors: ["transparent"],
-          },
+        },
         dataLabels: {
             enabled: false,
         },
@@ -67,7 +62,7 @@ const BalancoFiscal = () => {
             tickAmount: 4,
         },
         xaxis: {
-            categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08', '23/08'],
+            categories: meses, // Usando meses dinâmicos
             axisBorder: {
                 show: false,
             },
@@ -77,32 +72,37 @@ const BalancoFiscal = () => {
             fillSeriesColor: false,
         },
     };
+
     const seriescolumnchart = [
         {
-            name: 'Eanings this month',
-            data: [355, 390, 300, 350, 390, 180, 355, 390],
+            name: 'Entradas',
+            data: entradasPorMes, // Dados dinâmicos das entradas
         },
         {
-            name: 'Expense this month',
-            data: [280, 250, 325, 215, 250, 310, 280, 250],
+            name: 'Saídas',
+            data: saidasPorMes, // Dados dinâmicos das saídas
         },
     ];
 
-    return (
+    // Função para buscar dados financeiros
+    const fetchFinancialData = async () => {
+        try {
+            const idCliente = localStorage.getItem('idCliente'); // Supondo que o idCliente é armazenado no localStorage
+            const response = await axios.get(`http://localhost:8000/api/financas/entradasSaidasMensal?idCliente=${idCliente}`);
+            setEntradasPorMes(Object.values(response.data.entradas)); // Armazenando entradas por mês
+            setSaidasPorMes(Object.values(response.data.saidas)); // Armazenando saídas por mês
+            setMeses(response.data.meses); // Armazenando nomes dos meses
+        } catch (error) {
+            console.error("Erro ao buscar dados financeiros:", error);
+        }
+    };
 
-        <DashboardCard title="Balanço fiscal" action={
-            <Select
-                labelId="month-dd"
-                id="month-dd"
-                value={month}
-                size="small"
-                onChange={handleChange}
-            >
-                <MenuItem value={1}>March 2023</MenuItem>
-                <MenuItem value={2}>April 2023</MenuItem>
-                <MenuItem value={3}>May 2023</MenuItem>
-            </Select>
-        }>
+    useEffect(() => {
+        fetchFinancialData();
+    }, []);
+
+    return (
+        <DashboardCard title="Balanço Fiscal">
             <Chart
                 options={optionscolumnchart}
                 series={seriescolumnchart}
