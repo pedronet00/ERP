@@ -49,6 +49,9 @@ const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create
 const CadastrarLivro = Loadable(lazy(() => import('../components/livros/create.js')));
 const ListaLivros = Loadable(lazy(() => import('../components/livros/list.js')));
 const EventosList = Loadable(lazy(() => import('../components/eventos/list.js')));
+const Financas = Loadable(lazy(() => import('../components/financas/list.js')));
+const CadastrarEntrada = Loadable(lazy(() => import('../components/financas/entradas_create.js')));
+const CadastrarSaida = Loadable(lazy(() => import('../components/financas/saidas_create.js')));
 
 
 const Router = [
@@ -60,6 +63,11 @@ const Router = [
       // Dashboard
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
+
+      // Finanças
+      { path: '/financas', element: <PrivateRoute ><Financas /></PrivateRoute> },
+      { path: '/entradas/create', element: <PrivateRoute ><CadastrarEntrada /></PrivateRoute> },
+      { path: '/saidas/create', element: <PrivateRoute ><CadastrarSaida /></PrivateRoute> },
 
       // Livros
       { path: '/livros/create', element: <PrivateRoute ><CadastrarLivro /></PrivateRoute> },

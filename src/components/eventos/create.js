@@ -82,15 +82,12 @@ const CadastrarEvento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Ajusta a data para garantir que não haja problemas de fuso horário
-    const adjustedDate = new Date(dataEvento);
-    adjustedDate.setDate(adjustedDate.getDate() + 1); // Adiciona um dia
         
     const formData = {
       nomeEvento,
       descricaoEvento,
       localEvento,
-      dataEvento: adjustedDate.toISOString().split('T')[0],
+      dataEvento,
       prioridadeEvento,
       orcamentoEvento,
       idCliente

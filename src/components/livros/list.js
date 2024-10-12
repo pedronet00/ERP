@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Container, Typography, Box, Card, CardContent, Button } from '@mui/material';
-import { IconMinus, IconPlus, IconTrash, IconClipboard } from '@tabler/icons-react';
+import { IconMinus, IconPlus, IconTrash, IconClipboard, IconLoader } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 
 const ListaLivros = () => {
@@ -92,7 +92,7 @@ const ListaLivros = () => {
             <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo livro</button>
         </div>
         {loading ? (
-          <Typography variant="body1">Carregando...</Typography>
+          <Typography variant="body1"><IconLoader/></Typography>
         ) : (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
             {livros.length > 0 ? (
