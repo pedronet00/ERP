@@ -134,7 +134,7 @@ const Financas = () => {
                   filteredData.entradas.map((entrada) => (
                     <TableRow key={entrada.id}>
                       <TableCell>{entrada.descricao}</TableCell>
-                      <TableCell>{new Date(entrada.data).toLocaleDateString()}</TableCell>
+                      <TableCell>{entrada.data.split('-').reverse().join('/')}</TableCell>
                       <TableCell>
                         <Chip label={entrada.categoria === 1 ? 'Dízimo' : entrada.categoria === 2 ? 'Oferta' : 'Outros'} />
                       </TableCell>
@@ -165,7 +165,7 @@ const Financas = () => {
                   filteredData.saidas.map((saida) => (
                     <TableRow key={saida.id}>
                       <TableCell>{saida.descricao}</TableCell>
-                      <TableCell>{new Date(saida.data).toLocaleDateString()}</TableCell>
+                      <TableCell>{saida.data.split('-').reverse().join('/')}</TableCell>
                       <TableCell>
                         <Chip label={saida.categoria=== 1 ? 'Salários' : saida.categoria === 2 ? 'Manutenção' : saida.categoria === 3 ? 'Materiais' : 'Outros'}  />
                       </TableCell>
