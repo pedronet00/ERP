@@ -27,8 +27,9 @@ const Login = () => {
 
       console.log(response.data); // Aqui você pode usar a resposta conforme necessário
 
-      localStorage.setItem('idCliente', response.data.idCliente); // Armazenar o token
-      localStorage.setItem('razaoSocial', response.data.razaoSocial); // Armazenar o token
+      localStorage.setItem('idCliente', response.data.idCliente);
+      localStorage.setItem('razaoSocial', response.data.razaoSocial);
+      localStorage.setItem('nivelUsuario', response.data.nivelUsuario);
       Swal.fire({
         icon: 'success',
         title: 'Login realizado com sucesso!',
