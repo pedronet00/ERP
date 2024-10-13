@@ -2,6 +2,8 @@ import React from 'react';
 import { Grid, Box } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
+import Onboarding from '../../components/onboarding';
+
 // components
 import SalesOverview from './components/BalancoFiscal';
 import YearlyBreakup from './components/QuantidadeMembros';
@@ -20,8 +22,12 @@ const Dashboard = () => {
 
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
+      
       <Box>
         <Grid container spacing={3}>
+          <Grid item xs={12} lg={12}>
+            <Onboarding/> 
+          </Grid>
           <Grid item xs={12} lg={12}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
@@ -35,6 +41,7 @@ const Dashboard = () => {
           <Grid item xs={12} lg={12}>
             <EventosIgreja />
           </Grid>
+          
           <Grid item xs={12} lg={12}>
             <BalancoFiscal />
           </Grid>
