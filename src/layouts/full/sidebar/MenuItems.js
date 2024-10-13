@@ -28,6 +28,8 @@ const razaoSocial = localStorage.getItem('razaoSocial');
 const idCliente = localStorage.getItem('idCliente'); 
 const nivelUsuario = parseInt(localStorage.getItem('nivelUsuario'), 10); // Convertendo para número
 
+console.log("Nível usuário: " + nivelUsuario)
+
 // Função para verificar se o usuário tem permissão de acordo com o nível
 const canView = (requiredLevel) => nivelUsuario >= requiredLevel;
 const canManage = (requiredLevel) => nivelUsuario >= requiredLevel;

@@ -21,7 +21,7 @@ const DizimoList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dizimosPerPage] = useState(5); // Número de dízimos por página
   const navigate = useNavigate();
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const idCliente = localStorage.getItem('idCliente');
 
   // Função para buscar dízimos da API
@@ -55,11 +55,12 @@ const DizimoList = () => {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Dízimos</h2>
       </div>
-
+      {nivelUsuario > 3 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleNewDizimo}><IconClipboard/> Gerar relatório</button>
         <button className="btn btn-primary" onClick={handleNewDizimo}><IconPlus/> Novo registro</button>
       </div>
+      )}
 
       {/* Tabela de Dízimos */}
       <Table sx={{ marginTop: '2%' }}>
@@ -77,9 +78,11 @@ const DizimoList = () => {
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Valor arrecadado</Typography>
             </TableCell>
+            {nivelUsuario > 3 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Ações</Typography>
             </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -98,6 +101,7 @@ const DizimoList = () => {
                 <TableCell align="center">
                   <Typography variant="body2">{dizimo.valorArrecadado}</Typography>
                 </TableCell>
+                {nivelUsuario > 3 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
                     <Button
@@ -111,6 +115,7 @@ const DizimoList = () => {
                     </Button>
                   </Box>
                 </TableCell>
+                )}
               </TableRow>
             ))
           ) : (

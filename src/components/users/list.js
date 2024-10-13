@@ -27,6 +27,7 @@ const UserList = () => {
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // Alterado para 1 para melhor experiência
   const [usersPerPage] = useState(5);
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const navigate = useNavigate();
 
   // Função para buscar usuários da API
@@ -171,10 +172,12 @@ const UserList = () => {
         </Select>
       </FormControl>
 
+      {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
         <Button variant="contained" color="primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</Button>
         <Button variant="contained" color="success" onClick={handleNewUser}><IconPlus /> Novo Usuário</Button>
       </div>
+      )}
 
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
@@ -191,9 +194,11 @@ const UserList = () => {
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Status</Typography>
             </TableCell>
+            {nivelUsuario > 2 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>Ações</Typography>
             </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -212,6 +217,7 @@ const UserList = () => {
                 <TableCell align="center">
                   <Typography variant="body2">{user.usuarioAtivo === 1 ? "Ativo" : "Inativo"}</Typography>
                 </TableCell>
+                {nivelUsuario > 2 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
                     {user.usuarioAtivo === 1 ? (
@@ -247,6 +253,7 @@ const UserList = () => {
                     </Button>
                   </Box>
                 </TableCell>
+                )}
               </TableRow>
             ))
           ) : (

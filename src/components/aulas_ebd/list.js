@@ -22,7 +22,7 @@ const EBDAulasList = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(5);
   const navigate = useNavigate();
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   // Função para buscar aulas da API
   const fetchClasses = async () => {
     try {
@@ -86,10 +86,12 @@ const EBDAulasList = () => {
         />
       </Box>
 
+      {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewClass}><IconPlus/>Nova aula</button>
       </div>
+      )}
 
       {/* Tabela de Aulas */}
       <Table sx={{ marginTop: '2%' }}>

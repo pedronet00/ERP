@@ -66,9 +66,14 @@ setEventos(response.data); // Salva os eventos na state
     const handleNewEvent = () => {
         navigate('/eventos/create');
     }
+
+    const nivelUsuario = localStorage.getItem('nivelUsuario');
+
     return (
         <DashboardCard title="Próximos eventos da igreja">
-            <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus/>Novo evento</button>
+            {nivelUsuario > 2 && (
+                <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus/>Novo evento</button>
+            )}
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
                     aria-label="simple table"

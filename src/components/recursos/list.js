@@ -12,7 +12,7 @@ const RecursosList = () => {
   const [recursosList, setRecursosList] = useState([]);
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente'); 
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const fetchCategoriaRecurso = async () => {
     try {
         const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
@@ -94,10 +94,12 @@ const RecursosList = () => {
         Recursos da Primeira Igreja Batista de Presidente Prudente
       </Typography>
 
+      {nivelUsuario > 1 && (
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
         <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
       </div>
+      )}
 
       <AppBar position="static" style={{ marginTop: '2%' }} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
@@ -117,7 +119,9 @@ const RecursosList = () => {
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Nome</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Tipo</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Quantidade</Typography></TableCell>
+                  {nivelUsuario > 1 && (
                   <TableCell align="right"><Typography variant="subtitle2" fontWeight={600}>Ações</Typography></TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -128,11 +132,13 @@ const RecursosList = () => {
                       <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.tipo.tipoRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
+                      {nivelUsuario > 1 && (
                       <TableCell align="right">
                         <IconButton onClick={() => handleDecrease(recurso)}><IconMinus /></IconButton>
                         <IconButton onClick={() => handleIncrease(recurso)}><IconPlus /></IconButton>
                         <IconButton><IconTrash style={{ color: "#ff4c4c" }} /></IconButton>
                       </TableCell>
+                      )}
                     </TableRow>
                   ))}
               </TableBody>

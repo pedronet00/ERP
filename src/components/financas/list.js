@@ -12,7 +12,7 @@ const Financas = () => {
   const [filterDate, setFilterDate] = useState('');
   const [filterCategoria, setFilterCategoria] = useState('');
   const [loading, setLoading] = useState(true);
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const idCliente = localStorage.getItem('idCliente');  
   const navigate = useNavigate();
 
@@ -120,11 +120,12 @@ const Financas = () => {
             </Select>
           </FormControl>
         </Box>
-
+        {nivelUsuario > 2 && (
         <div className="d-flex justify-content-between mb-3">
           <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
           <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
         </div>
+        )}
 
         {loading ? (
           <Typography variant="body1">Carregando...</Typography>
@@ -167,8 +168,9 @@ const Financas = () => {
                 </Table>
               </div>
             ))}
+            {nivelUsuario > 2 && (
             <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
-
+            )}
             {/* Tabela de Saídas por Mês */}
             {Object.keys(groupedSaidas).map(month => (
               <div key={month}>

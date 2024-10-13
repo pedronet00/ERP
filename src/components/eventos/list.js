@@ -22,7 +22,8 @@ const EventList = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(5);  // Quantidade de eventos por página (5)
   const navigate = useNavigate();
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
+  
   // Função para buscar eventos da API
   const fetchEvents = async () => {
     try {
@@ -85,7 +86,7 @@ const EventList = () => {
           onChange={(e) => setSearchTitle(e.target.value)}
         />
       </Box>
-
+      {nivelUsuario > 1 && (
       <div className="d-flex justify-content-between mb-3">
         <Button variant="contained" color="success" onClick={handleReport} startIcon={<IconClipboard />}>
           Gerar Relatório
@@ -94,6 +95,7 @@ const EventList = () => {
           Novo Evento
         </Button>
       </div>
+      )}
 
       {/* Tabela de eventos */}
       <Table sx={{ marginTop: '2%' }}>
@@ -119,11 +121,13 @@ const EventList = () => {
                 Data
               </Typography>
             </TableCell>
+            {nivelUsuario > 1 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
               </Typography>
             </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -142,6 +146,7 @@ const EventList = () => {
                 <TableCell align="center">
                   <Typography variant="body2">{new Date(event.dataEvento).toLocaleDateString()}</Typography>
                 </TableCell>
+                {nivelUsuario > 1 && (
                 <TableCell align="center">
                   <Button
                     variant="contained"
@@ -153,6 +158,7 @@ const EventList = () => {
                     Editar
                   </Button>
                 </TableCell>
+                )}
               </TableRow>
             ))
           ) : (

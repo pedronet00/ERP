@@ -23,7 +23,7 @@ const MissoesList = () => {
   const [currentPage, setCurrentPage] = useState(1); // Estado da página atual
   const [usersPerPage] = useState(5); // Número de missões por página
   const navigate = useNavigate();
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const fetchMissoes = async () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
@@ -146,10 +146,12 @@ const MissoesList = () => {
         />
       </Box>
 
+      {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
       </div>
+      )}
 
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
@@ -174,11 +176,13 @@ const MissoesList = () => {
                 Pastor titular
               </Typography>
             </TableCell>
+            {nivelUsuario > 2 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
               </Typography>
             </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -197,6 +201,7 @@ const MissoesList = () => {
                 <TableCell>
                   <Typography align="center" variant="body2">{missao.pastor_titular.name}</Typography>
                 </TableCell>
+                {nivelUsuario > 2 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
                     {missao.statusMissao == 1 ? (
@@ -232,6 +237,7 @@ const MissoesList = () => {
                     </Button>
                   </Box>
                 </TableCell>
+                )}
 
               </TableRow>
             ))

@@ -27,6 +27,7 @@ const DepartmentList = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [page, setPage] = useState(1);  // Estado para controlar a página atual
   const [rowsPerPage] = useState(5);    // Quantidade de departamentos por página (5)
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const navigate = useNavigate();
 
   // Função para buscar departamentos da API
@@ -169,10 +170,12 @@ const DepartmentList = () => {
         </FormControl>
       </Box>
 
+      {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
         <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
       </div>
+      )}
 
       {/* Tabela de Departamentos */}
       <Table sx={{ marginTop: '2%' }}>
@@ -194,16 +197,19 @@ const DepartmentList = () => {
                 Status
               </Typography>
             </TableCell>
+            {nivelUsuario > 2 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
               </Typography>
             </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
           {paginatedDepartments.length > 0 ? (
             paginatedDepartments.map((department) => (
+              
               <TableRow key={department.id}>
                 <TableCell align="center">
                   <Typography variant="body2">{department.tituloDepartamento}</Typography>
@@ -216,6 +222,7 @@ const DepartmentList = () => {
                     {department.statusDepartamento === 1 ? 'Ativo' : 'Inativo'}
                   </Typography>
                 </TableCell>
+                {nivelUsuario > 2 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
                     {department.statusDepartamento === 1 ? (
@@ -251,6 +258,7 @@ const DepartmentList = () => {
                     </Button>
                   </Box>
                 </TableCell>
+                )}
               </TableRow>
             ))
           ) : (

@@ -9,7 +9,7 @@ const ListaLivros = () => {
   const [livros, setLivros] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const idCliente = localStorage.getItem('idCliente');
   const razaoSocial = localStorage.getItem('razaoSocial');
 
@@ -87,10 +87,12 @@ const ListaLivros = () => {
       </Box>
       
       <Box sx={{ marginTop: 4 }}>
-        <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-            <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
-            <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo livro</button>
-        </div>
+        {nivelUsuario > 2 && (
+          <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+              <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
+              <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo livro</button>
+          </div>
+        )}
         {loading ? (
           <Typography variant="body1"><IconLoader/></Typography>
         ) : (

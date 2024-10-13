@@ -18,9 +18,6 @@ import QuantidadeMembros from './components/QuantidadeMembros';
 
 const nivelUsuario = localStorage.getItem('nivelUsuario');
 
-console.log("Nível usuário: " + nivelUsuario);
-
-
 const Dashboard = () => {
 
   
@@ -36,6 +33,7 @@ const Dashboard = () => {
           </Grid>
         )}
 
+        { nivelUsuario == 4 && (
           <Grid item xs={12} lg={12}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
@@ -46,13 +44,17 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </Grid>
+        )}
+
           <Grid item xs={12} lg={12}>
             <EventosIgreja />
           </Grid>
           
+          { nivelUsuario == 4 && (
           <Grid item xs={12} lg={12}>
             <BalancoFiscal />
           </Grid>
+          )}
           
           
         </Grid>
