@@ -52,6 +52,7 @@ const EventosList = Loadable(lazy(() => import('../components/eventos/list.js'))
 const Financas = Loadable(lazy(() => import('../components/financas/list.js')));
 const CadastrarEntrada = Loadable(lazy(() => import('../components/financas/entradas_create.js')));
 const CadastrarSaida = Loadable(lazy(() => import('../components/financas/saidas_create.js')));
+const OnBoarding = Loadable(lazy(() => import('../components/onboarding/index.js')));
 
 
 const Router = [
