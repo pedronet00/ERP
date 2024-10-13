@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, requiredLevel }) => {
   const isAuthenticated = !!localStorage.getItem('idCliente');
   const navigate = useNavigate();
 
+  const nivelUsuario = parseInt(localStorage.getItem('nivelUsuario'), 10);
+
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!nivelUsuario || nivelUsuario < requiredLevel || !isAuthenticated) {
       navigate('/auth/login');
       
     }

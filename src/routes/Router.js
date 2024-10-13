@@ -65,75 +65,106 @@ const Router = [
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
 
-      // Finanças
-      { path: '/financas', element: <PrivateRoute ><Financas /></PrivateRoute> },
-      { path: '/entradas/create', element: <PrivateRoute ><CadastrarEntrada /></PrivateRoute> },
-      { path: '/saidas/create', element: <PrivateRoute ><CadastrarSaida /></PrivateRoute> },
-
-      // Livros
-      { path: '/livros/create', element: <PrivateRoute ><CadastrarLivro /></PrivateRoute> },
-      { path: '/livros', element: <PrivateRoute ><ListaLivros /></PrivateRoute> },
-
-      // Aulas da EBD
-      { path: '/aulasEBD', element: <PrivateRoute ><EBDAulasList /></PrivateRoute> },
-      { path: '/aulasEBD/create', element: <PrivateRoute ><EBDAulaCreate /></PrivateRoute> },
-
-      // Classes da EBD
-      { path: '/classesEBD', element: <PrivateRoute ><EBDClassesList /></PrivateRoute> },
-      { path: '/classesEBD/create', element: <PrivateRoute ><EBDClassesCreate /></PrivateRoute> },
-
-      // Usuários
-      { path: '/users', element: <PrivateRoute ><UserList /></PrivateRoute> },
-      { path: '/user/create', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
-      { path: '/user/edit/:userId', element: <PrivateRoute ><UserCreate /></PrivateRoute> },
+      { 
+        path: '/livros', 
+        element: <PrivateRoute requiredLevel={1}><ListaLivros /></PrivateRoute> 
+      },
+      { 
+        path: '/livros/create', 
+        element: <PrivateRoute requiredLevel={3}><CadastrarLivro /></PrivateRoute> 
+      },
 
       // Departamentos
-      { path: '/departaments', element: <PrivateRoute ><DepartmentList /></PrivateRoute> },
-      { path: '/departament/create', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
-      { path: '/departament/edit/:departmentId', element: <PrivateRoute ><DepartmentCreate /></PrivateRoute> },
-
-      // Missões
-      { path: '/missoes', element: <PrivateRoute ><MissoesList /></PrivateRoute> },
-      { path: '/missoes/create', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
-      { path: '/missoes/edit/:missaoId', element: <PrivateRoute ><MissoesCreate /></PrivateRoute> },
-
-      // Recursos
-      { path: '/recursos', element: <PrivateRoute ><RecursosList /></PrivateRoute> },
-      { path: '/recursos/create', element: <PrivateRoute ><RecursosCreate /></PrivateRoute> },
-
-      // Eventos
-      { path: '/eventos', element: <PrivateRoute ><EventosList /></PrivateRoute> },
-      { path: '/eventos/create', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
-      { path: '/eventos/edit/:eventId', element: <PrivateRoute ><EventosCreate /></PrivateRoute> },
+      { 
+        path: '/departaments', 
+        element: <PrivateRoute requiredLevel={1}><DepartmentList /></PrivateRoute> 
+      },
+      { 
+        path: '/departament/create', 
+        element: <PrivateRoute requiredLevel={3}><DepartmentCreate /></PrivateRoute> 
+      },
 
       // Dízimos
-      { path: '/dizimos/create', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
-      { path: '/dizimos/edit/:id', element: <PrivateRoute ><CadastroDizimo /></PrivateRoute> },
-      { path: '/dizimos', element: <PrivateRoute ><DizimoList /></PrivateRoute> },
+      { 
+        path: '/dizimos', 
+        element: <PrivateRoute requiredLevel={3}><DizimoList /></PrivateRoute> 
+      },
+      { 
+        path: '/dizimos/create', 
+        element: <PrivateRoute requiredLevel={4}><CadastroDizimo /></PrivateRoute> 
+      },
 
-      // Locais
-      { path: '/locais/create', element: <PrivateRoute ><CriarLocal /></PrivateRoute> },
-      { path: '/locais', element: <PrivateRoute ><ListaLocais /></PrivateRoute> },
+      // EBD (Aulas e Classes)
+      { 
+        path: '/aulasEBD', 
+        element: <PrivateRoute requiredLevel={1}><EBDAulasList /></PrivateRoute> 
+      },
+      { 
+        path: '/aulasEBD/create', 
+        element: <PrivateRoute requiredLevel={2}><EBDAulaCreate /></PrivateRoute> 
+      },
+      { 
+        path: '/classesEBD', 
+        element: <PrivateRoute requiredLevel={1}><EBDClassesList /></PrivateRoute> 
+      },
+      { 
+        path: '/classesEBD/create', 
+        element: <PrivateRoute requiredLevel={2}><EBDClassesCreate /></PrivateRoute> 
+      },
 
-      // Tipos de recursos
-      { path: '/tipoRecursos/create', element: <PrivateRoute ><CriarTipoRecurso /></PrivateRoute> },
-      { path: '/tiposRecursos', element: <PrivateRoute ><ListaTiposRecursos /></PrivateRoute> },
+      // Eventos
+      { 
+        path: '/eventos', 
+        element: <PrivateRoute requiredLevel={1}><EventosList /></PrivateRoute> 
+      },
+      { 
+        path: '/eventos/create', 
+        element: <PrivateRoute requiredLevel={2}><EventosCreate /></PrivateRoute> 
+      },
 
-      // Nível de usuário
-      { path: '/nivelUsuario/create', element: <PrivateRoute ><CriarNivelUsuario /></PrivateRoute> },
-      { path: '/nivelUsuario', element: <PrivateRoute ><ListaNivelUsuario /></PrivateRoute> },
+      // Finanças
+      { 
+        path: '/financas', 
+        element: <PrivateRoute requiredLevel={3}><Financas /></PrivateRoute> 
+      },
+      { 
+        path: '/entradas/create', 
+        element: <PrivateRoute requiredLevel={3}><CadastrarEntrada /></PrivateRoute> 
+      },
+      { 
+        path: '/saidas/create', 
+        element: <PrivateRoute requiredLevel={3}><CadastrarSaida /></PrivateRoute> 
+      },
 
-      // Settings
-      { path: '/settings', element: <PrivateRoute ><Settings /></PrivateRoute> },
+      // Missões
+      { 
+        path: '/missoes', 
+        element: <PrivateRoute requiredLevel={1}><MissoesList /></PrivateRoute> 
+      },
+      { 
+        path: '/missoes/create', 
+        element: <PrivateRoute requiredLevel={3}><MissoesCreate /></PrivateRoute> 
+      },
 
-      // Posts
-      { path: '/posts', element: <PrivateRoute ><PostList /></PrivateRoute> },
+      // Recursos
+      { 
+        path: '/recursos', 
+        element: <PrivateRoute requiredLevel={2}><RecursosList /></PrivateRoute> 
+      },
+      { 
+        path: '/recursos/create', 
+        element: <PrivateRoute requiredLevel={2}><RecursosCreate /></PrivateRoute> 
+      },
 
-      // Atas
-      { path: '/atas', element: <PrivateRoute ><AtasList /></PrivateRoute> },
-
-      // Relatórios
-      { path: '/relatorios', element: <PrivateRoute ><ReportCreate /></PrivateRoute> },
+      // Usuários
+      { 
+        path: '/users', 
+        element: <PrivateRoute requiredLevel={1}><UserList /></PrivateRoute> 
+      },
+      { 
+        path: '/user/create', 
+        element: <PrivateRoute requiredLevel={3}><UserCreate /></PrivateRoute> 
+      },
 
       // Outros
       { path: '/sample-page', exact: true, element: <PrivateRoute ><SamplePage /></PrivateRoute> },
