@@ -20,8 +20,6 @@ const nivelUsuario = localStorage.getItem('nivelUsuario');
 
 const Dashboard = () => {
 
-  
-
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
       

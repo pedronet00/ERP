@@ -21,7 +21,7 @@ const ListaNivelUsuario = () => {
   const fetchNiveisUsuarios = async () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pegando idCliente do localStorage
-      const apiUrl = `http://localhost:8000/api/nivelUsuario?idCliente=${idCliente}`; // URL com idCliente como parâmetro
+      const apiUrl = `http://localhost:8000/api/nivelUsuario`; // URL com idCliente como parâmetro
       const response = await axios.get(apiUrl);
       setNiveisUsuarios(response.data); // Guardar os tipos de recursos obtidos na state
     } catch (error) {
@@ -60,11 +60,8 @@ const ListaNivelUsuario = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Lista de Tipos de Recursos</h2>
-      <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleNewNivelUsuario}><IconClipboard /> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewNivelUsuario}><IconPlus />Novo Nível de Usuário</button>
-      </div>
+      <h2>Lista de Níveis de Usuários</h2>
+      
       {/* Tabela de Tipos de Recursos */}
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>

@@ -152,6 +152,15 @@ const Router = [
         path: '/missoes/create', 
         element: <PrivateRoute requiredLevel={3}><MissoesCreate /></PrivateRoute> 
       },
+      // Níveis de usuário
+      { 
+        path: '/nivelUsuario', 
+        element: <PrivateRoute requiredLevel={1}><ListaNivelUsuario /></PrivateRoute> 
+      },
+      { 
+        path: '/nivelUsuario/create', 
+        element: <PrivateRoute requiredLevel={3}><CriarNivelUsuario /></PrivateRoute> 
+      },
 
       // Recursos
       { 
