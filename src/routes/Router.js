@@ -164,6 +164,15 @@ const Router = [
 
       // Recursos
       { 
+        path: '/tipoRecursos', 
+        element: <PrivateRoute requiredLevel={2}><ListaTiposRecursos /></PrivateRoute> 
+      },
+      { 
+        path: '/tipoRecursos/create', 
+        element: <PrivateRoute requiredLevel={2}><CriarTipoRecurso /></PrivateRoute> 
+      },
+      // Recursos
+      { 
         path: '/recursos', 
         element: <PrivateRoute requiredLevel={2}><RecursosList /></PrivateRoute> 
       },

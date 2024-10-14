@@ -20,7 +20,7 @@ const CriarAulaEBD = () => {
   useEffect(() => {
     const fetchProfessores = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/user?id=${idCliente}`);
+        const response = await axios.get(`http://localhost:8000/api/user?idCliente=${idCliente}`);
         setProfessores(response.data); // Supondo que a resposta seja uma lista de professores
       } catch (error) {
         console.error("Erro ao buscar professores:", error);
@@ -42,6 +42,17 @@ const CriarAulaEBD = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verificar se existem professores e classes cadastradas
+    if (professores.length === 0) {
+      Swal.fire('Atenção!', 'Você deve cadastrar pelo menos um professor primeiro.', 'warning');
+      return;
+    }
+
+    if (classes.length === 0) {
+      Swal.fire('Atenção!', 'Você deve cadastrar pelo menos uma classe primeiro.', 'warning');
+      return;
+    }
 
     const aulaData = {
       dataAula,
@@ -106,12 +117,17 @@ const CriarAulaEBD = () => {
               value={professorAula}
               onChange={(e) => setProfessorAula(e.target.value)}
               label="Professor"
+              disabled={professores.length === 0} // Desabilita se não houver professores
             >
-              {professores.map((professor) => (
-                <MenuItem key={professor.id} value={professor.id}>
-                  {professor.name} {/* Supondo que o objeto professor tenha um campo "nome" */}
-                </MenuItem>
-              ))}
+              {professores.length === 0 ? (
+                <MenuItem disabled>Sem professores cadastrados</MenuItem>
+              ) : (
+                professores.map((professor) => (
+                  <MenuItem key={professor.id} value={professor.id}>
+                    {professor.name} {/* Supondo que o objeto professor tenha um campo "name" */}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
 
@@ -121,12 +137,17 @@ const CriarAulaEBD = () => {
               value={classeAula}
               onChange={(e) => setClasseAula(e.target.value)}
               label="Classe"
+              disabled={classes.length === 0} // Desabilita se não houver classes
             >
-              {classes.map((classe) => (
-                <MenuItem key={classe.id} value={classe.id}>
-                  {classe.nomeClasse} {/* Supondo que o objeto classe tenha um campo "nomeClasse" */}
-                </MenuItem>
-              ))}
+              {classes.length === 0 ? (
+                <MenuItem disabled>Sem classes cadastradas</MenuItem>
+              ) : (
+                classes.map((classe) => (
+                  <MenuItem key={classe.id} value={classe.id}>
+                    {classe.nomeClasse} {/* Supondo que o objeto classe tenha um campo "nomeClasse" */}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
 

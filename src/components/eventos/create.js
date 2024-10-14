@@ -10,7 +10,7 @@ import {
   FormControl,
   MenuItem
 } from '@mui/material';
-import { IconArrowLeft } from '@tabler/icons-react'; // Importe seu ícone de voltar
+import { IconArrowLeft } from '@tabler/icons-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -40,27 +40,39 @@ const CadastrarEvento = () => {
       try {
         const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
         const response = await axios.get(apiUrl);
-        setLocais(response.data);
+        const locaisData = response.data;
+
+        if (locaisData.length === 0) {
+          // Se não houver locais cadastrados, exibir o Swal
+          Swal.fire({
+            title: 'Atenção',
+            text: 'Antes de cadastrar um evento, você deve cadastrar um local.',
+            icon: 'warning',
+            confirmButtonText: 'Entendi'
+          }).then(() => {
+            navigate('/locais/create'); // Redireciona para a página de criação de locais, ajuste a rota conforme necessário
+          });
+        }
+
+        setLocais(locaisData);
       } catch (error) {
         console.error('Erro ao buscar os locais:', error);
       }
     };
 
     fetchLocais();
-  }, []);
+  }, [idCliente, navigate]);
 
   useEffect(() => {
     const fetchEvento = async () => {
       if (eventId) {
         try {
           const response = await axios.get(`http://localhost:8000/api/eventos/${eventId}`);
-          const evento = response.data; // Aqui você já tem o objeto evento
+          const evento = response.data;
   
-  
-          // Atribui os dados retornados aos estados corretamente
           setNomeEvento(evento.evento.nomeEvento || '');
           setDescricaoEvento(evento.evento.descricaoEvento || '');
-          setLocalEvento(evento.evento.localEvento || ''); // Local do evento é um id, ajuste conforme necessário
+          setLocalEvento(evento.evento.localEvento || '');
           setDataEvento(evento.evento.dataEvento || '');
           setPrioridadeEvento(evento.evento.prioridadeEvento || '');
           setOrcamentoEvento(evento.evento.orcamentoEvento || '');
@@ -72,8 +84,6 @@ const CadastrarEvento = () => {
   
     fetchEvento();
   }, [eventId]);
-  
-
 
   const handleGoBack = () => {
     navigate(-1);
@@ -82,7 +92,6 @@ const CadastrarEvento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-        
     const formData = {
       nomeEvento,
       descricaoEvento,
@@ -95,32 +104,14 @@ const CadastrarEvento = () => {
 
     try {
       if (eventId) {
-        const response = await axios.put(
-          `http://localhost:8000/api/eventos/${eventId}`,
-          formData
-        );
-        Swal.fire(
-          'Evento atualizado!',
-          'O evento foi atualizado com sucesso.',
-          'success'
-        );
-
-        setNomeEvento('');
-        setDescricaoEvento('');
-        setLocalEvento('');
-        setDataEvento('');
-        setPrioridadeEvento('');
-        setOrcamentoEvento('');
-
+        await axios.put(`http://localhost:8000/api/eventos/${eventId}`, formData);
+        Swal.fire('Evento atualizado!', 'O evento foi atualizado com sucesso.', 'success');
         navigate('/');
       } else {
-        const response = await axios.post(
-          'http://localhost:8000/api/eventos',
-          formData
-        );
-        console.log('Evento cadastrado com sucesso:', response.data);
+        await axios.post('http://localhost:8000/api/eventos', formData);
+        Swal.fire('Evento cadastrado!', 'O evento foi cadastrado com sucesso.', 'success');
       }
-      // Limpa os campos após salvar
+      
       setNomeEvento('');
       setDescricaoEvento('');
       setLocalEvento('');
@@ -166,16 +157,14 @@ const CadastrarEvento = () => {
             required
           />
 
-          {/* Select de Local do Evento */}
           <FormControl fullWidth margin="normal" required>
             <InputLabel>Local do Evento</InputLabel>
             <Select
               label="Local do Evento"
               value={localEvento}
               onChange={(e) => setLocalEvento(e.target.value)}
-              displayEmpty // Permite um valor vazio
+              displayEmpty
             >
-              
               {locais.map((local) => (
                 <MenuItem key={local.id} value={local.id}>
                   {local.nomeLocal}
@@ -204,9 +193,8 @@ const CadastrarEvento = () => {
               label="Prioridade do Evento"
               value={prioridadeEvento}
               onChange={(e) => setPrioridadeEvento(e.target.value)}
-              displayEmpty // Permite um valor vazio
+              displayEmpty
             >
-              
               {prioridades.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
@@ -242,4 +230,3 @@ const CadastrarEvento = () => {
 };
 
 export default CadastrarEvento;
-

@@ -13,21 +13,36 @@ const RecursosList = () => {
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente'); 
   const nivelUsuario = localStorage.getItem('nivelUsuario');
+
+  // Função para buscar as categorias de recursos
   const fetchCategoriaRecurso = async () => {
     try {
-        const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-        const response = await axios.get(apiUrl);
+      const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`;
+      const response = await axios.get(apiUrl);
       setCategoriaRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
     }
   };
 
+  // Função para buscar os recursos
   const fetchRecursos = async () => {
     try {
-        const apiUrl = `http://localhost:8000/api/recurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-        const response = await axios.get(apiUrl);
-      setRecursosList(response.data);
+      const apiUrl = `http://localhost:8000/api/recurso?idCliente=${idCliente}`;
+      const response = await axios.get(apiUrl);
+      const recursosData = response.data;
+
+      // Verifica se a lista de recursos está vazia
+      if (recursosData.length === 0) {
+        Swal.fire({
+          title: 'Dica',
+          html: 'Antes de cadastrar um recurso, você deve criar categorias de recursos e <a href="/tipoRecursos/create" style="text-decoration: none;">tipos de recursos</a>.',
+          icon: 'info',
+          confirmButtonText: 'Entendi'
+        });
+      }
+
+      setRecursosList(recursosData);
     } catch (error) {
       console.error("Erro ao buscar recursos:", error);
     }
@@ -66,22 +81,20 @@ const RecursosList = () => {
     navigate('/relatorio/recursos');
   };
 
-  // Função para incrementar a quantidade do recurso
   const handleIncrease = async (recurso) => {
     try {
       await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/aumentarQuantidade`);
-      fetchRecursos(); // Recarregar a lista de recursos
+      fetchRecursos();
     } catch (error) {
       Swal.fire('Erro!', 'Houve um problema ao aumentar a quantidade do recurso.', 'error');
     }
   };
 
-  // Função para decrementar a quantidade do recurso
   const handleDecrease = async (recurso) => {
     if (recurso.quantidadeRecurso > 0) {
       try {
         await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/diminuirQuantidade`);
-        fetchRecursos(); // Recarregar a lista de recursos
+        fetchRecursos();
       } catch (error) {
         Swal.fire('Erro!', 'Houve um problema ao diminuir a quantidade do recurso.', 'error');
       }
@@ -106,7 +119,7 @@ const RecursosList = () => {
           {categoriaRecursoList.map((categoria) => (
             <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
           ))}
-          <Tab key="novaCategoria" label="Nova +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
+          <Tab key="novaCategoria" label="Categoria +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
         </Tabs>
       </AppBar>
 
