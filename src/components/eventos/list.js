@@ -63,7 +63,7 @@ const EventList = () => {
   const paginatedEvents = filteredEvents.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewEvent = () => {
-    navigate('/evento/create');
+    navigate('/eventos/create');
   };
 
   const handleReport = () => {

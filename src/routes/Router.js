@@ -124,6 +124,10 @@ const Router = [
         path: '/eventos/create', 
         element: <PrivateRoute requiredLevel={2}><EventosCreate /></PrivateRoute> 
       },
+      { 
+        path: '/eventos/edit/:eventId', 
+        element: <PrivateRoute requiredLevel={2}><EventosCreate /></PrivateRoute> 
+      },
 
       // Finanças
       { 
