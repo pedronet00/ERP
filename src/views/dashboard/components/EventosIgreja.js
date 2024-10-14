@@ -67,6 +67,16 @@ setEventos(response.data); // Salva os eventos na state
         navigate('/eventos/create');
     }
 
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        date.setHours(date.getHours() + 12); // Ajusta a data para o meio do dia
+        return date.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    };
     const nivelUsuario = localStorage.getItem('nivelUsuario');
 
     return (
@@ -136,7 +146,7 @@ setEventos(response.data); // Salva os eventos na state
                                     </TableCell>
                                     <TableCell>
                                         <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                            {new Date(evento.dataEvento).toLocaleDateString()}
+                                        {formatDate(evento.dataEvento)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>

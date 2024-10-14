@@ -54,6 +54,7 @@ const CadastrarEntrada = Loadable(lazy(() => import('../components/financas/entr
 const CadastrarSaida = Loadable(lazy(() => import('../components/financas/saidas_create.js')));
 const OnBoarding = Loadable(lazy(() => import('../components/onboarding/index.js')));
 const FinancasReport = Loadable(lazy(() => import('../components/financas/report.js')));
+const EventoReport = Loadable(lazy(() => import('../components/eventos/report.js')));
 
 
 const Router = [
@@ -200,6 +201,7 @@ const Router = [
       { path: '/relatorio/missoes', element: <PrivateRoute ><MissoesReport /></PrivateRoute> },
       { path: '/relatorio/recursos', element: <PrivateRoute ><RecursoReport /></PrivateRoute> },
       { path: '/relatorio/financas', element: <PrivateRoute ><FinancasReport /></PrivateRoute> },
+      { path: '/relatorio/eventos', element: <PrivateRoute ><EventoReport /></PrivateRoute> },
     ],
   },
 ];
