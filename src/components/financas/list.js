@@ -60,7 +60,7 @@ const Financas = () => {
   };
 
   const handleReport = () => {
-    navigate('/relatorio/departamentos');
+    navigate('/relatorio/financas');
   };
 
   // Função para agrupar entradas e saídas por mês

@@ -53,6 +53,7 @@ const Financas = Loadable(lazy(() => import('../components/financas/list.js')));
 const CadastrarEntrada = Loadable(lazy(() => import('../components/financas/entradas_create.js')));
 const CadastrarSaida = Loadable(lazy(() => import('../components/financas/saidas_create.js')));
 const OnBoarding = Loadable(lazy(() => import('../components/onboarding/index.js')));
+const FinancasReport = Loadable(lazy(() => import('../components/financas/report.js')));
 
 
 const Router = [
@@ -65,6 +66,7 @@ const Router = [
       { path: '/', element: <PrivateRoute><Navigate to="/dashboard" /></PrivateRoute> },
       { path: '/dashboard', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
 
+      // Livros
       { 
         path: '/livros', 
         element: <PrivateRoute requiredLevel={1}><ListaLivros /></PrivateRoute> 
@@ -167,6 +169,8 @@ const Router = [
       },
 
       // Outros
+      { path: '/locais', exact: true, element: <PrivateRoute ><ListaLocais /></PrivateRoute> },
+      { path: '/locais/create', exact: true, element: <PrivateRoute ><CriarLocal /></PrivateRoute> },
       { path: '/sample-page', exact: true, element: <PrivateRoute ><SamplePage /></PrivateRoute> },
       { path: '/icons', exact: true, element: <PrivateRoute ><Icons /></PrivateRoute> },
       { path: '/ui/typography', exact: true, element: <PrivateRoute ><TypographyPage /></PrivateRoute> },
@@ -195,6 +199,7 @@ const Router = [
       { path: '/relatorio/departamentos', element: <PrivateRoute ><DepartamentoReport /></PrivateRoute> },
       { path: '/relatorio/missoes', element: <PrivateRoute ><MissoesReport /></PrivateRoute> },
       { path: '/relatorio/recursos', element: <PrivateRoute ><RecursoReport /></PrivateRoute> },
+      { path: '/relatorio/financas', element: <PrivateRoute ><FinancasReport /></PrivateRoute> },
     ],
   },
 ];
