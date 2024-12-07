@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CriarDepartamento = () => {
-  const { departmentId } = useParams(); // Obtenha o ID do departamento da URL
+  const { id } = useParams(); // Obtenha o ID do departamento da URL
   const [tituloDepartamento, setTituloDepartamento] = useState('');
   const [textoDepartamento, setTextoDepartamento] = useState('');
   const [imgDepartamento, setImgDepartamento] = useState('');
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente'); 
-  
-
 
   // Função para buscar os detalhes do departamento se estiver editando
   useEffect(() => {
     const fetchDepartment = async () => {
-      if (departmentId) {
+      if (id) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/departamentos/${departmentId}`);
+          const response = await api.get(`http://localhost:8000/api/departamentos/${id}`);
           const departamento = response.data.departamento; // Acesse os dados do departamento corretamente
           
           // Defina os estados com os dados do departamento
@@ -39,7 +37,7 @@ const CriarDepartamento = () => {
     };
 
     fetchDepartment();
-  }, [departmentId]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,17 +50,17 @@ const CriarDepartamento = () => {
     };
 
     try {
-      if (departmentId) {
-        // Se departmentId estiver presente, atualize o departamento
-        await axios.put(`http://localhost:8000/api/departamentos/${departmentId}`, departamentoData);
+      if (id) {
+        // Se id estiver presente, atualize o departamento
+        await api.put(`http://localhost:8000/api/departamentos/${id}`, departamentoData);
         Swal.fire(
           'Departamento Atualizado!',
           'O departamento foi atualizado com sucesso.',
           'success'
         );
       } else {
-        // Se não houver departmentId, crie um novo departamento
-        await axios.post(`http://localhost:8000/api/departamentos`, departamentoData);
+        // Se não houver id, crie um novo departamento
+        await api.post(`http://localhost:8000/api/departamentos`, departamentoData);
         Swal.fire(
           'Departamento Criado!',
           'O departamento foi criado com sucesso.',
@@ -74,7 +72,7 @@ const CriarDepartamento = () => {
       setTituloDepartamento('');
       setTextoDepartamento('');
       setImgDepartamento('');
-      navigate('/departaments'); // Navegue de volta para a lista de departamentos
+      navigate('/dashboard/departaments'); // Navegue de volta para a lista de departamentos
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(
@@ -103,12 +101,13 @@ const CriarDepartamento = () => {
       </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
-          {departmentId ? 'Editar Departamento' : 'Criar Novo Departamento'}
+          {id ? 'Editar Departamento' : 'Criar Novo Departamento'}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             label="Título do Departamento"
             variant="outlined"
+            inputProps={{ maxLength: 30 }}
             fullWidth
             margin="normal"
             value={tituloDepartamento}
@@ -117,11 +116,11 @@ const CriarDepartamento = () => {
           />
 
           <TextField
-            label="Texto do Departamento"
+            label="Descrição do Departamento"
             variant="outlined"
             fullWidth
             multiline
-            rows={5}
+            inputProps={{ maxLength: 50 }}
             margin="normal"
             value={textoDepartamento}
             onChange={(e) => setTextoDepartamento(e.target.value)}
@@ -145,7 +144,7 @@ const CriarDepartamento = () => {
             fullWidth
             sx={{ marginTop: 2 }}
           >
-            {departmentId ? 'Atualizar Departamento' : 'Criar Departamento'}
+            {id ? 'Atualizar Departamento' : 'Criar Departamento'}
           </Button>
         </form>
       </Box>

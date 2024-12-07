@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -29,7 +29,7 @@ const EventList = () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
       const apiUrl = `http://localhost:8000/api/eventos?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setEvents(response.data);
       setFilteredEvents(response.data); // Inicialmente, mostrar todos os eventos
     } catch (error) {
@@ -63,7 +63,7 @@ const EventList = () => {
   const paginatedEvents = filteredEvents.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewEvent = () => {
-    navigate('/eventos/create');
+    navigate('/dashboard/eventos/create');
   };
 
   const handleReport = () => {
@@ -88,12 +88,8 @@ const EventList = () => {
       </Box>
       {nivelUsuario > 1 && (
       <div className="d-flex justify-content-between mb-3">
-        <Button variant="contained" color="success" onClick={handleReport} startIcon={<IconClipboard />}>
-          Gerar Relatório
-        </Button>
-        <Button variant="contained" color="primary" onClick={handleNewEvent} startIcon={<IconPlus />}>
-          Novo Evento
-        </Button>
+        <button className="btn btn-success" onClick={handleNewEvent}><IconPlus /> Novo Evento</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
       )}
 
@@ -151,7 +147,7 @@ const EventList = () => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => navigate(`/eventos/edit/${event.id}`)}
+                    onClick={() => navigate(`/dashboard/eventos/create/${event.id}`)}
                     startIcon={<IconEdit />}
                     size="small"
                   >

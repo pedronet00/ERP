@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem,  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const CadastroDizimo = () => {
   
     try {
       // Tenta enviar os dados para a API
-      const response = await axios.post('http://localhost:8000/api/dizimos', dizimoData);
+      const response = await api.post('http://localhost:8000/api/dizimos', dizimoData);
   
       // Verifica se a resposta da API foi bem-sucedida (status 200)
       if (response.status == 200) {
@@ -41,7 +41,7 @@ const CadastroDizimo = () => {
         setValorArrecadado('');
   
         // Navega de volta para a lista de dízimos
-        navigate('/dizimos');
+        navigate('/dashboard/dizimos');
       } else {
         // Caso a resposta não seja 200, trata como um erro
         Swal.fire(

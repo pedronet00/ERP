@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconCheck, IconX, IconClipboard, IconPlus } from '@tabler/icons-react'; // Ícones
 import { useNavigate } from 'react-router-dom';
 import {
@@ -22,7 +22,7 @@ const ListaTiposRecursos = () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pegando idCliente do localStorage
       const apiUrl = `http://localhost:8000/api/tipoRecurso?idCliente=${idCliente}`; // URL com idCliente como parâmetro
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setTiposRecursos(response.data); // Guardar os tipos de recursos obtidos na state
     } catch (error) {
       console.error("Erro ao buscar tipos de recursos:", error);
@@ -37,7 +37,7 @@ const ListaTiposRecursos = () => {
   // Função para ativar tipo de recurso
   const handleActivateTipoRecurso = async (tipoRecursoId) => {
     try {
-      await axios.patch(`http://localhost:8000/api/tipo-recurso/${tipoRecursoId}/ativar`);
+      await api.patch(`http://localhost:8000/api/tipo-recurso/${tipoRecursoId}/ativar`);
       fetchTiposRecursos(); // Atualizar a lista de tipos de recursos após ativar
     } catch (error) {
       console.error("Erro ao ativar tipo de recurso:", error);
@@ -47,7 +47,7 @@ const ListaTiposRecursos = () => {
   // Função para desativar tipo de recurso
   const handleDeactivateTipoRecurso = async (tipoRecursoId) => {
     try {
-      await axios.patch(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}/desativar`);
+      await api.patch(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}/desativar`);
       fetchTiposRecursos(); // Atualizar a lista de tipos de recursos após desativar
     } catch (error) {
       console.error("Erro ao desativar tipo de recurso:", error);
@@ -55,7 +55,7 @@ const ListaTiposRecursos = () => {
   };
 
   const handleNewTipoRecurso = () => {
-    navigate('/tipoRecursos/create'); // Navega para a tela de criação de tipo de recurso
+    navigate('/dashboard/tipoRecursos/create'); // Navega para a tela de criação de tipo de recurso
   };
 
   return (

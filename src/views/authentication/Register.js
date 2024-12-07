@@ -96,7 +96,7 @@ const Register = () => {
           >
             <Card elevation={9} sx={{ p: 4, zIndex: 1, width: '100%', maxWidth: '500px' }}>
               <Box display="flex" alignItems="center" justifyContent="center">
-                <Logo />
+                <Typography variant='h3'>Registre-se no ERP Aliance</Typography>
               </Box>
 
               <Box component="form" onSubmit={handleRegister} sx={{ mt: 2 }}>

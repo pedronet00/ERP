@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
@@ -6,26 +6,8 @@ import { IconArrowUpLeft } from '@tabler/icons-react';
 
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const QuantidadeMembros = () => {
-
-  const [quantidadeMembros, setQuantidadeMembros] = useState(0); // Inicializa com 0 ou null
-  const idCliente = localStorage.getItem('idCliente'); 
+const QuantidadeMembros = ({ qtdeUsuarios }) => {  // Recebe a quantidade de usuários via props
   const razaoSocial = localStorage.getItem('razaoSocial'); 
-
-  const fetchQuantidadeUsuarios = async () => {
-      try {
-          const response = await fetch(`http://localhost:8000/api/userCount?idCliente=${idCliente}`);
-          const data = await response.json();
-          setQuantidadeMembros(data.quantidade_usuarios); // Acessa a chave correta
-      } catch (error) {
-          console.error('Erro ao contar os usuários:', error);
-      }
-  };
-
-  useEffect(() => {
-      fetchQuantidadeUsuarios();
-  }, []);
-
 
   // chart color
   const theme = useTheme();
@@ -87,7 +69,7 @@ const QuantidadeMembros = () => {
         {/* column */}
         <Grid item xs={7} sm={7}>
           <Typography variant="h3" fontWeight="700">
-            {quantidadeMembros}
+            {qtdeUsuarios} {/* Usa a quantidade de membros passada por props */}
           </Typography>
           <Stack direction="row" spacing={1} mt={1} alignItems="center">
             <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>

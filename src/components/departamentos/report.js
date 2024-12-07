@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const DepartamentoReport = () => {
@@ -14,7 +14,7 @@ const DepartamentoReport = () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
             const apiUrl = `http://localhost:8000/api/departamentoReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-            const response = await axios.get(apiUrl);
+            const response = await api.get(apiUrl);
     
             // Armazena os usuários a partir do campo 'usuarios'
             setDepartamentos(response.data.departamentos); 

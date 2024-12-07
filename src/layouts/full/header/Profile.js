@@ -65,7 +65,7 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem component={Link} to="/settings" onClick={handleClose2}>
+        <MenuItem component={Link} to="/dashboard/settings" onClick={handleClose2}>
           <ListItemIcon>
             <IconSettings width={20} />
           </ListItemIcon>

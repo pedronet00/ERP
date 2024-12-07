@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const EBDAulasList = () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
       const apiUrl = `http://localhost:8000/api/aulaEBD?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setClasses(response.data);
       setFilteredClasses(response.data); // Inicialmente, mostrar todas as aulas
     } catch (error) {
@@ -62,11 +62,11 @@ const EBDAulasList = () => {
   const paginatedClasses = filteredClasses.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewClass = () => {
-    navigate('/aulasEBD/create');
+    navigate('/dashboard/aulasEBD/create');
   };
 
   const handleReport = () => {
-    navigate('/relatorio/aulas');
+    navigate('/relatorio/ebd');
   };
 
   return (
@@ -88,8 +88,8 @@ const EBDAulasList = () => {
 
       {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewClass}><IconPlus/>Nova aula</button>
+        <button className="btn btn-success" onClick={handleNewClass}><IconPlus/>Nova aula</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
       </div>
       )}
 

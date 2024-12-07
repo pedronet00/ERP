@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
@@ -30,12 +30,13 @@ const UserList = () => {
   const nivelUsuario = localStorage.getItem('nivelUsuario');
   const navigate = useNavigate();
 
+
   // Função para buscar usuários da API
   const fetchUsers = async () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
       const apiUrl = `http://localhost:8000/api/user?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
   
       setUsers(response.data);
       setFilteredUsers(response.data);
@@ -50,7 +51,7 @@ const UserList = () => {
   }, []);
 
   const handleNewUser = () => {
-    navigate('/user/create');
+    navigate('/dashboard/user/create');
   };
 
   const handleReport = () => {
@@ -90,7 +91,7 @@ const UserList = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/deactivateUser/${userId}`);
+        await api.patch(`http://localhost:8000/api/deactivateUser/${userId}`);
         // Atualizar a lista de usuários após a desativação
         fetchUsers();
         Swal.fire({
@@ -122,7 +123,7 @@ const UserList = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/activateUser/${userId}`);
+        await api.patch(`http://localhost:8000/api/activateUser/${userId}`);
         // Atualizar a lista de usuários após a ativação
         fetchUsers();
         Swal.fire({
@@ -174,8 +175,8 @@ const UserList = () => {
 
       {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <Button variant="contained" color="primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</Button>
-        <Button variant="contained" color="success" onClick={handleNewUser}><IconPlus /> Novo Usuário</Button>
+        <button className="btn btn-success" onClick={handleNewUser}><IconPlus /> Novo Usuário</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
       )}
 
@@ -245,7 +246,7 @@ const UserList = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/user/edit/${user.id}`)}
+                      onClick={() => navigate(`/dashboard/user/create/${user.id}`)}
                       startIcon={<IconEdit />}
                       size="small"
                     >

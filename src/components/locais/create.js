@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ const CriarLocal = () => {
     const fetchLocal = async () => {
       if (localId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/locais/${localId}`);
+          const response = await api.get(`http://localhost:8000/api/locais/${localId}`);
           const local = response.data.local; // Acesse os dados do local corretamente
           
           // Defina os estados com os dados do local
@@ -46,7 +46,7 @@ const CriarLocal = () => {
     try {
       if (localId) {
         // Se localId estiver presente, atualize o local
-        await axios.put(`http://localhost:8000/api/locais/${localId}`, localData);
+        await api.put(`http://localhost:8000/api/locais/${localId}`, localData);
         Swal.fire(
           'Local Atualizado!',
           'O local foi atualizado com sucesso.',
@@ -54,7 +54,7 @@ const CriarLocal = () => {
         );
       } else {
         // Se não houver localId, crie um novo local
-        await axios.post(`http://localhost:8000/api/locais`, localData);
+        await api.post(`http://localhost:8000/api/locais`, localData);
         Swal.fire(
           'Local Criado!',
           'O local foi criado com sucesso.',
@@ -64,7 +64,7 @@ const CriarLocal = () => {
 
       // Limpa o campo após o sucesso
       setNomeLocal('');
-      navigate('/locais'); // Navegue de volta para a lista de locais
+      navigate('/dashboard/locais'); // Navegue de volta para a lista de locais
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(

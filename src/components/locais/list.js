@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconCheck, IconX, IconClipboard, IconPlus } from '@tabler/icons-react'; // Ícones
 import { useNavigate } from 'react-router-dom';
 import {
@@ -22,7 +22,7 @@ const ListaLocais = () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pegando idCliente do localStorage
       const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // URL com idCliente como parâmetro
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setLocations(response.data); // Guardar os locais obtidos na state
     } catch (error) {
       console.error("Erro ao buscar locais:", error);
@@ -37,7 +37,7 @@ const ListaLocais = () => {
   // Função para ativar local
   const handleActivateLocation = async (locationId) => {
     try {
-      await axios.patch(`http://localhost:8000/api/local/${locationId}/ativar`);
+      await api.patch(`http://localhost:8000/api/local/${locationId}/ativar`);
       fetchLocations(); // Atualizar a lista de locais após ativar
     } catch (error) {
       console.error("Erro ao ativar local:", error);
@@ -47,7 +47,7 @@ const ListaLocais = () => {
   // Função para desativar local
   const handleDeactivateLocation = async (locationId) => {
     try {
-      await axios.patch(`http://localhost:8000/api/local/${locationId}/desativar`);
+      await api.patch(`http://localhost:8000/api/local/${locationId}/desativar`);
       fetchLocations(); // Atualizar a lista de locais após desativar
     } catch (error) {
       console.error("Erro ao desativar local:", error);
@@ -55,7 +55,7 @@ const ListaLocais = () => {
   };
 
   const handleNewUser = () => {
-    navigate('/locais/create'); // Volta para a tela anterior
+    navigate('/dashboard/locais/create'); // Volta para a tela anterior
   };
 
   return (

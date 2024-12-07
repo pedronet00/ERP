@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const CriarClasseAula = () => {
         };
 
         try {
-            await axios.post('http://localhost:8000/api/classesEBD', classeData);
+            await api.post('http://localhost:8000/api/classesEBD', classeData);
             Swal.fire(
                 'Classe Criada!',
                 'A classe foi criada com sucesso.',
@@ -30,7 +30,7 @@ const CriarClasseAula = () => {
             // Limpa os campos após o sucesso
             setNomeClasse('');
             setQuantidadeMembros('');
-            navigate('/classesEBD'); // Navegue de volta para a lista de classes (ajuste a rota conforme necessário)
+            navigate('/dashboard/classesEBD'); // Navegue de volta para a lista de classes (ajuste a rota conforme necessário)
         } catch (error) {
             if (error.response && error.response.data.error) {
                 Swal.fire(

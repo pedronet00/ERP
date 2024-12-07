@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const CriarAulaEBD = () => {
   useEffect(() => {
     const fetchProfessores = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/user?idCliente=${idCliente}`);
+        const response = await api.get(`http://localhost:8000/api/user?idCliente=${idCliente}`);
         setProfessores(response.data); // Supondo que a resposta seja uma lista de professores
       } catch (error) {
         console.error("Erro ao buscar professores:", error);
@@ -29,7 +29,7 @@ const CriarAulaEBD = () => {
 
     const fetchClasses = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/classesEBD?idCliente=${idCliente}`);
+        const response = await api.get(`http://localhost:8000/api/classesEBD?idCliente=${idCliente}`);
         setClasses(response.data); // Supondo que a resposta seja uma lista de classes
       } catch (error) {
         console.error("Erro ao buscar classes:", error);
@@ -65,7 +65,7 @@ const CriarAulaEBD = () => {
 
     try {
       // Enviar os dados da aula para o backend
-      await axios.post(`http://localhost:8000/api/aulaEBD`, aulaData);
+      await api.post(`http://localhost:8000/api/aulaEBD`, aulaData);
       Swal.fire('Aula Criada!', 'A aula foi criada com sucesso.', 'success');
 
       // Limpa os campos após o sucesso

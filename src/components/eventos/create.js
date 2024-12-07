@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 
 const CadastrarEvento = () => {
@@ -39,7 +39,7 @@ const CadastrarEvento = () => {
     const fetchLocais = async () => {
       try {
         const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-        const response = await axios.get(apiUrl);
+        const response = await api.get(apiUrl);
         const locaisData = response.data;
 
         if (locaisData.length === 0) {
@@ -50,7 +50,7 @@ const CadastrarEvento = () => {
             icon: 'warning',
             confirmButtonText: 'Entendi'
           }).then(() => {
-            navigate('/locais/create'); // Redireciona para a página de criação de locais, ajuste a rota conforme necessário
+            navigate('/dashboard/locais/create'); // Redireciona para a página de criação de locais, ajuste a rota conforme necessário
           });
         }
 
@@ -67,7 +67,7 @@ const CadastrarEvento = () => {
     const fetchEvento = async () => {
       if (eventId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/eventos/${eventId}`);
+          const response = await api.get(`http://localhost:8000/api/eventos/${eventId}`);
           const evento = response.data;
   
           setNomeEvento(evento.evento.nomeEvento || '');
@@ -86,7 +86,7 @@ const CadastrarEvento = () => {
   }, [eventId]);
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/dashboard/eventos');
   };
 
   const handleSubmit = async (e) => {
@@ -104,11 +104,11 @@ const CadastrarEvento = () => {
 
     try {
       if (eventId) {
-        await axios.put(`http://localhost:8000/api/eventos/${eventId}`, formData);
+        await api.put(`http://localhost:8000/api/eventos/${eventId}`, formData);
         Swal.fire('Evento atualizado!', 'O evento foi atualizado com sucesso.', 'success');
-        navigate('/');
+        navigate('/dashboard/eventos');
       } else {
-        await axios.post('http://localhost:8000/api/eventos', formData);
+        await api.post('http://localhost:8000/api/eventos', formData);
         Swal.fire('Evento cadastrado!', 'O evento foi cadastrado com sucesso.', 'success');
       }
       
@@ -140,6 +140,7 @@ const CadastrarEvento = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            inputProps={{ maxLength: 40 }}
             value={nomeEvento}
             onChange={(e) => setNomeEvento(e.target.value)}
             required
@@ -150,6 +151,7 @@ const CadastrarEvento = () => {
             variant="outlined"
             fullWidth
             multiline
+            inputProps={{ maxLength: 100 }}
             rows={5}
             margin="normal"
             value={descricaoEvento}

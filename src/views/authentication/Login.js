@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Box, Card, Stack, Typography, TextField, Button } from '@mui/material';
+import { Grid, Box, Card, Stack, Typography, TextField, Button, Icon } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Importando o Swal para alertas
+import Swal from 'sweetalert2';
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
@@ -25,26 +25,26 @@ const Login = () => {
         password,
       });
 
-      console.log(response.data); // Aqui você pode usar a resposta conforme necessário
-
       localStorage.setItem('idCliente', response.data.idCliente);
       localStorage.setItem('razaoSocial', response.data.razaoSocial);
       localStorage.setItem('nivelUsuario', response.data.nivelUsuario);
+      localStorage.setItem('idUsuario', response.data.idUsuario);
+      localStorage.setItem('token', response.data.token);
       Swal.fire({
         icon: 'success',
         title: 'Login realizado com sucesso!',
-        text: `Redirecionando para dashboard...`,
+        text: `Redirecionando para o dashboard...`,
         timer: 2000,
         showConfirmButton: false,
-    });
-      navigate('/');
+      });
+      navigate('/dashboard');
 
     } catch (err) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro ao fazer login!',
-          text: 'Email ou senha incorretos.',
-        });
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro ao fazer login!',
+        text: 'Email ou senha incorretos.',
+      });
       setError(err.response.data.message || 'Erro ao fazer login');
     }
   };
@@ -56,7 +56,6 @@ const Login = () => {
           position: 'relative',
           '&:before': {
             content: '""',
-            background: 'radial-gradient(#d2f1df, #d3d7fa, #bad8f4)',
             backgroundSize: '400% 400%',
             animation: 'gradient 15s ease infinite',
             position: 'absolute',
@@ -66,20 +65,32 @@ const Login = () => {
           },
         }}
       >
-        <Grid container spacing={0} justifyContent="center" sx={{ height: '100vh' }}>
+        <Grid container sx={{ height: '100vh' }}>
+          {/* Coluna da imagem */}
           <Grid
             item
             xs={12}
-            sm={12}
-            lg={4}
-            xl={3}
+            lg={6}
+            sx={{
+              background: 'url(https://c0.wallpaperflare.com/preview/542/2/496/people-woman-praise-worship.jpg) center/cover no-repeat',
+              display: { xs: 'none', lg: 'block' }, // Oculta a imagem em telas pequenas
+            }}
+          />
+
+          {/* Coluna do formulário */}
+          <Grid
+            item
+            xs={12}
+            lg={6}
             display="flex"
             justifyContent="center"
             alignItems="center"
           >
             <Card elevation={9} sx={{ p: 4, zIndex: 1, width: '100%', maxWidth: '500px' }}>
-              <Box display="flex" alignItems="center" justifyContent="center">
-                <Logo />
+              <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
+                <Typography variant="h3" fontWeight="bold" ml={2}>
+                  Aliance | ERP para igrejas
+                </Typography>
               </Box>
 
               {/* Formulário de Login */}
@@ -108,15 +119,27 @@ const Login = () => {
                     {error}
                   </Typography>
                 )}
-                <Button fullWidth variant="contained" color="primary" type="submit">
+                <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mb: 2 }}>
                   Login
                 </Button>
               </form>
 
-              {/* Subtexto e Citação */}
-              <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={1}>
-                Sistema Gerenciador da Primeira Igreja Batista de Presidente Prudente
-              </Typography>
+              {/* Link para Esqueci minha senha e Registro */}
+              <Stack direction="row" justifyContent="space-between" mb={3}>
+                <Typography variant="body2" color="textSecondary">
+                  <Link to="/forgot-password" style={{ textDecoration: 'none', color: '#393f81' }}>
+                    Esqueci minha senha
+                  </Link>
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Não tem uma conta?{' '}
+                  <Link to="/register" style={{ textDecoration: 'none', color: '#393f81' }}>
+                    Registre-se aqui
+                  </Link>
+                </Typography>
+              </Stack>
+
+              {/* Subtexto */}
               <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
                 <Typography color="textSecondary" variant="h6" fontWeight="500" textAlign="center">
                   <i>

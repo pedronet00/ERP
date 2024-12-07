@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const MissoesList = () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
       const apiUrl = `http://localhost:8000/api/missoes?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setMissoes(response.data);
       setFilteredMissoes(response.data);
     } catch (error) {
@@ -49,7 +49,7 @@ const MissoesList = () => {
   }, [filterNome, filterCidade, missoes]);
 
   const handleNewUser = () => {
-    navigate('/missoes/create');
+    navigate('/dashboard/missoes/create');
   };
 
   const handleReport = () => {
@@ -69,7 +69,7 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/missoes/${id}/ativar`); // Corrigido para incluir 'http://'
+        await api.patch(`http://localhost:8000/api/missoes/${id}/ativar`); // Corrigido para incluir 'http://'
         fetchMissoes();
         Swal.fire({
           title: "Ativada!",
@@ -100,7 +100,7 @@ const MissoesList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/missoes/${id}/desativar`); // Corrigido para incluir 'http://'
+        await api.patch(`http://localhost:8000/api/missoes/${id}/desativar`); // Corrigido para incluir 'http://'
         fetchMissoes();
         Swal.fire({
           title: "Desativada!",
@@ -148,8 +148,8 @@ const MissoesList = () => {
 
       {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
+        <button className="btn btn-success" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
       )}
 
@@ -229,7 +229,7 @@ const MissoesList = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/missoes/edit/${missao.id}`)}
+                      onClick={() => navigate(`/dashboard/missoes/create/${missao.id}`)}
                       startIcon={<IconEdit />}
                       size="small"
                     >

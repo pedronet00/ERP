@@ -1,4 +1,4 @@
-import { useMediaQuery, Box, Drawer } from '@mui/material';
+import { useMediaQuery, Box, Drawer, Typography } from '@mui/material';
 import SidebarItems from './SidebarItems';
 import { Sidebar, Logo } from 'react-mui-sidebar';
 import logo from '../../../assets/images/logos/dark1-logo.svg'
@@ -63,7 +63,7 @@ const MSidebar = (props) => {
               {/* ------------------------------------------- */}
               {/* Logo */}
               {/* ------------------------------------------- */}
-              <Logo img={logo} />
+              <Typography align='center' style={{fontSize: '18px', padding: '10%'}}>Aliance | ERP para igrejas</Typography>
               <Box>
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}

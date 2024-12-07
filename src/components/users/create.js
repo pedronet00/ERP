@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +24,7 @@ const CreateUser = ({ onUserCreated }) => {
     const fetchNiveisUsuarios = async () => {
       try {
       const apiUrl = `http://localhost:8000/api/nivelUsuario?idCliente=${idCliente}`; // URL com idCliente como parâmetro
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
         setNiveisUsuarios(response.data);
       } catch (error) {
         console.error("Erro ao buscar níveis de usuários:", error);
@@ -39,7 +39,7 @@ const CreateUser = ({ onUserCreated }) => {
     const fetchUser = async () => {
       if (userId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/user/${userId}`);
+          const response = await api.get(`http://localhost:8000/api/user/${userId}`);
           const user = response.data.user; // Acesse a propriedade user
   
           // Agora acesse as propriedades corretamente
@@ -75,25 +75,28 @@ const CreateUser = ({ onUserCreated }) => {
     try {
       if (userId) {
         // Se userId estiver presente, atualize o usuário
-        await axios.put(`http://localhost:8000/api/user/${userId}`, userData)
+        await api.put(`http://localhost:8000/api/user/${userId}`, userData)
         .then(() => {
           Swal.fire(
             'Usuário atualizado!',
             'O usuário foi atualizado com sucesso.',
             'success'
           )});
+          navigate('/dashboard/users'); // Navegar para a lista de usuários
+
       } else {
         // Se não houver userId, crie um novo usuário
-        await axios.post(`http://localhost:8000/api/user`, userData)
+        await api.post(`http://localhost:8000/api/user`, userData)
         .then(() => {
           Swal.fire(
             'Usuário criado!',
             'O usuário foi criado com sucesso.',
             'success'
           )});
+          onUserCreated(); // Atualizar a lista de usuários
+          navigate('/dashboard/users'); // Navegar para a lista de usuários
       }
-      onUserCreated(); // Atualize a lista de usuários
-      navigate('/users'); // Navegue de volta para a lista de usuários
+      
     } catch (error) {
         if (error.response && error.response.data.error) {
           Swal.fire(
@@ -101,13 +104,7 @@ const CreateUser = ({ onUserCreated }) => {
             error.response.data.error,
             'error'
           );
-        } else {
-          Swal.fire(
-            'Erro!',
-            'Houve um problema ao criar ou atualizar o usuário.',
-            'error'
-          );
-        }
+        } 
     }
   };
 
@@ -142,6 +139,7 @@ const CreateUser = ({ onUserCreated }) => {
             type="email"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength: 40 }}
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -152,6 +150,7 @@ const CreateUser = ({ onUserCreated }) => {
             type="password"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength: 40 }}
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -193,6 +192,7 @@ const CreateUser = ({ onUserCreated }) => {
             label="Imagem do Usuário (URL ou nome)"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength: 60 }}
             margin="normal"
             value={imgUsuario}
             onChange={(e) => setImgUsuario(e.target.value)}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material'; // Adicione Autocomplete
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ const MissaoEdit = () => {
   const fetchUsers = async () => {
     try {
       const apiUrl = `http://localhost:8000/api/user?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setUsers(response.data);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
@@ -33,7 +33,7 @@ const MissaoEdit = () => {
     const fetchMissao = async () => {
       if (missaoId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/missoes/${missaoId}`);
+          const response = await api.get(`http://localhost:8000/api/missoes/${missaoId}`);
           const missao = response.data.missao; // Acesse os dados da missão
           
           // Defina os estados com os dados da missão
@@ -55,7 +55,7 @@ const MissaoEdit = () => {
   const fetchCidades = async (query) => {
     if (query.length < 3) return; // Buscar cidades apenas após 3 caracteres
     try {
-      const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
+      const response = await api.get(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios`);
       const allCidades = response.data.map(cidade => cidade.nome);
       
       // Filtrar as cidades com base na query digitada
@@ -83,7 +83,7 @@ const MissaoEdit = () => {
     try {
       if (missaoId) {
         // Se missaoId estiver presente, atualize a missão
-        await axios.put(`http://localhost:8000/api/missoes/${missaoId}`, missaoData);
+        await api.put(`http://localhost:8000/api/missoes/${missaoId}`, missaoData);
         Swal.fire(
           'Missão Atualizada!',
           'A missão foi atualizada com sucesso.',
@@ -91,7 +91,7 @@ const MissaoEdit = () => {
         );
       } else {
         // Se não houver missaoId, crie uma nova missão
-        await axios.post('http://localhost:8000/api/missoes', missaoData);
+        await api.post('http://localhost:8000/api/missoes', missaoData);
         Swal.fire(
           'Missão Criada!',
           'A missão foi criada com sucesso.',
@@ -104,7 +104,7 @@ const MissaoEdit = () => {
       setQuantidadeMembros('');
       setCidadeMissao('');
       setPastorTitular('');
-      navigate('/missoes'); // Navegue de volta para a lista de missões
+      navigate('/dashboard/missoes'); // Navegue de volta para a lista de missões
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(
@@ -140,6 +140,7 @@ const MissaoEdit = () => {
             label="Nome da missão"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength: 30 }}
             margin="normal"
             value={nomeMissao}
             onChange={(e) => setNomeMissao(e.target.value)}

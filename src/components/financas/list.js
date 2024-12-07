@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
 import { Container, Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, TextField, Select, MenuItem, InputLabel, FormControl, Chip, Button } from '@mui/material';
@@ -19,8 +19,8 @@ const Financas = () => {
   useEffect(() => {
     const fetchFinancas = async () => {
       try {
-        const entradasResponse = await axios.get(`http://localhost:8000/api/entradas?idCliente=${idCliente}`);
-        const saidasResponse = await axios.get(`http://localhost:8000/api/saidas?idCliente=${idCliente}`);
+        const entradasResponse = await api.get(`http://localhost:8000/api/entradas?idCliente=${idCliente}`);
+        const saidasResponse = await api.get(`http://localhost:8000/api/saidas?idCliente=${idCliente}`);
         setEntradas(entradasResponse.data);
         setSaidas(saidasResponse.data);
       } catch (error) {
@@ -52,11 +52,11 @@ const Financas = () => {
   const filteredData = handleSearch();
 
   const handleNewEntrada = () => {
-    navigate('/entradas/create');
+    navigate('/dashboard/entradas/create');
   };
 
   const handleNewSaida = () => {
-    navigate('/saidas/create');
+    navigate('/dashboard/saidas/create');
   };
 
   const handleReport = () => {

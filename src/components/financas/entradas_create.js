@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { Container, Typography, Box, TextField, Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
@@ -24,7 +24,7 @@ const CadastrarEntrada = () => {
     };
 
     try {
-      await axios.post('http://localhost:8000/api/entradas', novaEntrada);
+      await api.post('http://localhost:8000/api/entradas', novaEntrada);
       Swal.fire('Sucesso!', 'Entrada financeira cadastrada com sucesso.', 'success');
       setDescricao('');
       setValor('');

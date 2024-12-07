@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Typography, 
@@ -11,30 +11,12 @@ import {
     Chip,
     Button
 } from '@mui/material';
-import { IconPlus, IconEdit } from '@tabler/icons-react'; // IconCheck adicionado
+import { IconPlus } from '@tabler/icons-react';
 import DashboardCard from '../../../components/shared/DashboardCard';
-import axios from 'axios';
 
-const EventosIgreja = () => {
-    const [eventos, setEventos] = useState([]);
+const EventosIgreja = ({ eventos }) => { // Recebe os eventos via props
     const navigate = useNavigate();
-    const idCliente = localStorage.getItem('idCliente'); 
-
-    // Função para buscar os eventos da API
-    const fetchEventos = async () => {
-        try {
-            const apiUrl = `http://localhost:8000/api/proximosEventos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-            const response = await axios.get(apiUrl);
-setEventos(response.data); // Salva os eventos na state
-        } catch (error) {
-            console.error('Erro ao buscar os eventos:', error);
-        }
-    };
-
-    // useEffect para chamar a função quando o componente carregar
-    useEffect(() => {
-        fetchEventos();
-    }, []);
+    const nivelUsuario = localStorage.getItem('nivelUsuario');
 
     // Função para definir a cor de background com base na prioridade
     const getPriorityColor = (prioridade) => {
@@ -64,9 +46,8 @@ setEventos(response.data); // Salva os eventos na state
     };
 
     const handleNewEvent = () => {
-        navigate('/eventos/create');
+        navigate('/dashboard/eventos/create');
     }
-
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -77,12 +58,11 @@ setEventos(response.data); // Salva os eventos na state
             year: 'numeric'
         });
     };
-    const nivelUsuario = localStorage.getItem('nivelUsuario');
 
     return (
         <DashboardCard title="Próximos eventos da igreja">
             {nivelUsuario > 2 && (
-                <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus/>Novo evento</button>
+                <button className="btn btn-primary" onClick={handleNewEvent}><IconPlus />Novo evento</button>
             )}
             <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                 <Table
@@ -114,30 +94,21 @@ setEventos(response.data); // Salva os eventos na state
                                     Orçamento
                                 </Typography>
                             </TableCell>
-                            
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {eventos.length > 0 ? (
                             eventos.map((evento) => (
                                 <TableRow key={evento.id}>
-                                    
                                     <TableCell>
-                                        <Box
-                                            sx={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
+                                        <Box sx={{ display: "flex", alignItems: "center" }}>
                                             <Box>
                                                 <Typography variant="subtitle2" fontWeight={600}>
                                                     {evento.nomeEvento}
                                                 </Typography>
                                                 <Typography
                                                     color="textSecondary"
-                                                    sx={{
-                                                        fontSize: "13px",
-                                                    }}
+                                                    sx={{ fontSize: "13px" }}
                                                 >
                                                     {evento.local.nomeLocal}
                                                 </Typography>
@@ -146,7 +117,7 @@ setEventos(response.data); // Salva os eventos na state
                                     </TableCell>
                                     <TableCell>
                                         <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                        {formatDate(evento.dataEvento)}
+                                            {formatDate(evento.dataEvento)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -163,7 +134,6 @@ setEventos(response.data); // Salva os eventos na state
                                     <TableCell align="center">
                                         <Typography variant="h6">R$ {parseFloat(evento.orcamentoEvento).toFixed(2)}</Typography>
                                     </TableCell>
-                                    
                                 </TableRow>
                             ))
                         ) : (

@@ -44,79 +44,79 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Dashboard',
     icon: IconLayoutDashboard,
-    href: '/dashboard',
+    href: '/dashboard/',
   },
   {
     navlabel: true,
     subheader: 'Gerenciamento',
   },
-  canView(1) && {
-    id: uniqueId(),
-    title: 'Acervo Virtual',
-    icon: IconBooks,
-    href: '/livros',
-    manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
-  },
+  // canView(1) && {
+  //   id: uniqueId(),
+  //   title: 'Acervo Virtual',
+  //   icon: IconBooks,
+  //   href: '/dashboard/livros',
+  //   manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
+  // },
   canView(1) && {
     id: uniqueId(),
     title: 'Departamentos',
     icon: IconCopy,
-    href: '/departaments',
+    href: '/dashboard/departaments',
     manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
   },
   canView(3) && {
     id: uniqueId(),
     title: 'Dízimos',
     icon: IconHeartHandshake,
-    href: '/dizimos',
+    href: '/dashboard/dizimos',
     manage: canManage(4), // Somente adms (4) podem gerenciar
   },
   canView(1) && {
     id: uniqueId(),
     title: 'EBD',
     icon: IconSchool,
-    href: '/aulasEBD',
+    href: '/dashboard/aulasEBD',
     manage: canManage(2), // Somente líderes (2), pastores (3) e adms (4) podem gerenciar
   },
   canView(1) && {
     id: uniqueId(),
     title: 'Eventos',
     icon: IconCalendarEvent,
-    href: '/eventos',
+    href: '/dashboard/eventos',
     manage: canManage(2), // Somente líderes (2), pastores (3) e adms (4) podem gerenciar
   },
   canView(3) && {
     id: uniqueId(),
     title: 'Finanças',
     icon: IconFileDollar,
-    href: '/financas',
+    href: '/dashboard/financas',
     manage: canManage(3), // Somente pastores (3) e adms (4) podem ver e gerenciar
   },
   canView(1) && {
     id: uniqueId(),
     title: 'Missões',
     icon: IconTargetArrow,
-    href: '/missoes',
+    href: '/dashboard/missoes',
     manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
   },
   canView(2) && {
     id: uniqueId(),
     title: 'Recursos',
     icon: IconStar,
-    href: '/recursos',
+    href: '/dashboard/recursos',
     manage: canManage(2), // Somente líderes (2), pastores (3) e adms (4) podem ver e gerenciar
   },
   canView(1) && {
     id: uniqueId(),
     title: 'Relatórios',
     icon: IconFileAnalytics,
-    href: '/relatorios',
+    href: '/dashboard/relatorios',
   },
   canView(1) && {
     id: uniqueId(),
     title: 'Usuários',
     icon: IconUsers,
-    href: '/users',
+    href: '/dashboard/users',
     manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
   },
   {
@@ -149,7 +149,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Posts',
     icon: IconPencilStar,
-    href: '/posts',
+    href: '/dashboard/posts',
   },
   {
     navlabel: true,
@@ -159,37 +159,37 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Locais',
     icon: IconMapPin,
-    href: '/locais',
+    href: '/dashboard/locais',
   },
   canView(2) && {
     id: uniqueId(),
     title: 'Classes de EBD',
     icon: IconChalkboard,
-    href: '/classesEBD',
+    href: '/dashboard/classesEBD',
   },
   canView(2) && {
     id: uniqueId(),
     title: 'Tipo de Recurso',
     icon: IconPackage,
-    href: '/tiposRecursos',
+    href: '/dashboard/tipoRecursos',
   },
   canView(4) && {
     id: uniqueId(),
     title: 'Níveis de Usuário',
     icon: IconChartArrowsVertical,
-    href: '/nivelUsuario',
+    href: '/dashboard/nivelUsuario',
   },
   {
     id: uniqueId(),
     title: 'Icons',
     icon: IconMoodHappy,
-    href: '/icons',
+    href: '/dashboard/icons',
   },
   {
     id: uniqueId(),
     title: 'Sample Page',
     icon: IconAperture,
-    href: '/sample-page',
+    href: '/dashboard/sample-page',
   },
 ];
 

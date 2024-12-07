@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,7 +18,7 @@ const CadastrarLivro = () => {
     const fetchLivro = async () => {
       if (livroId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/livros/${livroId}`);
+          const response = await api.get(`http://localhost:8000/api/livros/${livroId}`);
           const livro = response.data.livro; // Acesse os dados do livro corretamente
           
           // Defina os estados com os dados do livro
@@ -60,7 +60,7 @@ const CadastrarLivro = () => {
     try {
       if (livroId) {
         // Se livroId estiver presente, atualize o livro
-        await axios.put(`http://localhost:8000/api/livros/${livroId}`, livroData);
+        await api.put(`http://localhost:8000/api/livros/${livroId}`, livroData);
         Swal.fire(
           'Livro Atualizado!',
           'O livro foi atualizado com sucesso.',
@@ -68,7 +68,7 @@ const CadastrarLivro = () => {
         );
       } else {
         // Se não houver livroId, crie um novo livro
-        await axios.post(`http://localhost:8000/api/livros`, livroData);
+        await api.post(`http://localhost:8000/api/livros`, livroData);
         Swal.fire(
           'Livro Criado!',
           'O livro foi criado com sucesso.',

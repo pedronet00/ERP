@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { Container, Typography, Box, Card, CardContent, Button } from '@mui/material';
 import { IconMinus, IconPlus, IconTrash, IconClipboard, IconLoader } from '@tabler/icons-react';
@@ -16,7 +16,7 @@ const ListaLivros = () => {
   useEffect(() => {
     const fetchLivros = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/livros?idCliente=${idCliente}`);
+        const response = await api.get(`http://localhost:8000/api/livros?idCliente=${idCliente}`);
         setLivros(response.data);
       } catch (error) {
         console.error("Erro ao buscar livros:", error);
@@ -35,7 +35,7 @@ const ListaLivros = () => {
 
   const handleDownload = async (livroId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/livros/${livroId}/download`, {
+      const response = await api.get(`http://localhost:8000/api/livros/${livroId}/download`, {
         responseType: 'blob', // Importante para downloads
       });
       

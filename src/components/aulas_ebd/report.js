@@ -5,28 +5,28 @@ import api from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const MissoesReport = () => {
-    const [missoes, setMissoes] = useState([]);
+    const [aulas, setAulas] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
     
     // Função para buscar os usuários da API
-    const fetchMissoes = async () => {
+    const fetchAulas = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/missoesReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/ebdReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await api.get(apiUrl);
     
             // Armazena os usuários a partir do campo 'usuarios'
-            setMissoes(response.data.missoes); 
+            setAulas(response.data.aulas); 
             setReportData(response.data); // Armazena os dados do relatório
         } catch (error) {
-            console.error("Erro ao buscar missões:", error);
+            console.error("Erro ao buscar aulas:", error);
         }
     };
 
     // Busca os usuários quando o componente for montado
     useEffect(() => {
-        fetchMissoes();
+        fetchAulas();
     }, []);
 
     // Função para impressão
@@ -58,10 +58,10 @@ const MissoesReport = () => {
             
             {/* Título e informações do relatório */}
             <Typography variant="h4" gutterBottom style={{ textAlign: 'center', padding: '5% 0 0 0' }}>
-                Relatório de Missões da Primeira Igreja Batista de Presidente Prudente
+                Relatório de Aulas de EBD da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
-                Missões cadastradas entre 20/08/2024 e 04/10/2024
+                Aulas cadastradas entre 20/08/2024 e 04/10/2024
             </Typography>
 
             {/* Ícone de impressão */}
@@ -73,26 +73,28 @@ const MissoesReport = () => {
             <Grid container spacing={1} style={{ marginTop: '20px', width: '80%', margin: 'auto' }}>
                 <Grid item xs={6}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de missões:</Typography>
-                        <Typography variant="h5">{reportData.qtdeMissoes}</Typography>
+                        <Typography variant="h6">Quantidade de aulas:</Typography>
+                        <Typography variant="h5">{reportData.qtdeAulas}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Membros de missões:</Typography>
-                        <Typography variant="h5">{reportData.qtdeMembrosMissoes}</Typography>
+                        <Typography variant="h6">Quantidade de classes:</Typography>
+                        <Typography variant="h5">{reportData.qtdeClasses}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} style={{marginTop: '5%'}}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de missões ativas:</Typography>
-                        <Typography variant="h5">{reportData.qtdeMissoesAtivas}</Typography>
+                        <Typography variant="h6">Média de alunos:</Typography>
+                        <Typography variant="h5">{reportData.mediaAlunos}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} style={{marginTop: '5%'}}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de missões inativas:</Typography>
-                        <Typography variant="h5">{reportData.qtdeMissoesInativas}</Typography>
+                        <Typography variant="h6">Professor mais ativo:</Typography>
+                        <Typography variant="h5">{reportData.professorMaisFrequente && reportData.professorMaisFrequente.professor 
+                ? `${reportData.professorMaisFrequente.professor.name} (${reportData.professorMaisFrequente.total} aulas)` 
+                : "Dados indisponíveis"}</Typography>
                     </Paper>
                 </Grid>
                 
@@ -103,24 +105,22 @@ const MissoesReport = () => {
                 <Table sx={{ borderCollapse: 'collapse', textAlign: 'center' }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Nome</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Membros</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Cidade</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Pastor titular</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Status</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de cadastro</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data da aula</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Classe da aula</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Professor da aula</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Quantidade presentes</TableCell>
+                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Lição</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {missoes.length > 0 ? (
-                            missoes.map((missao, index) => (
+                        {aulas.length > 0 ? (
+                            aulas.map((aula, index) => (
                                 <TableRow key={index}>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{missao.nomeMissao}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{missao.quantidadeMembros}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{missao.cidadeMissao}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{missao.pastor_titular.name}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{missao.statusMissao === 0 ? "Inativo" : "Ativo"}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(missao.created_at).toLocaleDateString()}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.dataAula}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.classe.nomeClasse}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.professor.name}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.quantidadePresentes}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.numeroAula}</TableCell>
                                 </TableRow>
                             ))
                         ) : (

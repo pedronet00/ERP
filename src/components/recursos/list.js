@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Box, Tabs, Tab, AppBar, Table, TableBody, TableCell, TableHead, TableRow, IconButton } from '@mui/material';
 import { IconMinus, IconPlus, IconTrash, IconClipboard } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const RecursosList = () => {
@@ -18,7 +18,7 @@ const RecursosList = () => {
   const fetchCategoriaRecurso = async () => {
     try {
       const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setCategoriaRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
@@ -29,14 +29,14 @@ const RecursosList = () => {
   const fetchRecursos = async () => {
     try {
       const apiUrl = `http://localhost:8000/api/recurso?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       const recursosData = response.data;
 
       // Verifica se a lista de recursos está vazia
       if (recursosData.length === 0) {
         Swal.fire({
           title: 'Dica',
-          html: 'Antes de cadastrar um recurso, você deve criar categorias de recursos e <a href="/tipoRecursos/create" style="text-decoration: none;">tipos de recursos</a>.',
+          html: 'Antes de cadastrar um recurso, você deve criar categorias de recursos e <a href="/dashboard/tipoRecursos/create" style="text-decoration: none;">tipos de recursos</a>.',
           icon: 'info',
           confirmButtonText: 'Entendi'
         });
@@ -61,7 +61,7 @@ const RecursosList = () => {
     e.preventDefault();
     const novaCategoriaRecursoObject = { categoriaRecurso, idCliente };
 
-    axios.post('http://localhost:8000/api/categoriaRecurso', novaCategoriaRecursoObject)
+    api.post('http://localhost:8000/api/categoriaRecurso', novaCategoriaRecursoObject)
       .then(() => {
         Swal.fire('Categoria criada!', 'A categoria foi criada com sucesso.', 'success');
         setCategoriaRecurso('');
@@ -74,7 +74,7 @@ const RecursosList = () => {
   };
 
   const handleNewUser = () => {
-    navigate('/recursos/create');
+    navigate('/dashboard/recursos/create');
   };
 
   const handleReport = () => {
@@ -83,7 +83,7 @@ const RecursosList = () => {
 
   const handleIncrease = async (recurso) => {
     try {
-      await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/aumentarQuantidade`);
+      await api.patch(`http://localhost:8000/api/recurso/${recurso.id}/aumentarQuantidade`);
       fetchRecursos();
     } catch (error) {
       Swal.fire('Erro!', 'Houve um problema ao aumentar a quantidade do recurso.', 'error');
@@ -93,7 +93,7 @@ const RecursosList = () => {
   const handleDecrease = async (recurso) => {
     if (recurso.quantidadeRecurso > 0) {
       try {
-        await axios.patch(`http://localhost:8000/api/recurso/${recurso.id}/diminuirQuantidade`);
+        await api.patch(`http://localhost:8000/api/recurso/${recurso.id}/diminuirQuantidade`);
         fetchRecursos();
       } catch (error) {
         Swal.fire('Erro!', 'Houve um problema ao diminuir a quantidade do recurso.', 'error');
@@ -109,8 +109,8 @@ const RecursosList = () => {
 
       {nivelUsuario > 1 && (
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
+        <button className="btn btn-success" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
       )}
 

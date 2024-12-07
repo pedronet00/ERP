@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Select, MenuItem } from '@mui/material';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
-import axios from 'axios';
 
-const BalancoFiscal = () => {
-    const [entradasPorMes, setEntradasPorMes] = useState([]);
-    const [saidasPorMes, setSaidasPorMes] = useState([]);
-    const [meses, setMeses] = useState([]);
+const BalancoFiscal = ({ balancoFiscal }) => { 
+    const entradasPorMes = Object.values(balancoFiscal.entradas).map(parseFloat); // Converte os valores de entradas para float
+    const saidasPorMes = Object.values(balancoFiscal.saidas).map(parseFloat); // Converte os valores de saídas para float
+    const meses = balancoFiscal.meses; // Lista de meses
 
     // chart color
     const theme = useTheme();
@@ -83,23 +81,6 @@ const BalancoFiscal = () => {
             data: saidasPorMes, // Dados dinâmicos das saídas
         },
     ];
-
-    // Função para buscar dados financeiros
-    const fetchFinancialData = async () => {
-        try {
-            const idCliente = localStorage.getItem('idCliente'); // Supondo que o idCliente é armazenado no localStorage
-            const response = await axios.get(`http://localhost:8000/api/financas/entradasSaidasMensal?idCliente=${idCliente}`);
-            setEntradasPorMes(Object.values(response.data.entradas)); // Armazenando entradas por mês
-            setSaidasPorMes(Object.values(response.data.saidas)); // Armazenando saídas por mês
-            setMeses(response.data.meses); // Armazenando nomes dos meses
-        } catch (error) {
-            console.error("Erro ao buscar dados financeiros:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchFinancialData();
-    }, []);
 
     return (
         <DashboardCard title="Balanço Fiscal">

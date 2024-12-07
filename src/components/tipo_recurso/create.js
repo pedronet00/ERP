@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ const CriarTipoRecurso = () => {
     const fetchTipoRecurso = async () => {
       if (tipoRecursoId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}`);
+          const response = await api.get(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}`);
           const tipoRecursoData = response.data.tipoRecurso; // Acesse os dados do tipo de recurso corretamente
           
           // Defina os estados com os dados do tipo de recurso
@@ -46,7 +46,7 @@ const CriarTipoRecurso = () => {
     try {
       if (tipoRecursoId) {
         // Se tipoRecursoId estiver presente, atualize o tipo de recurso
-        await axios.put(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}`, tipoRecursoData);
+        await api.put(`http://localhost:8000/api/tipoRecurso/${tipoRecursoId}`, tipoRecursoData);
         Swal.fire(
           'Tipo de Recurso Atualizado!',
           'O tipo de recurso foi atualizado com sucesso.',
@@ -54,7 +54,7 @@ const CriarTipoRecurso = () => {
         );
       } else {
         // Se não houver tipoRecursoId, crie um novo tipo de recurso
-        await axios.post(`http://localhost:8000/api/tipoRecurso`, tipoRecursoData);
+        await api.post(`http://localhost:8000/api/tipoRecurso`, tipoRecursoData);
         Swal.fire(
           'Tipo de Recurso Criado!',
           'O tipo de recurso foi criado com sucesso.',
@@ -64,7 +64,7 @@ const CriarTipoRecurso = () => {
 
       // Limpa o campo após o sucesso
       setTipoRecurso('');
-      navigate('/tipoRecursos'); // Navegue de volta para a lista de tipos de recursos
+      navigate('/dashboard/tipoRecursos'); // Navegue de volta para a lista de tipos de recursos
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire(

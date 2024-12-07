@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconX, IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const DizimoList = () => {
   const fetchDizimos = async () => {
     try {
       const apiUrl = `http://localhost:8000/api/dizimos?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setDizimos(response.data);
       setFilteredDizimos(response.data); // Inicialmente, mostrar todos os dízimos
     } catch (error) {
@@ -42,7 +42,11 @@ const DizimoList = () => {
   }, []);
 
   const handleNewDizimo = () => {
-    navigate('/dizimos/create');
+    navigate('/dashboard/dizimos/create');
+  };
+
+  const handleReport = () => {
+    navigate('/relatorio/dizimos');
   };
 
   // Cálculo dos índices para a paginação
@@ -57,8 +61,8 @@ const DizimoList = () => {
       </div>
       {nivelUsuario > 3 && (
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleNewDizimo}><IconClipboard/> Gerar relatório</button>
-        <button className="btn btn-primary" onClick={handleNewDizimo}><IconPlus/> Novo registro</button>
+        <button className="btn btn-success" onClick={handleNewDizimo}><IconPlus/> Novo registro</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar relatório</button>
       </div>
       )}
 

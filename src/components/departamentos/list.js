@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react'; // IconCheck adicionado
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -35,7 +35,7 @@ const DepartmentList = () => {
     try {
       const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
       const apiUrl = `http://localhost:8000/api/departamentos?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-      const response = await axios.get(apiUrl); // Alterado para HTTP
+      const response = await api.get(apiUrl); // Alterado para HTTP
       setDepartments(response.data);
       setFilteredDepartments(response.data); // Inicialmente, mostrar todos os departamentos
     } catch (error) {
@@ -57,7 +57,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
+        await api.patch(`http://localhost:8000/api/departamento/${departmentId}/ativar`); // Alterado para HTTP
         fetchDepartments();
         Swal.fire({
           title: "Ativado!",
@@ -88,7 +88,7 @@ const DepartmentList = () => {
   
     if (result.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
+        await api.patch(`http://localhost:8000/api/departamento/${departmentId}/desativar`); // Alterado para HTTP
         fetchDepartments();
         Swal.fire({
           title: "Desativado!",
@@ -133,7 +133,7 @@ const DepartmentList = () => {
   const paginatedDepartments = filteredDepartments.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewUser = () => {
-    navigate('/departament/create');
+    navigate('/dashboard/departament/create');
   };
 
   const handleReport = () => {
@@ -172,8 +172,8 @@ const DepartmentList = () => {
 
       {nivelUsuario > 2 && (
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
+        <button className="btn btn-success" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
+        <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
       </div>
       )}
 
@@ -250,7 +250,7 @@ const DepartmentList = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => navigate(`/departament/edit/${department.id}`)}
+                      onClick={() => navigate(`/dashboard/departament/create/${department.id}`)}
                       startIcon={<IconEdit />}
                       size="small"
                     >

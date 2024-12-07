@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, MenuItem, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const RecursosCreate = () => {
   const fetchCategoriaRecurso = async () => {
     try {
         const apiUrl = `http://localhost:8000/api/categoriaRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-        const response = await axios.get(apiUrl);
+        const response = await api.get(apiUrl);
       setCategoriaRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar categorias de recursos:", error);
@@ -30,7 +30,7 @@ const RecursosCreate = () => {
   const fetchTipoRecurso = async () => {
     try {
       const apiUrl = `http://localhost:8000/api/tipoRecurso?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
-        const response = await axios.get(apiUrl);
+        const response = await api.get(apiUrl);
       setTipoRecursoList(response.data);
     } catch (error) {
       console.error("Erro ao buscar tipos de recursos:", error);
@@ -54,7 +54,7 @@ const RecursosCreate = () => {
       idCliente
     };
 
-    axios.post('http://localhost:8000/api/recurso', novoRecurso)
+    api.post('http://localhost:8000/api/recurso', novoRecurso)
       .then(() => {
         Swal.fire(
           'Recurso criado!',
@@ -102,6 +102,7 @@ const RecursosCreate = () => {
             label="Nome do recurso"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength: 30 }}
             margin="normal"
             value={nomeRecurso}
             onChange={(e) => setNomeRecurso(e.target.value)}

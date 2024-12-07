@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../axiosConfig';
 import { IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const EBDClassesList = () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
       const apiUrl = `http://localhost:8000/api/classesEBD?idCliente=${idCliente}`;
-      const response = await axios.get(apiUrl);
+      const response = await api.get(apiUrl);
       setClasses(response.data);
       setFilteredClasses(response.data); // Inicialmente, mostrar todas as classes
     } catch (error) {
@@ -62,7 +62,7 @@ const EBDClassesList = () => {
   const paginatedClasses = filteredClasses.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const handleNewClass = () => {
-    navigate('/classesEBD/create');
+    navigate('/dashboard/classesEBD/create');
   };
 
   const handleReport = () => {
