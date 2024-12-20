@@ -108,12 +108,6 @@ const Menuitems = [
   },
   canView(1) && {
     id: uniqueId(),
-    title: 'Relatórios',
-    icon: IconFileAnalytics,
-    href: '/dashboard/relatorios',
-  },
-  canView(1) && {
-    id: uniqueId(),
     title: 'Usuários',
     icon: IconUsers,
     href: '/dashboard/users',
@@ -123,17 +117,23 @@ const Menuitems = [
     navlabel: true,
     subheader: 'Cultos',
   },
+  // {
+  //   id: uniqueId(),
+  //   title: 'Histórico de Cultos',
+  //   icon: IconBuildingChurch,
+  //   href: '/ui/shadow',
+  // },
+  // {
+  //   id: uniqueId(),
+  //   title: 'Atas de Cultos',
+  //   icon: IconScript,
+  //   href: '/atas',
+  // },
   {
     id: uniqueId(),
-    title: 'Histórico de Cultos',
-    icon: IconBuildingChurch,
-    href: '/ui/shadow',
-  },
-  {
-    id: uniqueId(),
-    title: 'Atas de Cultos',
+    title: 'Boletins',
     icon: IconScript,
-    href: '/atas',
+    href: '/dashboard/boletim',
   },
   {
     navlabel: true,
@@ -143,9 +143,9 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Ver Blog',
     icon: IconArticle,
-    href: 'https://pib-three.vercel.app/blog',
+    href: 'http://localhost:3000/blog',
   },
-  canView(3) && {
+  canView(2) && {
     id: uniqueId(),
     title: 'Posts',
     icon: IconPencilStar,
@@ -155,42 +155,48 @@ const Menuitems = [
     navlabel: true,
     subheader: 'Outros',
   },
-  canView(2) && {
+  canView(3) && {
     id: uniqueId(),
     title: 'Locais',
     icon: IconMapPin,
     href: '/dashboard/locais',
   },
-  canView(2) && {
+  canView(3) && {
     id: uniqueId(),
     title: 'Classes de EBD',
     icon: IconChalkboard,
     href: '/dashboard/classesEBD',
   },
-  canView(2) && {
+  canView(3) && {
     id: uniqueId(),
     title: 'Tipo de Recurso',
     icon: IconPackage,
     href: '/dashboard/tipoRecursos',
   },
-  canView(4) && {
+  // canView(4) && {
+  //   id: uniqueId(),
+  //   title: 'Níveis de Usuário',
+  //   icon: IconChartArrowsVertical,
+  //   href: '/dashboard/nivelUsuario',
+  // },
+  canView(2) && {
     id: uniqueId(),
-    title: 'Níveis de Usuário',
-    icon: IconChartArrowsVertical,
-    href: '/dashboard/nivelUsuario',
+    title: 'Tipo de Post',
+    icon: IconPencilStar,
+    href: '/dashboard/tipoPost',
   },
-  {
-    id: uniqueId(),
-    title: 'Icons',
-    icon: IconMoodHappy,
-    href: '/dashboard/icons',
-  },
-  {
-    id: uniqueId(),
-    title: 'Sample Page',
-    icon: IconAperture,
-    href: '/dashboard/sample-page',
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: 'Icons',
+  //   icon: IconMoodHappy,
+  //   href: '/dashboard/icons',
+  // },
+  // {
+  //   id: uniqueId(),
+  //   title: 'Sample Page',
+  //   icon: IconAperture,
+  //   href: '/dashboard/sample-page',
+  // },
 ];
 
 // Filtra os itens que foram marcados como falsos no filtro

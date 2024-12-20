@@ -89,8 +89,14 @@ const ListaLivros = Loadable(lazy(() => import('../components/livros/list.js')))
 const PostList = Loadable(lazy(() => import('../components/posts/list')));
 const PostCreate = Loadable(lazy(() => import('../components/posts/create')));
 
+// Boletins
+const CriarBoletimCulto = Loadable(lazy(() => import('../components/boletins/create')));
+const BoletinsList = Loadable(lazy(() => import('../components/boletins/list')));
+
 // Outros
 const Settings = Loadable(lazy(() => import('../components/settings/index')));
+const CriarTipoPost = Loadable(lazy(() => import('../components/tipo_post/create')));
+const ListaTiposPosts = Loadable(lazy(() => import('../components/tipo_post/list')));
 const CriarLocal = Loadable(lazy(() => import('../components/locais/create')));
 const ListaLocais = Loadable(lazy(() => import('../components/locais/list')));
 const CriarNivelUsuario = Loadable(lazy(() => import('../components/niveis_usuarios/create')));
@@ -276,6 +282,32 @@ const Router = [
       { 
         path: 'user/create/:userId', 
         element: <PrivateRoute requiredLevel={3}><UserCreate /></PrivateRoute> 
+      },
+      // Tipo Post
+      { 
+        path: 'tipoPost/create', 
+        element: <PrivateRoute requiredLevel={3}><CriarTipoPost /></PrivateRoute> 
+      },
+      { 
+        path: 'tipoPost/create/:tipoPostId', 
+        element: <PrivateRoute requiredLevel={3}><CriarTipoPost /></PrivateRoute> 
+      },
+      { 
+        path: 'tipoPost', 
+        element: <PrivateRoute requiredLevel={3}><ListaTiposPosts /></PrivateRoute> 
+      },
+      // Boletins
+      { 
+        path: 'boletim/create', 
+        element: <PrivateRoute requiredLevel={3}><CriarBoletimCulto /></PrivateRoute> 
+      },
+      { 
+        path: 'boletim/create/:id', 
+        element: <PrivateRoute requiredLevel={3}><CriarBoletimCulto /></PrivateRoute> 
+      },
+      { 
+        path: 'boletim', 
+        element: <PrivateRoute requiredLevel={3}><BoletinsList /></PrivateRoute> 
       },
 
       // Outros

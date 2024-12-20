@@ -8,7 +8,7 @@ const Onboarding = ({ onboarding, loading }) => {
     { id: 1, text: 'Criar uma conta', completed: true },
     { id: 2, text: 'Cadastrar um usuário', completed: false },
     { id: 3, text: 'Adicionar recursos', completed: false },
-    { id: 4, text: 'Criar grupos de ministérios', completed: false },
+    { id: 4, text: 'Criar departamentos', completed: false },
   ]);
 
   const [showOnboarding, setShowOnboarding] = useState(false); // Controla a exibição do onboarding
@@ -21,7 +21,7 @@ const Onboarding = ({ onboarding, loading }) => {
         { id: 1, text: 'Criar uma conta', completed: true },
         { id: 2, text: 'Cadastrar um usuário', completed: onboarding.userCount > 0 },
         { id: 3, text: 'Adicionar recursos', completed: onboarding.recursosCount > 0 },
-        { id: 4, text: 'Criar grupos de ministérios', completed: onboarding.departamentoCount > 0 },
+        { id: 4, text: 'Criar departamentos', completed: onboarding.departamentoCount > 0 },
       ];
 
 

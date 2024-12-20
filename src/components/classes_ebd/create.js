@@ -3,6 +3,7 @@ import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const CriarClasseAula = () => {
     const [nomeClasse, setNomeClasse] = useState('');
@@ -48,12 +49,20 @@ const CriarClasseAula = () => {
         }
     };
 
+    const handleGoBack = () => {
+        navigate(-1); // Volta para a tela anterior
+      };
+
     return (
         <Container maxWidth="sm">
             <Box sx={{ marginTop: 4 }}>
+                
                 <Typography variant="h4" gutterBottom>
                     Criar Nova Classe de Aula
                 </Typography>
+                <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+      </div>
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label="Nome da Classe"

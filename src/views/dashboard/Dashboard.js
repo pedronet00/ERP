@@ -15,66 +15,82 @@ const nivelUsuario = localStorage.getItem('nivelUsuario');
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null); // Estado para armazenar dados da API
-  const idCliente = localStorage.getItem('idCliente');  // Substitua pelo idCliente correto ou obtenha dinamicamente
+  const idCliente = localStorage.getItem('idCliente'); // Substitua pelo idCliente correto ou obtenha dinamicamente
   const [loading, setLoading] = useState(true); // Estado de carregamento
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await api.get(`http://localhost:8000/api/dashboardData?idCliente=${idCliente}`);
+        const response = await api.get(
+          `http://localhost:8000/api/dashboardData?idCliente=${idCliente}`
+        );
         setDashboardData(response.data); // Armazena os dados no estado
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
-        console.error("Erro ao buscar os dados do dashboard", error);
-        setLoading(false)
+        console.error('Erro ao buscar os dados do dashboard', error);
+        setLoading(false);
       }
     };
 
     fetchDashboardData();
   }, []);
 
-  if (!dashboardData) {
+  if (loading) {
     return <div>Carregando...</div>; // Mostra um loader enquanto os dados são carregados
   }
 
+  if (!dashboardData) {
+    return <div>Erro ao carregar dados do dashboard.</div>;
+  }
 
+  const {
+    onboarding,
+    saldoAtual,
+    eventos,
+    balancoFiscal,
+  } = dashboardData;
 
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
       <Box>
         <Grid container spacing={3}>
-          { nivelUsuario == 4 && (
+          {nivelUsuario == 4 && (
             <Grid item xs={12} lg={12}>
-              <Onboarding onboarding={dashboardData.onboarding} loading={loading} />
+              <Onboarding onboarding={onboarding} loading={loading} />
             </Grid>
           )}
 
-          { nivelUsuario == 4 && (
+          {nivelUsuario == 4 && (
             <Grid item xs={12} lg={12}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
-                  <QuantidadeMembros qtdeUsuarios={dashboardData.userCount.qtdeUsuarios} />
+                  {/* Passando as informações necessárias para o componente de membros */}
+                  <QuantidadeMembros
+                    usuariosMesAtual={onboarding.usuariosMesAtual}
+                    usuariosMesPassado={onboarding.usuariosMesPassado}
+                    percentualAumento={onboarding.percentualAumento}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <EntradasMensais saldoAtual={dashboardData.saldoAtual.saldoAtual} />                
-                </Grid>
+            <EntradasMensais
+              saldoMesAtual={dashboardData?.saldoMensal?.saldoMesAtual || 0}
+              saldoMesPassado={dashboardData?.saldoMensal?.saldoMesPassado || 0}
+              percentualSaldo={dashboardData?.saldoMensal?.percentualSaldo || 0}
+            />
+          </Grid>
               </Grid>
             </Grid>
           )}
 
           <Grid item xs={12} lg={12}>
-            <EventosIgreja eventos={dashboardData.eventos.proximosEventos}/>
+            <EventosIgreja eventos={eventos.proximosEventos} />
           </Grid>
-          
-          { nivelUsuario == 4 && (
-          <Grid item xs={12} lg={12}>
-            <BalancoFiscal 
-    balancoFiscal={dashboardData.balancoFiscal} // Passando o objeto completo de balancoFiscal
-/>
 
-          </Grid>
+          {nivelUsuario == 4 && (
+            <Grid item xs={12} lg={12}>
+              <BalancoFiscal balancoFiscal={balancoFiscal} />
+            </Grid>
           )}
-          
         </Grid>
       </Box>
     </PageContainer>

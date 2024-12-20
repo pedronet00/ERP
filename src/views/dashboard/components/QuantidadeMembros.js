@@ -2,109 +2,86 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
-import { IconArrowUpLeft } from '@tabler/icons-react';
+import { IconArrowUpLeft, IconArrowDownRight } from '@tabler/icons-react';
 
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const QuantidadeMembros = ({ qtdeUsuarios }) => {  // Recebe a quantidade de usuários via props
-  const razaoSocial = localStorage.getItem('razaoSocial'); 
-
-  // chart color
+const QuantidadeMembros = ({ usuariosMesAtual, usuariosMesPassado, percentualAumento }) => {
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const primarylight = '#ecf2ff';
   const successlight = theme.palette.success.light;
+  const errorlight = theme.palette.error.light;
 
-  // chart
-  const optionscolumnchart = {
+  // Dados para o gráfico de linha
+  const optionsLineChart = {
     chart: {
-      type: 'donut',
+      type: 'line',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 155,
     },
-    colors: [primary, primarylight, '#F9F9FD'],
-    plotOptions: {
-      pie: {
-        startAngle: 0,
-        endAngle: 360,
-        donut: {
-          size: '75%',
-          background: 'transparent',
-        },
-      },
+    colors: [theme.palette.primary.main],
+    xaxis: {
+      categories: ['Mês Passado', 'Mês Atual'],
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    stroke: {
+      curve: 'smooth',
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
     },
-    stroke: {
-      show: false,
+    grid: {
+      borderColor: '#f1f1f1',
     },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    responsive: [
-      {
-        breakpoint: 991,
-        options: {
-          chart: {
-            width: 120,
-          },
-        },
-      },
-    ],
   };
-  const seriescolumnchart = [38, 40, 25];
+
+  const seriesLineChart = [
+    {
+      name: 'Membros',
+      data: [usuariosMesPassado, usuariosMesAtual],
+    },
+  ];
 
   return (
-    <DashboardCard title={`Membros de ${razaoSocial}`}>
+    <DashboardCard title="Total de Membros">
       <Grid container spacing={3}>
-        {/* column */}
+        {/* Coluna com informações de resumo */}
         <Grid item xs={7} sm={7}>
           <Typography variant="h3" fontWeight="700">
-            {qtdeUsuarios} {/* Usa a quantidade de membros passada por props */}
+            {usuariosMesAtual} {/* Quantidade de membros no mês atual */}
           </Typography>
           <Stack direction="row" spacing={1} mt={1} alignItems="center">
-            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
-              <IconArrowUpLeft width={20} color="#39B69A" />
+            <Avatar
+              sx={{
+                bgcolor: percentualAumento >= 0 ? successlight : errorlight,
+                width: 27,
+                height: 27,
+              }}
+            >
+              {percentualAumento >= 0 ? (
+                <IconArrowUpLeft width={20} color="#39B69A" />
+              ) : (
+                <IconArrowDownRight width={20} color="#E53935" />
+              )}
             </Avatar>
             <Typography variant="subtitle2" fontWeight="600">
-              +9%
+              {percentualAumento >= 0 ? '+' : ''}
+              {percentualAumento}%
             </Typography>
           </Stack>
-          <Stack spacing={3} mt={5} direction="row">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                sx={{ width: 9, height: 9, bgcolor: primary, svg: { display: 'none' } }}
-              ></Avatar>
-              <Typography variant="subtitle2" color="textSecondary">
-                2024
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                sx={{ width: 9, height: 9, bgcolor: primarylight, svg: { display: 'none' } }}
-              ></Avatar>
-              <Typography variant="subtitle2" color="textSecondary">
-                2023
-              </Typography>
-            </Stack>
-          </Stack>
         </Grid>
-        {/* column */}
-        <Grid item xs={5} sm={5}>
+
+        {/* Coluna com gráfico de linha */}
+        <Grid item xs={12} sm={12}>
           <Chart
-            options={optionscolumnchart}
-            series={seriescolumnchart}
-            type="donut"
-            height="150px"
+            options={optionsLineChart}
+            series={seriesLineChart}
+            type="line"
+            height="200px"
           />
         </Grid>
       </Grid>

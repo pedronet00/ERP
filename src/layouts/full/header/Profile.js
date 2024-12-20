@@ -40,13 +40,13 @@ const Profile = () => {
         onClick={handleClick2}
       >
         <Avatar
-          src={ProfileImg}
-          alt={ProfileImg}
-          sx={{
-            width: 35,
-            height: 35,
-          }}
-        />
+      src="https://cdn-icons-png.flaticon.com/512/74/74472.png"
+      alt="Profile Icon"
+      sx={{
+        width: 20,
+        height: 20,
+      }}
+    />
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}

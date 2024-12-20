@@ -102,11 +102,7 @@ const PostList = () => {
                 Autor
               </Typography>
             </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Data de Criação
-              </Typography>
-            </TableCell>
+            
             <TableCell>
               <Typography variant="subtitle2" fontWeight={600}>
                 Data de Publicação
@@ -139,9 +135,7 @@ const PostList = () => {
                 <TableCell>
                   <Typography variant="body2">{post.autor.name}</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2">{post.created_at}</Typography>
-                </TableCell>
+                
                 <TableCell>
                   <Typography variant="body2">{post.dataPost}</Typography>
                 </TableCell>
