@@ -52,6 +52,10 @@ const EBDClassesList = Loadable(lazy(() => import('../components/classes_ebd/lis
 const EBDClassesCreate = Loadable(lazy(() => import('../components/classes_ebd/create.js')));
 const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
 
+// EBD
+const CelulasList = Loadable(lazy(() => import('../components/celulas/list.js')));
+const CelulasCreate = Loadable(lazy(() => import('../components/celulas/create.js')));
+
 
 // Finanças
 const EventosList = Loadable(lazy(() => import('../components/eventos/list.js')));
@@ -276,6 +280,16 @@ const Router = [
       { 
         path: 'user/create/:userId', 
         element: <PrivateRoute requiredLevel={3}><UserCreate /></PrivateRoute> 
+      },
+
+      // Células
+      { 
+        path: 'celulas', 
+        element: <PrivateRoute requiredLevel={1}><CelulasList /></PrivateRoute> 
+      },
+      { 
+        path: 'celulas/create', 
+        element: <PrivateRoute requiredLevel={1}><CelulasCreate /></PrivateRoute> 
       },
 
       // Outros

@@ -19,7 +19,7 @@ import {
   IconSchool,
   IconChalkboard,
   IconCalendarEvent,
-  IconBooks
+  IconBooks, IconHeart
 } from '@tabler/icons-react';
 
 import { uniqueId } from 'lodash';
@@ -57,6 +57,13 @@ const Menuitems = [
   //   href: '/dashboard/livros',
   //   manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
   // },
+  canView(1) && {
+    id: uniqueId(),
+    title: 'Células',
+    icon: IconHeart,
+    href: '/dashboard/celulas',
+    manage: canManage(3), // Somente pastores (3) e adms (4) podem gerenciar
+  },
   canView(1) && {
     id: uniqueId(),
     title: 'Departamentos',
