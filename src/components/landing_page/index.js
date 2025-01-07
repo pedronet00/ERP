@@ -4,7 +4,9 @@ import { styled } from '@mui/system';
 import { IconCurrencyDollar, IconBrandWhatsapp, IconUsersGroup, IconCalendar, IconStar, IconSchool, IconTarget, IconHeartHandshake, IconWall, IconCross, IconCheck } from '@tabler/icons-react';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
+import Navbar from './navbar';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 
 import backgroundImage from '../../assets/images/backgrounds/intro-bg.jpg';
@@ -30,6 +32,7 @@ const AlianceLandingPage = () => {
     const phoneNumber = '5518988075144'; // Formato: código do país + código de área + número
     const message = 'Olá! Me interessei pelo ERP Aliance e gostaria de saber mais!';
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    const navigate = useNavigate();
     
     useEffect(() => {
         Aos.init();
@@ -74,6 +77,8 @@ const AlianceLandingPage = () => {
   return (
     <div>
 
+        <Navbar backgroundColor="black"/>
+
         {/* Header com imagem de fundo */}
         <Box sx={{ position: 'relative', overflow: 'hidden' }}>
                 <BackgroundBox>
@@ -84,7 +89,7 @@ const AlianceLandingPage = () => {
                     <Typography variant="h5" gutterBottom sx={{ color: '#fff', position: 'relative', zIndex: 2 }}>
                         Simplicidade, eficiência e fé trabalhando juntas.
                     </Typography>
-                    <Button variant="contained" color="primary" size="large" sx={{ marginTop: 2, position: 'relative', zIndex: 2 }}>
+                    <Button variant="contained" color="primary" size="large" sx={{ marginTop: 2, position: 'relative', zIndex: 2 }} onClick={() => navigate('/cadastro')}>
                         Comece Agora
                     </Button>
                     </Container>
@@ -105,7 +110,7 @@ const AlianceLandingPage = () => {
         </Box>
 
 
-        <Box sx={{ padding: '4rem 0' }}>
+        <Box sx={{ padding: '4rem 0' }} id="features">
             <Container>
                 <Typography variant="h2" align="center" gutterBottom>
                 Nós temos módulos <span style={{ color: '#6a82cc', fontWeight: 'bold' }}>incríveis</span>.
@@ -334,7 +339,7 @@ const AlianceLandingPage = () => {
         </Box>
 
         {/* Seção Planos */}
-        <Box sx={{ backgroundColor: '#f5f5f5', padding: '4rem 0' }}>
+        <Box sx={{ backgroundColor: '#f5f5f5', padding: '4rem 0' }} id="pricing">
             <Container>
                 <Typography variant="h2" align="center" gutterBottom>Planos que cabem <span style={{color: '#6a82cc', fontWeight: 'bold'}}>no orçamento!</span></Typography>
                 <Typography variant="h6" align="center">Disponibilizamos 3 opções para você escolher a que mais se encaixa na sua igreja.</Typography>
@@ -492,88 +497,88 @@ const AlianceLandingPage = () => {
 
         {/* Seção de Princípios e Valores */}
         <Box sx={{ padding: '4rem 0' }}>
-  <Container>
-    <Typography variant="h2" align="center" gutterBottom>
-      Nossos <span style={{ color: '#6a82cc', fontWeight: 'bold' }}>princípios e valores</span>
-    </Typography>
-    <Grid container spacing={4} justifyContent="center">
-      {[{
-        icon: <IconHeartHandshake style={{ width: '60px', height: '60px' }} />,
-        title: 'Comprometimento',
-        text: 'Estamos totalmente comprometidos em oferecer um serviço excepcional às igrejas de todo o Brasil. Nossa equipe está sempre disponível para atender suas necessidades e garantir que sua experiência com o Aliance seja a melhor possível.',
-        overlayText: 'Jeremias 29:13'
-      },
-      {
-        icon: <IconWall style={{ width: '60px', height: '60px' }} />,
-        title: 'Edificação',
-        text: 'Queremos edificar o Corpo de Cristo ao fornecer ferramentas robustas de gestão. Através de nossa plataforma, as igrejas podem otimizar suas operações, permitindo que se concentrem no que realmente importa: a missão de espalhar a palavra de Deus.',
-        overlayText: 'Mateus 7:24-27'
-      },
-      {
-        icon: <IconCross style={{ width: '60px', height: '60px' }} />,
-        title: 'Glorificando a Cristo',
-        text: 'Acreditamos que cada ação conta. Por isso, nosso compromisso é oferecer um serviço de alta qualidade, permitindo que as igrejas realizem suas atividades com excelência. Servir a Cristo com dedicação é o que nos motiva todos os dias. ',
-        overlayText: 'Colossenses 3:23-24'
-      },
-      {
-        icon: <IconCheck style={{ width: '60px', height: '60px' }} />,
-        title: 'Qualidade',
-        text: 'O Aliance é sinônimo de qualidade. Estamos comprometidos em apoiar as igrejas na sua jornada de fé e gestão, oferecendo soluções que realmente fazem a diferença, desde a administração de membros até o controle financeiro.',
-        overlayText: '1 Coríntios 10:31'
-      }].map((card, index) => (
-        <Grid item xs={12} sm={6} md={6} key={index}>
-          <Card data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" sx={{
-            position: 'relative',
-            overflow: 'hidden',
-            height: '100%',
-            transition: 'transform 1.5s ease-in-out',
-            
-            '&:hover .overlay': {
-              opacity: 1,
-              visibility: 'visible'
-            },
-            '&:hover .content': {
-              opacity: 0,
-              visibility: 'hidden'
-            }
-          }}>
-            <CardContent align="center" className="content" sx={{ transition: 'opacity 1s ease' }}>
-              <Typography variant="h3" sx={{ marginBottom: 2 }}>
-                {card.icon}
-              </Typography>
-              <Typography variant="h5">{card.title}</Typography>
-              <Typography variant="body1">
-                {card.text}
-              </Typography>
-            </CardContent>
+            <Container>
+                <Typography variant="h2" align="center" gutterBottom>
+                Nossos <span style={{ color: '#6a82cc', fontWeight: 'bold' }}>princípios e valores</span>
+                </Typography>
+                <Grid container spacing={4} justifyContent="center">
+                {[{
+                    icon: <IconHeartHandshake style={{ width: '60px', height: '60px' }} />,
+                    title: 'Comprometimento',
+                    text: 'Estamos totalmente comprometidos em oferecer um serviço excepcional às igrejas de todo o Brasil. Nossa equipe está sempre disponível para atender suas necessidades e garantir que sua experiência com o Aliance seja a melhor possível.',
+                    overlayText: 'Jeremias 29:13'
+                },
+                {
+                    icon: <IconWall style={{ width: '60px', height: '60px' }} />,
+                    title: 'Edificação',
+                    text: 'Queremos edificar o Corpo de Cristo ao fornecer ferramentas robustas de gestão. Através de nossa plataforma, as igrejas podem otimizar suas operações, permitindo que se concentrem no que realmente importa: a missão de espalhar a palavra de Deus.',
+                    overlayText: 'Mateus 7:24-27'
+                },
+                {
+                    icon: <IconCross style={{ width: '60px', height: '60px' }} />,
+                    title: 'Glorificando a Cristo',
+                    text: 'Acreditamos que cada ação conta. Por isso, nosso compromisso é oferecer um serviço de alta qualidade, permitindo que as igrejas realizem suas atividades com excelência. Servir a Cristo com dedicação é o que nos motiva todos os dias. ',
+                    overlayText: 'Colossenses 3:23-24'
+                },
+                {
+                    icon: <IconCheck style={{ width: '60px', height: '60px' }} />,
+                    title: 'Qualidade',
+                    text: 'O Aliance é sinônimo de qualidade. Estamos comprometidos em apoiar as igrejas na sua jornada de fé e gestão, oferecendo soluções que realmente fazem a diferença, desde a administração de membros até o controle financeiro.',
+                    overlayText: '1 Coríntios 10:31'
+                }].map((card, index) => (
+                    <Grid item xs={12} sm={6} md={6} key={index}>
+                    <Card data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" sx={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        height: '100%',
+                        transition: 'transform 1.5s ease-in-out',
+                        
+                        '&:hover .overlay': {
+                        opacity: 1,
+                        visibility: 'visible'
+                        },
+                        '&:hover .content': {
+                        opacity: 0,
+                        visibility: 'hidden'
+                        }
+                    }}>
+                        <CardContent align="center" className="content" sx={{ transition: 'opacity 1s ease' }}>
+                        <Typography variant="h3" sx={{ marginBottom: 2 }}>
+                            {card.icon}
+                        </Typography>
+                        <Typography variant="h5">{card.title}</Typography>
+                        <Typography variant="body1">
+                            {card.text}
+                        </Typography>
+                        </CardContent>
 
-            {/* Overlay */}
-            <Box
-              className="overlay"
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                opacity: 0,
-                visibility: 'hidden',
-                transition: 'opacity 1s ease',
-              }}
-            >
-              <Typography variant="h6">{card.overlayText}</Typography>
-            </Box>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
-  </Container>
-</Box>
+                        {/* Overlay */}
+                        <Box
+                        className="overlay"
+                        sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            opacity: 0,
+                            visibility: 'hidden',
+                            transition: 'opacity 1s ease',
+                        }}
+                        >
+                        <Typography variant="h6">{card.overlayText}</Typography>
+                        </Box>
+                    </Card>
+                    </Grid>
+                ))}
+                </Grid>
+            </Container>
+        </Box>
 
 
         {/* Seção Quem Somos */}
@@ -613,7 +618,7 @@ const AlianceLandingPage = () => {
                 </Container>
         </Box>
 
-        <Box sx={{ padding: '4rem 0', backgroundColor: '#f5f5f5' }}>
+        <Box sx={{ padding: '4rem 0', backgroundColor: '#f5f5f5' }} id="contact">
             <Container maxWidth="sm">
                 <Typography variant="h4" align="center" gutterBottom>
                 Entre em Contato
@@ -690,29 +695,29 @@ const AlianceLandingPage = () => {
         </Box>
 
         <Box
-      component="a"
-      href={whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      sx={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
-        backgroundColor: '#25D366',
-        borderRadius: '50%',
-        padding: '1rem',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        zIndex: 1000,
-        textDecoration: 'none',
-        color: '#fff',
-        transition: 'background-color 0.3s ease',
-        '&:hover': {
-          backgroundColor: '#243b53',
-        },
-      }}
-    >
-      <IconBrandWhatsapp sx={{color: 'white', fontSize: '2rem' }} />
-    </Box>
+            component="a"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+                position: 'fixed',
+                bottom: '2rem',
+                right: '2rem',
+                backgroundColor: '#25D366',
+                borderRadius: '50%',
+                padding: '1rem',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+                zIndex: 1000,
+                textDecoration: 'none',
+                color: '#fff',
+                transition: 'background-color 0.3s ease',
+                '&:hover': {
+                backgroundColor: '#243b53',
+                },
+            }}
+            >
+            <IconBrandWhatsapp sx={{color: 'white', fontSize: '2rem' }} />
+        </Box>
     </div>
   );
 };

@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const RecursoReport = () => {
     const [recursos, setRecursos] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
+    const params = new URLSearchParams(location.search);
+    const dataInicial = params.get('dataInicial');
+    const dataFinal = params.get('dataFinal');
     
     // Função para buscar os recursos da API
     const fetchRecursos = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/recursoReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/recursoReport?dataInicial=${dataInicial}&dataFinal=${dataFinal}&idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await api.get(apiUrl);
 
             // Armazena os recursos e os dados do relatório

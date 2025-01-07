@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const MissoesReport = () => {
+const AulaEBDReport = () => {
     const [aulas, setAulas] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
-    
-    // Função para buscar os usuários da API
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search); // Obtém os parâmetros da URL
+    const dataInicial = queryParams.get('dataInicial');
+    const dataFinal = queryParams.get('dataFinal');
+
+    // Função para buscar os dados da API
     const fetchAulas = async () => {
         try {
-            const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/ebdReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const idCliente = localStorage.getItem('idCliente'); // Obtém o ID do cliente do localStorage
+    
+            // Monta a URL com os parâmetros
+            const apiUrl = `http://localhost:8000/api/ebdReport?idCliente=${idCliente}&dataInicial=${dataInicial}&dataFinal=${dataFinal}`;
             const response = await api.get(apiUrl);
     
-            // Armazena os usuários a partir do campo 'usuarios'
-            setAulas(response.data.aulas); 
-            setReportData(response.data); // Armazena os dados do relatório
+            // Armazena os dados do relatório
+            setAulas(response.data.aulas);
+            setReportData(response.data);
         } catch (error) {
             console.error("Erro ao buscar aulas:", error);
         }
@@ -61,7 +67,7 @@ const MissoesReport = () => {
                 Relatório de Aulas de EBD da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
-                Aulas cadastradas entre 20/08/2024 e 04/10/2024
+                Aulas registradas entre {new Date(dataInicial).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} e {new Date(dataFinal).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
             </Typography>
 
             {/* Ícone de impressão */}
@@ -74,30 +80,31 @@ const MissoesReport = () => {
                 <Grid item xs={6}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Quantidade de aulas:</Typography>
-                        <Typography variant="h5">{reportData.qtdeAulas}</Typography>
+                        <Typography variant="h5">{reportData.qtdeAulas ?? "Sem dados disponíveis"}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Quantidade de classes:</Typography>
-                        <Typography variant="h5">{reportData.qtdeClasses}</Typography>
+                        <Typography variant="h5">{reportData.qtdeClasses ?? "Sem dados disponíveis"}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
+                <Grid item xs={6} style={{ marginTop: '5%' }}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Média de alunos:</Typography>
-                        <Typography variant="h5">{reportData.mediaAlunos}</Typography>
+                        <Typography variant="h5">{reportData.mediaAlunos ?? "Sem dados disponíveis"}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
+                <Grid item xs={6} style={{ marginTop: '5%' }}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Professor mais ativo:</Typography>
-                        <Typography variant="h5">{reportData.professorMaisFrequente && reportData.professorMaisFrequente.professor 
-                ? `${reportData.professorMaisFrequente.professor.name} (${reportData.professorMaisFrequente.total} aulas)` 
-                : "Dados indisponíveis"}</Typography>
+                        <Typography variant="h5">
+                            {reportData.professorMaisFrequente?.professor
+                                ? `${reportData.professorMaisFrequente.professor.name} (${reportData.professorMaisFrequente.total} aulas)`
+                                : "Sem dados disponíveis"}
+                        </Typography>
                     </Paper>
                 </Grid>
-                
             </Grid>
 
             {/* Tabela de missões */}
@@ -116,17 +123,17 @@ const MissoesReport = () => {
                         {aulas.length > 0 ? (
                             aulas.map((aula, index) => (
                                 <TableRow key={index}>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.dataAula}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.classe.nomeClasse}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.professor.name}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.quantidadePresentes}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.numeroAula}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.dataAula ?? "Sem dados"}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.classe?.nomeClasse ?? "Sem dados"}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.professor?.name ?? "Sem dados"}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.quantidadePresentes ?? "Sem dados"}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{aula.numeroAula ?? "Sem dados"}</TableCell>
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={5} align="center" sx={{ border: '1px solid black' }}>
-                                    Nenhuma missão encontrada.
+                                    Sem dados disponíveis.
                                 </TableCell>
                             </TableRow>
                         )}
@@ -137,13 +144,11 @@ const MissoesReport = () => {
             {/* Área de assinaturas */}
             <Grid container style={{ marginTop: '50px', textAlign: 'center', padding: '50px' }} spacing={4}>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
-                    </Typography>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }} />
                     <Typography variant="body1">Pastor</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
-                    </Typography>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }} />
                     <Typography variant="body1">Secretária</Typography>
                 </Grid>
             </Grid>
@@ -151,4 +156,4 @@ const MissoesReport = () => {
     );
 };
 
-export default MissoesReport;
+export default AulaEBDReport;

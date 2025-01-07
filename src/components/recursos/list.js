@@ -78,8 +78,35 @@ const RecursosList = () => {
   };
 
   const handleReport = () => {
-    navigate('/relatorio/recursos');
-  };
+        Swal.fire({
+          title: 'Gerar Relatório',
+          html: `
+            <p>Insira a data inicial e final para a geração do relatório.</p>
+            <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
+            <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
+            <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Gerar Relatório',
+          cancelButtonText: 'Cancelar',
+          focusConfirm: false,
+          preConfirm: () => {
+            const dataInicial = document.getElementById('dataInicial').value;
+            const dataFinal = document.getElementById('dataFinal').value;
+            if (!dataInicial || !dataFinal) {
+              Swal.showValidationMessage('Por favor, insira ambas as datas!');
+              return false;
+            }
+            return { dataInicial, dataFinal };
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const { dataInicial, dataFinal } = result.value;
+            // Redirecionar para o relatório com as datas na URL
+            navigate(`/relatorio/recursos?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
+          }
+        });
+      };
 
   const handleIncrease = async (recurso) => {
     try {
@@ -107,12 +134,11 @@ const RecursosList = () => {
         Recursos da Primeira Igreja Batista de Presidente Prudente
       </Typography>
 
-      {nivelUsuario > 1 && (
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
         <button className="btn btn-success" onClick={handleNewUser}><IconPlus /> Novo recurso</button>
         <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
-      )}
+      
 
       <AppBar position="static" style={{ marginTop: '2%' }} color="default">
         <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">

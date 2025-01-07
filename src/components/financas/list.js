@@ -12,9 +12,32 @@ const Financas = () => {
   const [filterDate, setFilterDate] = useState('');
   const [filterCategoria, setFilterCategoria] = useState('');
   const [loading, setLoading] = useState(true);
-  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const idCliente = localStorage.getItem('idCliente');  
   const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const perfil = parseInt(localStorage.getItem('perfil'), 10); // Convertendo para número
+
+  async function fetchPerfilFuncao() {
+    try {
+      const response = await fetch(`http://localhost:8000/api/perfis-funcoes/${perfil}`, {
+        method: 'GET', // O método da requisição
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os dados');
+      }
+  
+      const data = await response.json();
+      return data; // Retorna o resultado na variável 'data'
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      return []; // Retorna um array vazio em caso de erro
+    }
+  }
+
 
   useEffect(() => {
     const fetchFinancas = async () => {
@@ -81,6 +104,20 @@ const Financas = () => {
   const groupedEntradas = groupByMonth(filteredData.entradas);
   const groupedSaidas = groupByMonth(filteredData.saidas);
 
+  useEffect(() => {
+            fetchPerfilFuncao().then(fetchedData => {
+              setData(fetchedData); // Atualiza o estado com os dados
+            });
+          }, []); // Executa apenas uma vez ao montar o componente
+        
+          if (data === null) {
+            return []; // Retorna um array vazio enquanto os dados estão sendo carregados
+          }
+          
+    const permissaoCadastroEntradas = data.find(permissao => permissao.idFuncao === 13)?.permissao; // Listagem de células
+    const permissaoCadastroSaidas = data.find(permissao => permissao.idFuncao === 14)?.permissao; // Listagem de células
+  
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ marginTop: 4 }}>
@@ -120,7 +157,7 @@ const Financas = () => {
             </Select>
           </FormControl>
         </Box>
-        {nivelUsuario > 2 && (
+        {permissaoCadastroEntradas == 1 && (
         <div className="d-flex justify-content-between mb-3">
           <button className="btn btn-success" onClick={handleNewEntrada}><IconPlus/>Nova entrada</button>
           <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
@@ -168,7 +205,7 @@ const Financas = () => {
                 </Table>
               </div>
             ))}
-            {nivelUsuario > 2 && (
+            {permissaoCadastroSaidas == 1 && (
             <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
             )}
             {/* Tabela de Saídas por Mês */}

@@ -179,20 +179,27 @@ const MissaoEdit = () => {
             )}
           />
 
-            <FormControl fullWidth margin="normal" required>
-              <InputLabel id="pastor-titular-label">Pastor Titular</InputLabel>
-              <Select
-                labelId="pastor-titular-label"
-                value={pastorTitular}
-                onChange={(e) => setPastorTitular(e.target.value)}
-              >
-                {users.map((user) => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.name} {/* Supondo que o usuário tenha um campo 'nome' */}
-                  </MenuItem>
-                ))}
-              </Select>
-          </FormControl>
+<FormControl fullWidth margin="normal" required>
+  <InputLabel id="pastor-titular-label">Pastor Titular</InputLabel>
+  <Select
+    labelId="pastor-titular-label"
+    value={pastorTitular}
+    onChange={(e) => setPastorTitular(e.target.value)}
+  >
+    {users.length === 0 ? (
+      <MenuItem disabled>Sem usuários cadastrados</MenuItem>
+    ) : (
+      users
+        .filter((user) => user.usuarioAtivo === 1) // Filtra usuários com usuarioAtivo igual a 1
+        .map((user) => (
+          <MenuItem key={user.id} value={user.id}>
+            {user.name} {/* Exibe o nome do usuário */}
+          </MenuItem>
+        ))
+    )}
+  </Select>
+</FormControl>
+
 
           <Button
             variant="contained"

@@ -6,50 +6,45 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CreateUser = ({ onUserCreated }) => {
-  const { userId } = useParams(); // Obtenha o ID do usuário da URL
+  const { userId } = useParams(); 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [nivelUsuario, setNivelUsuario] = useState('');
+  const [perfil, setPerfil] = useState('');
   const [dataNascimentoUsuario, setDataNascimentoUsuario] = useState('');
-  const [imgUsuario, setImgUsuario] = useState('');
-  const [niveisUsuarios, setNiveisUsuarios] = useState([]);
-  const idCliente = localStorage.getItem('idCliente'); 
-  const [oldPassword, setOldPassword] = useState(''); // Armazena a senha antiga
+  const [imgUsuario, setImgUsuario] = useState(null); // Alterado para armazenar a imagem
+  const [perfis, setPerfis] = useState([]);
+  const idCliente = localStorage.getItem('idCliente');
+  const [oldPassword, setOldPassword] = useState('');
   const navigate = useNavigate();
 
-  
-  // Função para buscar níveis de usuários
   useEffect(() => {
-    const fetchNiveisUsuarios = async () => {
+    const fetchPerfis = async () => {
       try {
-      const apiUrl = `http://localhost:8000/api/nivelUsuario?idCliente=${idCliente}`; // URL com idCliente como parâmetro
-      const response = await api.get(apiUrl);
-        setNiveisUsuarios(response.data);
+        const apiUrl = `http://localhost:8000/api/perfis?idCliente=${idCliente}`; 
+        const response = await api.get(apiUrl);
+        setPerfis(response.data);
       } catch (error) {
-        console.error("Erro ao buscar níveis de usuários:", error);
+        console.error("Erro ao buscar perfis:", error);
       }
     };
 
-    fetchNiveisUsuarios();
+    fetchPerfis();
   }, []);
 
-  // Função para buscar os detalhes do usuário se estiver editando
   useEffect(() => {
     const fetchUser = async () => {
       if (userId) {
         try {
           const response = await api.get(`http://localhost:8000/api/user/${userId}`);
-          const user = response.data.user; // Acesse a propriedade user
+          const user = response.data.user;
   
-          // Agora acesse as propriedades corretamente
           setName(user.name);
           setEmail(user.email);
-          setNivelUsuario(user.nivelUsuario);
+          setPerfil(user.perfil);
           setDataNascimentoUsuario(user.dataNascimentoUsuario);
           setImgUsuario(user.imgUsuario);
-          setOldPassword(user.password); // Armazena a senha antiga
-  
+          setOldPassword(user.password);
         } catch (error) {
           console.error("Erro ao buscar detalhes do usuário:", error);
         }
@@ -59,57 +54,67 @@ const CreateUser = ({ onUserCreated }) => {
     fetchUser();
   }, [userId]);
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      name,
-      email,
-      password: password || oldPassword, // Use a senha antiga se a nova estiver em branco
-      nivelUsuario,
-      dataNascimentoUsuario,
-      imgUsuario,
-      idCliente
-    };
+
+    // Criando o FormData para enviar a imagem e os dados do usuário
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password || oldPassword);
+    formData.append('perfil', perfil);
+    formData.append('dataNascimentoUsuario', dataNascimentoUsuario);
+    formData.append('idCliente', idCliente);
+
+    // Se uma imagem foi selecionada, adicione ao FormData
+    if (imgUsuario instanceof File) {
+      formData.append('imgUsuario', imgUsuario);
+    } else {
+      formData.append('imgUsuario', imgUsuario); // Caso já tenha a URL
+    }
 
     try {
       if (userId) {
-        // Se userId estiver presente, atualize o usuário
-        await api.put(`http://localhost:8000/api/user/${userId}`, userData)
-        .then(() => {
+        await api.put(`http://localhost:8000/api/user/${userId}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Necessário para enviar arquivos
+          },
+        }).then(() => {
           Swal.fire(
             'Usuário atualizado!',
             'O usuário foi atualizado com sucesso.',
             'success'
-          )});
-          navigate('/dashboard/users'); // Navegar para a lista de usuários
-
+          );
+        });
+        navigate('/dashboard/users');
       } else {
-        // Se não houver userId, crie um novo usuário
-        await api.post(`http://localhost:8000/api/user`, userData)
-        .then(() => {
+        await api.post(`http://localhost:8000/api/user`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(() => {
           Swal.fire(
             'Usuário criado!',
             'O usuário foi criado com sucesso.',
             'success'
-          )});
-          onUserCreated(); // Atualizar a lista de usuários
-          navigate('/dashboard/users'); // Navegar para a lista de usuários
-      }
-      
-    } catch (error) {
-        if (error.response && error.response.data.error) {
-          Swal.fire(
-            'Erro!',
-            error.response.data.error,
-            'error'
           );
-        } 
+        });
+        onUserCreated(); 
+        navigate('/dashboard/users');
+      }
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        Swal.fire(
+          'Erro!',
+          error.response.data.error,
+          'error'
+        );
+      }
     }
   };
 
   const handleGoBack = () => {
-      navigate(-1); // Volta para a tela anterior
+    navigate(-1); // Volta para a tela anterior
   };
 
   return (
@@ -122,18 +127,16 @@ const CreateUser = ({ onUserCreated }) => {
           {userId ? 'Editar Usuário' : 'Criar Novo Usuário'}
         </Typography>
         <form onSubmit={handleSubmit}>
-        <TextField
-          label="Nome"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          inputProps={{
-            maxLength: 45, // Define o limite de caracteres
-          }}
-        />
+          <TextField
+            label="Nome"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            inputProps={{ maxLength: 45 }}
+          />
           <TextField
             label="Email"
             type="email"
@@ -154,23 +157,22 @@ const CreateUser = ({ onUserCreated }) => {
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            // Não é necessário 'required' aqui, pois a senha pode ser deixada em branco
           />
           <FormControl fullWidth margin="normal" required>
-            <InputLabel id="nivelUsuario-label">Nível de Usuário</InputLabel>
+            <InputLabel id="perfil-label">Perfil</InputLabel>
             <Select
-              labelId="nivelUsuario-label"
-              id="nivelUsuario"
-              value={nivelUsuario}
-              onChange={(e) => setNivelUsuario(e.target.value)}
-              label="Nível de Usuário"
+              labelId="perfil-label"
+              id="perfil"
+              value={perfil}
+              onChange={(e) => setPerfil(e.target.value)}
+              label="Perfil"
             >
               <MenuItem value="">
-                <em>Selecione um nível</em>
+                <em>Selecione um perfil</em>
               </MenuItem>
-              {niveisUsuarios.map((nivel) => (
-                <MenuItem key={nivel.id} value={nivel.id}>
-                  {nivel.nivelUsuario}
+              {perfis.map((perfil) => (
+                <MenuItem key={perfil.id} value={perfil.id}>
+                  {perfil.nomePerfil}
                 </MenuItem>
               ))}
             </Select>
@@ -188,15 +190,13 @@ const CreateUser = ({ onUserCreated }) => {
             onChange={(e) => setDataNascimentoUsuario(e.target.value)}
             required
           />
+          {/* Campo para upload de imagem */}
           <TextField
-            label="Imagem do Usuário (URL ou nome)"
+            type="file"
             variant="outlined"
             fullWidth
-            inputProps={{ maxLength: 60 }}
             margin="normal"
-            value={imgUsuario}
-            onChange={(e) => setImgUsuario(e.target.value)}
-            required
+            onChange={(e) => setImgUsuario(e.target.files[0])} // Armazenar o arquivo selecionado
           />
           <Button variant="contained" color="primary" type="submit" fullWidth sx={{ marginTop: 2 }}>
             {userId ? 'Atualizar Usuário' : 'Criar Usuário'}

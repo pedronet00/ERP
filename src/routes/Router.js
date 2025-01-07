@@ -11,63 +11,45 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 
 // Dashboard
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')))
-
-
 // Landing Page
 const AlianceLandingPage = Loadable(lazy(() => import('../components/landing_page/index.js')));
-
-
 // Usuários
 const UserList = Loadable(lazy(() => import('../components/users/list')));
 const UserCreate = Loadable(lazy(() => import('../components/users/create')));
-
-
 // Departamentos
 const DepartmentCreate = Loadable(lazy(() => import('../components/departamentos/create')));
 const DepartmentList = Loadable(lazy(() => import('../components/departamentos/list')));
-
-
 // Missões
 const MissoesList = Loadable(lazy(() => import('../components/missoes/list')));
-const MissoesCreate = Loadable(lazy(() => import('../components/missoes/create')));
-
-
+const MissoesCreate = Loadable(lazy(() => import('../components/missoes/create')))
 // Recursos
 const RecursosList = Loadable(lazy(() => import('../components/recursos/list')));
 const RecursosCreate = Loadable(lazy(() => import('../components/recursos/create')));
-
-
 // Tipos Recursos
 const CriarTipoRecurso = Loadable(lazy(() => import('../components/tipo_recurso/create')));
 const ListaTiposRecursos = Loadable(lazy(() => import('../components/tipo_recurso/list')));
-
-
 // Eventos
 const EventosCreate = Loadable(lazy(() => import('../components/eventos/create')));
-
-
 // EBD
 const EBDAulasList = Loadable(lazy(() => import('../components/aulas_ebd/list.js')));
 const EBDClassesList = Loadable(lazy(() => import('../components/classes_ebd/list.js')));
 const EBDClassesCreate = Loadable(lazy(() => import('../components/classes_ebd/create.js')));
 const EBDAulaCreate = Loadable(lazy(() => import('../components/aulas_ebd/create.js')));
-
-// EBD
+// Células
 const CelulasList = Loadable(lazy(() => import('../components/celulas/list.js')));
 const CelulasCreate = Loadable(lazy(() => import('../components/celulas/create.js')));
-
-
+const CelulasPerfil = Loadable(lazy(() => import('../components/celulas/celulasPerfil.js')));
+const CelulasMembros = Loadable(lazy(() => import('../components/celulas/membrosCelula.js')));
+const AdicionarMembroCelula = Loadable(lazy(() => import('../components/celulas/adicionarMembroCelula.js')));
+const EncontrosCelulasCreate = Loadable(lazy(() => import('../components/celulas/encontrosCelula.js')));
 // Finanças
 const EventosList = Loadable(lazy(() => import('../components/eventos/list.js')));
 const Financas = Loadable(lazy(() => import('../components/financas/list.js')));
 const CadastrarEntrada = Loadable(lazy(() => import('../components/financas/entradas_create.js')));
 const CadastrarSaida = Loadable(lazy(() => import('../components/financas/saidas_create.js')));
-
 // Dízimo
 const CadastroDizimo = Loadable(lazy(() => import('../components/dizimos/create')));
 const DizimoList = Loadable(lazy(() => import('../components/dizimos/list')));
-
-
 // Relatórios
 const UserReport = Loadable(lazy(() => import('../components/users/report.js')));
 const DepartamentoReport = Loadable(lazy(() => import('../components/departamentos/report.js')));
@@ -77,22 +59,25 @@ const EBDAulaReport = Loadable(lazy(() => import('../components/aulas_ebd/report
 const FinancasReport = Loadable(lazy(() => import('../components/financas/report.js')));
 const EventoReport = Loadable(lazy(() => import('../components/eventos/report.js')));
 const DizimosReport = Loadable(lazy(() => import('../components/dizimos/report.js')));
-
-
 // Auth
 const Register = Loadable(lazy(() => import('../views/authentication/Register'))); 
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
-
-
+const Payment = Loadable(lazy(() => import('../views/authentication/Payment3.js')));
 // Livros
 const CadastrarLivro = Loadable(lazy(() => import('../components/livros/create.js')));
 const ListaLivros = Loadable(lazy(() => import('../components/livros/list.js')));
-
-
+// Cultos
+const CadastrarCulto = Loadable(lazy(() => import('../components/cultos/create.js')));
+const ListaCultos = Loadable(lazy(() => import('../components/cultos/list.js')));
+const CultoReport = Loadable(lazy(() => import('../components/cultos/report.js')));
+// Escalas de Cultos
+const CadastrarEscalaCulto = Loadable(lazy(() => import('../components/escalas-cultos/create.js')));
+const ListaEscalasCultos = Loadable(lazy(() => import('../components/escalas-cultos/list.js')));
+const ListaEscalasUsuario = Loadable(lazy(() => import('../components/escalas-cultos/escala_usuario.js')));
+const EscalaCultoReport = Loadable(lazy(() => import('../components/escalas-cultos/report.js')));
 // Posts
 const PostList = Loadable(lazy(() => import('../components/posts/list')));
 const PostCreate = Loadable(lazy(() => import('../components/posts/create')));
-
 // Outros
 const Settings = Loadable(lazy(() => import('../components/settings/index')));
 const CriarLocal = Loadable(lazy(() => import('../components/locais/create')));
@@ -103,13 +88,15 @@ const OnBoarding = Loadable(lazy(() => import('../components/onboarding/index.js
 const AtasList = Loadable(lazy(() => import('../components/atas/index')));
 const ReportIndex = Loadable(lazy(() => import('../components/reports/index')));
 
-
+import SavePaymentMethodWrapper from '../views/authentication/Payment.js';
+import TermsAndConditions from '../components/landing_page/termosECondicoes.js';
 
 const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')))
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')))
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')))
 const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')))
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
+const SemPermissao = Loadable(lazy(() => import('../views/authentication/SemPermissao')));
 const ReportCreate = Loadable(lazy(() => import('../components/reports/create')));
 
 
@@ -117,6 +104,10 @@ const Router = [
    // Landing page fora das rotas autenticadas
    { path: '/', element: <AlianceLandingPage /> },
 
+   { path: '/login', element: <Login /> },
+   { path: '/cadastro', element: <Register /> },
+   { path: '/pagamento', element: <SavePaymentMethodWrapper /> },
+   { path: '/termos-e-condicoes', element: <TermsAndConditions /> },
    // Rotas autenticadas
    {
     path: '/dashboard',
@@ -124,172 +115,217 @@ const Router = [
     children: [
 
       // Dashboard
-      { path: '', exact: true, element: <PrivateRoute ><Dashboard /></PrivateRoute> },
-
+      { 
+        path: '', 
+        exact: true, 
+        element: <PrivateRoute><Dashboard /></PrivateRoute> 
+      },
+    
       // Livros
       { 
         path: 'livros', 
-        element: <PrivateRoute requiredLevel={1}><ListaLivros /></PrivateRoute> 
+        element: <PrivateRoute><ListaLivros /></PrivateRoute> 
       },
       { 
         path: 'livros/create', 
-        element: <PrivateRoute requiredLevel={3}><CadastrarLivro /></PrivateRoute> 
+        element: <PrivateRoute><CadastrarLivro /></PrivateRoute> 
       },
-
+      { 
+        path: 'configuracoes', 
+        element: <PrivateRoute><Settings /></PrivateRoute> 
+      },
+    
       // Departamentos
       { 
         path: 'departaments', 
-        element: <PrivateRoute requiredLevel={1}><DepartmentList /></PrivateRoute> 
+        element: <PrivateRoute><DepartmentList /></PrivateRoute> 
       },
       { 
         path: 'departament/create', 
-        element: <PrivateRoute requiredLevel={3}><DepartmentCreate /></PrivateRoute> 
+        element: <PrivateRoute><DepartmentCreate /></PrivateRoute> 
       },
       { 
         path: 'departament/create/:id', 
-        element: <PrivateRoute requiredLevel={3}><DepartmentCreate /></PrivateRoute> 
+        element: <PrivateRoute><DepartmentCreate /></PrivateRoute> 
       },
-
+    
       // Dízimos
       { 
         path: 'dizimos', 
-        element: <PrivateRoute requiredLevel={3}><DizimoList /></PrivateRoute> 
+        element: <PrivateRoute><DizimoList /></PrivateRoute> 
       },
       { 
         path: 'dizimos/create', 
-        element: <PrivateRoute requiredLevel={4}><CadastroDizimo /></PrivateRoute> 
+        element: <PrivateRoute><CadastroDizimo /></PrivateRoute> 
       },
-
+    
       // EBD (Aulas e Classes)
       { 
         path: 'aulasEBD', 
-        element: <PrivateRoute requiredLevel={1}><EBDAulasList /></PrivateRoute> 
+        element: <PrivateRoute><EBDAulasList /></PrivateRoute> 
       },
       { 
         path: 'aulasEBD/create', 
-        element: <PrivateRoute requiredLevel={2}><EBDAulaCreate /></PrivateRoute> 
+        element: <PrivateRoute><EBDAulaCreate /></PrivateRoute> 
       },
       { 
         path: 'classesEBD', 
-        element: <PrivateRoute requiredLevel={1}><EBDClassesList /></PrivateRoute> 
+        element: <PrivateRoute><EBDClassesList /></PrivateRoute> 
       },
       { 
         path: 'classesEBD/create', 
-        element: <PrivateRoute requiredLevel={2}><EBDClassesCreate /></PrivateRoute> 
+        element: <PrivateRoute><EBDClassesCreate /></PrivateRoute> 
       },
-
+    
       // Eventos
       { 
         path: 'eventos', 
-        element: <PrivateRoute requiredLevel={1}><EventosList /></PrivateRoute> 
+        element: <PrivateRoute><EventosList /></PrivateRoute> 
       },
       { 
         path: 'eventos/create', 
-        element: <PrivateRoute requiredLevel={2}><EventosCreate /></PrivateRoute> 
+        element: <PrivateRoute><EventosCreate /></PrivateRoute> 
       },
       { 
         path: 'eventos/create/:eventId', 
-        element: <PrivateRoute requiredLevel={2}><EventosCreate /></PrivateRoute> 
+        element: <PrivateRoute><EventosCreate /></PrivateRoute> 
       },
-
+    
       // Finanças
       { 
         path: 'financas', 
-        element: <PrivateRoute requiredLevel={3}><Financas /></PrivateRoute> 
+        element: <PrivateRoute><Financas /></PrivateRoute> 
       },
       { 
         path: 'entradas/create', 
-        element: <PrivateRoute requiredLevel={3}><CadastrarEntrada /></PrivateRoute> 
+        element: <PrivateRoute><CadastrarEntrada /></PrivateRoute> 
       },
       { 
         path: 'saidas/create', 
-        element: <PrivateRoute requiredLevel={3}><CadastrarSaida /></PrivateRoute> 
+        element: <PrivateRoute><CadastrarSaida /></PrivateRoute> 
       },
-
+    
       // Missões
       { 
         path: 'missoes', 
-        element: <PrivateRoute requiredLevel={1}><MissoesList /></PrivateRoute> 
+        element: <PrivateRoute><MissoesList /></PrivateRoute> 
       },
       { 
         path: 'missoes/create', 
-        element: <PrivateRoute requiredLevel={3}><MissoesCreate /></PrivateRoute> 
+        element: <PrivateRoute><MissoesCreate /></PrivateRoute> 
       },
       { 
         path: 'missoes/create/:missaoId', 
-        element: <PrivateRoute requiredLevel={3}><MissoesCreate /></PrivateRoute> 
+        element: <PrivateRoute><MissoesCreate /></PrivateRoute> 
       },
+    
       // Níveis de usuário
       { 
         path: 'nivelUsuario', 
-        element: <PrivateRoute requiredLevel={1}><ListaNivelUsuario /></PrivateRoute> 
+        element: <PrivateRoute><ListaNivelUsuario /></PrivateRoute> 
       },
       { 
         path: 'nivelUsuario/create', 
-        element: <PrivateRoute requiredLevel={3}><CriarNivelUsuario /></PrivateRoute> 
+        element: <PrivateRoute><CriarNivelUsuario /></PrivateRoute> 
       },
-
-      // Recursos
+    
+      // Tipos de Recursos
       { 
         path: 'tipoRecursos', 
-        element: <PrivateRoute requiredLevel={2}><ListaTiposRecursos /></PrivateRoute> 
+        element: <PrivateRoute><ListaTiposRecursos /></PrivateRoute> 
       },
       { 
         path: 'tipoRecursos/create', 
-        element: <PrivateRoute requiredLevel={2}><CriarTipoRecurso /></PrivateRoute> 
+        element: <PrivateRoute><CriarTipoRecurso /></PrivateRoute> 
       },
-
-      // Recursos
+    
+      // Posts
       { 
         path: 'posts', 
-        element: <PrivateRoute requiredLevel={2}><PostList /></PrivateRoute> 
+        element: <PrivateRoute><PostList /></PrivateRoute> 
       },
       { 
         path: 'posts/create', 
-        element: <PrivateRoute requiredLevel={2}><PostCreate /></PrivateRoute> 
+        element: <PrivateRoute><PostCreate /></PrivateRoute> 
       },
       { 
         path: 'posts/create/:id', 
-        element: <PrivateRoute requiredLevel={2}><PostCreate /></PrivateRoute> 
+        element: <PrivateRoute><PostCreate /></PrivateRoute> 
       },
+    
       // Recursos
       { 
         path: 'recursos', 
-        element: <PrivateRoute requiredLevel={2}><RecursosList /></PrivateRoute> 
+        element: <PrivateRoute><RecursosList /></PrivateRoute> 
       },
       { 
         path: 'recursos/create', 
-        element: <PrivateRoute requiredLevel={2}><RecursosCreate /></PrivateRoute> 
+        element: <PrivateRoute><RecursosCreate /></PrivateRoute> 
       },
-
-      // Configurações
-      { 
-        path: 'settings', 
-        element: <PrivateRoute requiredLevel={2}><Settings /></PrivateRoute> 
-      },
-
+    
       // Usuários
       { 
         path: 'users', 
-        element: <PrivateRoute requiredLevel={1}><UserList /></PrivateRoute> 
+        element: <PrivateRoute><UserList /></PrivateRoute> 
       },
       { 
         path: 'user/create', 
-        element: <PrivateRoute requiredLevel={3}><UserCreate /></PrivateRoute> 
+        element: <PrivateRoute><UserCreate /></PrivateRoute> 
       },
       { 
         path: 'user/create/:userId', 
-        element: <PrivateRoute requiredLevel={3}><UserCreate /></PrivateRoute> 
+        element: <PrivateRoute><UserCreate /></PrivateRoute> 
       },
-
+    
       // Células
       { 
-        path: 'celulas', 
-        element: <PrivateRoute requiredLevel={1}><CelulasList /></PrivateRoute> 
+        path: 'celulas',
+        element: <PrivateRoute><CelulasList /></PrivateRoute>
+      },
+      { 
+        path: 'membrosCelula/:idCelula', 
+        element: <PrivateRoute><CelulasMembros /></PrivateRoute> 
+      },
+      { 
+        path: 'membrosCelula/:idCelula/adicionar', 
+        element: <PrivateRoute><AdicionarMembroCelula /></PrivateRoute> 
+      },
+      { 
+        path: 'celulas/:id', 
+        element: <PrivateRoute><CelulasPerfil /></PrivateRoute> 
       },
       { 
         path: 'celulas/create', 
-        element: <PrivateRoute requiredLevel={1}><CelulasCreate /></PrivateRoute> 
+        element: <PrivateRoute><CelulasCreate /></PrivateRoute> 
+      },
+      { 
+        path: 'encontrosCelulas/create/:idCelula', 
+        element: <PrivateRoute><EncontrosCelulasCreate /></PrivateRoute> 
+      },
+      { 
+        path: 'encontrosCelulas/edit/:idEncontro', 
+        element: <PrivateRoute><EncontrosCelulasCreate /></PrivateRoute> 
+      },
+
+      { 
+        path: 'cultos', 
+        element: <PrivateRoute><ListaCultos /></PrivateRoute> 
+      },
+      { 
+        path: 'cultos/create', 
+        element: <PrivateRoute><CadastrarCulto /></PrivateRoute> 
+      },
+      { 
+        path: 'escalas-cultos', 
+        element: <PrivateRoute><ListaEscalasCultos /></PrivateRoute> 
+      },
+      { 
+        path: 'escalas-cultos/create', 
+        element: <PrivateRoute><CadastrarEscalaCulto /></PrivateRoute> 
+      },
+      { 
+        path: 'escalas-cultos/usuario', 
+        element: <PrivateRoute><ListaEscalasUsuario /></PrivateRoute> 
       },
 
       // Outros
@@ -309,8 +345,7 @@ const Router = [
     element: <BlankLayout />,
     children: [
       { path: '404', element: <Error /> },
-      { path: '/auth/register', element: <Register /> },
-      { path: '/auth/login', element: <Login /> },
+      { path: '500', element: <SemPermissao /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
@@ -327,6 +362,8 @@ const Router = [
       { path: '/relatorio/eventos', element: <PrivateRoute ><EventoReport /></PrivateRoute> },
       { path: '/relatorio/ebd', element: <PrivateRoute ><EBDAulaReport /></PrivateRoute> },
       { path: '/relatorio/dizimos', element: <PrivateRoute ><DizimosReport /></PrivateRoute> },
+      { path: '/relatorio/cultos', element: <PrivateRoute ><CultoReport /></PrivateRoute> },
+      { path: '/relatorio/escala-culto', element: <PrivateRoute ><EscalaCultoReport /></PrivateRoute> },
     ],
   },
 ];

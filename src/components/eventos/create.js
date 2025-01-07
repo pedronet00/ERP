@@ -118,6 +118,8 @@ const CadastrarEvento = () => {
       setDataEvento('');
       setPrioridadeEvento('');
       setOrcamentoEvento('');
+
+      navigate('/dashboard/eventos');
     } catch (error) {
       console.error('Erro ao salvar o evento:', error);
     }
@@ -167,11 +169,15 @@ const CadastrarEvento = () => {
               onChange={(e) => setLocalEvento(e.target.value)}
               displayEmpty
             >
-              {locais.map((local) => (
-                <MenuItem key={local.id} value={local.id}>
-                  {local.nomeLocal}
-                </MenuItem>
-              ))}
+              {locais
+                .filter(local => local.statusLocal === 1)  // Filtra os locais com statusLocal igual a 1
+                .map((local) => (
+                  <MenuItem key={local.id} value={local.id}>
+                    {local.nomeLocal}
+                  </MenuItem>
+                ))
+              }
+
             </Select>
           </FormControl>
 

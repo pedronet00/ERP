@@ -111,25 +111,28 @@ const CriarAulaEBD = () => {
             }}
           />
 
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel>Professor</InputLabel>
-            <Select
-              value={professorAula}
-              onChange={(e) => setProfessorAula(e.target.value)}
-              label="Professor"
-              disabled={professores.length === 0} // Desabilita se não houver professores
-            >
-              {professores.length === 0 ? (
-                <MenuItem disabled>Sem professores cadastrados</MenuItem>
-              ) : (
-                professores.map((professor) => (
-                  <MenuItem key={professor.id} value={professor.id}>
-                    {professor.name} {/* Supondo que o objeto professor tenha um campo "name" */}
-                  </MenuItem>
-                ))
-              )}
-            </Select>
-          </FormControl>
+<FormControl fullWidth margin="normal" required>
+  <InputLabel>Professor</InputLabel>
+  <Select
+    value={professorAula}
+    onChange={(e) => setProfessorAula(e.target.value)}
+    label="Professor"
+    disabled={professores.length === 0} // Desabilita se não houver professores
+  >
+    {professores.length === 0 ? (
+      <MenuItem disabled>Sem professores cadastrados</MenuItem>
+    ) : (
+      professores
+        .filter((professor) => professor.usuarioAtivo === 1) // Filtra os professores com usuarioAtivo igual a 1
+        .map((professor) => (
+          <MenuItem key={professor.id} value={professor.id}>
+            {professor.name} {/* Exibe o nome do professor */}
+          </MenuItem>
+        ))
+    )}
+  </Select>
+</FormControl>
+
 
           <FormControl fullWidth margin="normal" required>
             <InputLabel>Classe</InputLabel>

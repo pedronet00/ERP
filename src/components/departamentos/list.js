@@ -27,8 +27,32 @@ const DepartmentList = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [page, setPage] = useState(1);  // Estado para controlar a página atual
   const [rowsPerPage] = useState(5);    // Quantidade de departamentos por página (5)
-  const nivelUsuario = localStorage.getItem('nivelUsuario');
   const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const perfil = parseInt(localStorage.getItem('perfil'), 10); // Convertendo para número
+
+  async function fetchPerfilFuncao() {
+    try {
+      const response = await fetch(`http://localhost:8000/api/perfis-funcoes/${perfil}`, {
+        method: 'GET', // O método da requisição
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os dados');
+      }
+  
+      const data = await response.json();
+      return data; // Retorna o resultado na variável 'data'
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      return []; // Retorna um array vazio em caso de erro
+    }
+  }
+
+
 
   // Função para buscar departamentos da API
   const fetchDepartments = async () => {
@@ -137,8 +161,51 @@ const DepartmentList = () => {
   };
 
   const handleReport = () => {
-    navigate('/relatorio/departamentos');
+    Swal.fire({
+      title: 'Gerar Relatório',
+      html: `
+        <p>Insira a data inicial e final para a geração do relatório.</p>
+        <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
+        <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
+        <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Gerar Relatório',
+      cancelButtonText: 'Cancelar',
+      focusConfirm: false,
+      preConfirm: () => {
+        const dataInicial = document.getElementById('dataInicial').value;
+        const dataFinal = document.getElementById('dataFinal').value;
+        if (!dataInicial || !dataFinal) {
+          Swal.showValidationMessage('Por favor, insira ambas as datas!');
+          return false;
+        }
+        return { dataInicial, dataFinal };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const { dataInicial, dataFinal } = result.value;
+        // Redirecionar para o relatório com as datas na URL
+        navigate(`/relatorio/departamentos?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
+      }
+    });
   };
+  
+
+  useEffect(() => {
+    fetchPerfilFuncao().then(fetchedData => {
+      setData(fetchedData); // Atualiza o estado com os dados
+    });
+  }, []); // Executa apenas uma vez ao montar o componente
+
+  if (data === null) {
+    return []; // Retorna um array vazio enquanto os dados estão sendo carregados
+  }
+  
+const permissaoCadastroDepartamento = data.find(permissao => permissao.idFuncao === 2)?.permissao; // Listagem de células
+const permissaoEdicaoDepartamento = data.find(permissao => permissao.idFuncao === 51)?.permissao; // Listagem de células
+const permissaoDesativarAtivarDepartamento = data.find(permissao => permissao.idFuncao === 67)?.permissao; // Listagem de células
+
 
   return (
     <div className="container mt-4">
@@ -170,7 +237,7 @@ const DepartmentList = () => {
         </FormControl>
       </Box>
 
-      {nivelUsuario > 2 && (
+      {permissaoCadastroDepartamento === 1 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleNewUser}><IconPlus/>Novo Departamento</button>
         <button className="btn btn-primary" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
@@ -197,7 +264,7 @@ const DepartmentList = () => {
                 Status
               </Typography>
             </TableCell>
-            {nivelUsuario > 2 && (
+            {perfil > 2 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
@@ -222,10 +289,10 @@ const DepartmentList = () => {
                     {department.statusDepartamento === 1 ? 'Ativo' : 'Inativo'}
                   </Typography>
                 </TableCell>
-                {nivelUsuario > 2 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
-                    {department.statusDepartamento === 1 ? (
+                  {permissaoDesativarAtivarDepartamento == 1 && (
+                    department.statusDepartamento === 1 ? (
                       <Button
                         variant="contained"
                         color="error"
@@ -245,8 +312,10 @@ const DepartmentList = () => {
                       >
                         Ativar
                       </Button>
-                    )}
+                    )
+                  )}
 
+                  {permissaoEdicaoDepartamento == 1 && (
                     <Button
                       variant="contained"
                       color="primary"
@@ -256,9 +325,9 @@ const DepartmentList = () => {
                     >
                       Editar
                     </Button>
+                  )}
                   </Box>
                 </TableCell>
-                )}
               </TableRow>
             ))
           ) : (

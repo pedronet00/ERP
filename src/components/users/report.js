@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const UserReport = () => {
     const [users, setUsers] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
     
+    const params = new URLSearchParams(location.search);
+    const dataInicial = params.get('dataInicial');
+    const dataFinal = params.get('dataFinal');
+    
     // Função para buscar os usuários da API
     const fetchUsers = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/userReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/userReport?dataInicial=${dataInicial}&dataFinal=${dataFinal}&idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await api.get(apiUrl);
     
             // Armazena os usuários a partir do campo 'usuarios'
@@ -61,7 +65,7 @@ const UserReport = () => {
                 Relatório de Membros da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
-                Membros cadastrados entre 20/08/2024 e 04/10/2024
+                Membros cadastrados entre {new Date(dataInicial).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} e {new Date(dataFinal).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
             </Typography>
 
             {/* Ícone de impressão */}
@@ -89,30 +93,6 @@ const UserReport = () => {
                         <Typography variant="h5">{reportData.qtdeUsuariosInativos}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de usuários comuns:</Typography>
-                        <Typography variant="h5">{reportData.qtdeUsuariosComuns}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de usuários líderes:</Typography>
-                        <Typography variant="h5">{reportData.qtdeUsuariosLideres}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de usuários pastores:</Typography>
-                        <Typography variant="h5">{reportData.qtdeUsuariosPastores}</Typography>
-                    </Paper>
-                </Grid>
-                <Grid item xs={6} style={{marginTop: '5%'}}>
-                    <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                        <Typography variant="h6">Quantidade de usuários administrador:</Typography>
-                        <Typography variant="h5">{reportData.qtdeUsuariosAdm}</Typography>
-                    </Paper>
-                </Grid>
             </Grid>
 
             {/* Tabela de usuários */}
@@ -122,7 +102,6 @@ const UserReport = () => {
                         <TableRow>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Nome</TableCell>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de nascimento</TableCell>
-                            <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Nível do usuário</TableCell>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Data de cadastro</TableCell>
                             <TableCell sx={{ border: '1px solid black', fontWeight: '900', textAlign: 'center' }}>Status do usuário</TableCell>
                         </TableRow>
@@ -133,7 +112,6 @@ const UserReport = () => {
                                 <TableRow key={index}>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.name}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.dataNascimentoUsuario}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.nivel_usuario?.nivelUsuario || "N/A"}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{user.usuarioAtivo === 0 ? "Inativo" : "Ativo"}</TableCell>
                                 </TableRow>

@@ -37,7 +37,7 @@ const ListaLocais = () => {
   // Função para ativar local
   const handleActivateLocation = async (locationId) => {
     try {
-      await api.patch(`http://localhost:8000/api/local/${locationId}/ativar`);
+      await api.patch(`http://localhost:8000/api/locais/${locationId}/ativar`);
       fetchLocations(); // Atualizar a lista de locais após ativar
     } catch (error) {
       console.error("Erro ao ativar local:", error);
@@ -47,7 +47,7 @@ const ListaLocais = () => {
   // Função para desativar local
   const handleDeactivateLocation = async (locationId) => {
     try {
-      await api.patch(`http://localhost:8000/api/local/${locationId}/desativar`);
+      await api.patch(`http://localhost:8000/api/locais/${locationId}/desativar`);
       fetchLocations(); // Atualizar a lista de locais após desativar
     } catch (error) {
       console.error("Erro ao desativar local:", error);

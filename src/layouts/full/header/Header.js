@@ -12,6 +12,11 @@ const Header = (props) => {
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const razaoSocial = localStorage.getItem('razaoSocial'); 
+  var nome = localStorage.getItem('nome'); 
+
+  if(nome === 'undefined'){
+    nome = "Usuário Igreja";
+  }
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
@@ -57,9 +62,11 @@ const Header = (props) => {
             }),
           }}
         >
-          <Badge color="primary">
-            {razaoSocial}
-          </Badge>
+          <Badge color="primary" style={{ fontSize: '20px' }}>
+  {nome !== undefined ? nome : 'Usuário Igreja'} &nbsp;| &nbsp; <b>{razaoSocial}</b>
+</Badge>
+
+
 
         </IconButton>
         <Box flexGrow={1} />

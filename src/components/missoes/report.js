@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const MissoesReport = () => {
     const [missoes, setMissoes] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
+    const params = new URLSearchParams(location.search);
+    const dataInicial = params.get('dataInicial');
+    const dataFinal = params.get('dataFinal');
     
     // Função para buscar os usuários da API
     const fetchMissoes = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/missoesReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/missoesReport?dataInicial=${dataInicial}&dataFinal=${dataFinal}&idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
             const response = await api.get(apiUrl);
     
             // Armazena os usuários a partir do campo 'usuarios'
@@ -61,7 +64,7 @@ const MissoesReport = () => {
                 Relatório de Missões da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
-                Missões cadastradas entre 20/08/2024 e 04/10/2024
+                Missões cadastradas entre {new Date(dataInicial).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} e {new Date(dataFinal).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
             </Typography>
 
             {/* Ícone de impressão */}

@@ -1,20 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PermissoesContext from './PermissionsContext';
 
-const PrivateRoute = ({ children, requiredLevel }) => {
+const PrivateRoute = ({ children }) => {
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const isAuthenticated = !!localStorage.getItem('idCliente');
   const navigate = useNavigate();
 
-  const nivelUsuario = parseInt(localStorage.getItem('nivelUsuario'), 10);
-
   useEffect(() => {
-    if (!nivelUsuario || nivelUsuario < requiredLevel || !isAuthenticated) {
-      navigate('/auth/login');
-      
-    }
-  }, [isAuthenticated, navigate, ]);
+    const verificarPermissao = () => {
+      if (!isAuthenticated) {
+        navigate('/auth/login');
+        return;
+      }
 
-  return isAuthenticated ? children : null;
+      setIsAuthorized(true);
+    };
+
+    verificarPermissao();
+  }, [isAuthenticated, navigate,]);
+
+  if (!isAuthorized) {
+    return null; // Ou um spinner de carregamento
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

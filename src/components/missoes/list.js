@@ -23,7 +23,31 @@ const MissoesList = () => {
   const [currentPage, setCurrentPage] = useState(1); // Estado da página atual
   const [usersPerPage] = useState(5); // Número de missões por página
   const navigate = useNavigate();
-  const nivelUsuario = localStorage.getItem('nivelUsuario');
+  const [data, setData] = useState(null);
+  const perfil = parseInt(localStorage.getItem('perfil'), 10); // Convertendo para número
+
+  async function fetchPerfilFuncao() {
+    try {
+      const response = await fetch(`http://localhost:8000/api/perfis-funcoes/${perfil}`, {
+        method: 'GET', // O método da requisição
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os dados');
+      }
+  
+      const data = await response.json();
+      return data; // Retorna o resultado na variável 'data'
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      return []; // Retorna um array vazio em caso de erro
+    }
+  }
+
+
   const fetchMissoes = async () => {
     try {
       const idCliente = localStorage.getItem('idCliente');
@@ -53,8 +77,35 @@ const MissoesList = () => {
   };
 
   const handleReport = () => {
-    navigate('/relatorio/missoes');
-  };
+      Swal.fire({
+        title: 'Gerar Relatório',
+        html: `
+          <p>Insira a data inicial e final para a geração do relatório.</p>
+          <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
+          <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
+          <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Gerar Relatório',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: () => {
+          const dataInicial = document.getElementById('dataInicial').value;
+          const dataFinal = document.getElementById('dataFinal').value;
+          if (!dataInicial || !dataFinal) {
+            Swal.showValidationMessage('Por favor, insira ambas as datas!');
+            return false;
+          }
+          return { dataInicial, dataFinal };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const { dataInicial, dataFinal } = result.value;
+          // Redirecionar para o relatório com as datas na URL
+          navigate(`/relatorio/missoes?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
+        }
+      });
+    };
 
   const ativarMissao = async (id) => {
     const result = await Swal.fire({
@@ -123,6 +174,21 @@ const MissoesList = () => {
   const indexOfFirstMission = indexOfLastMission - usersPerPage;
   const currentMissoes = filteredMissoes.slice(indexOfFirstMission, indexOfLastMission);
 
+  useEffect(() => {
+          fetchPerfilFuncao().then(fetchedData => {
+            setData(fetchedData); // Atualiza o estado com os dados
+          });
+        }, []); // Executa apenas uma vez ao montar o componente
+      
+        if (data === null) {
+          return []; // Retorna um array vazio enquanto os dados estão sendo carregados
+        }
+        
+  const permissaoCadastroMissoes = data.find(permissao => permissao.idFuncao === 4)?.permissao; // Listagem de células
+  const permissaoAtivarDesativarMissao = data.find(permissao => permissao.idFuncao === 69)?.permissao; // Listagem de células
+  const permissaoEditarMissao = data.find(permissao => permissao.idFuncao === 53)?.permissao; // Listagem de células
+  
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -146,7 +212,7 @@ const MissoesList = () => {
         />
       </Box>
 
-      {nivelUsuario > 2 && (
+      {permissaoCadastroMissoes == 1 && (
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={handleNewUser}><IconPlus /> Nova Missão</button>
         <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
@@ -176,7 +242,7 @@ const MissoesList = () => {
                 Pastor titular
               </Typography>
             </TableCell>
-            {nivelUsuario > 2 && (
+            {perfil > 2 && (
             <TableCell align="center">
               <Typography variant="subtitle2" fontWeight={600}>
                 Ações
@@ -201,10 +267,10 @@ const MissoesList = () => {
                 <TableCell>
                   <Typography align="center" variant="body2">{missao.pastor_titular.name}</Typography>
                 </TableCell>
-                {nivelUsuario > 2 && (
                 <TableCell align="center">
                   <Box display="flex" flexDirection="column" gap={1}>
-                    {missao.statusMissao == 1 ? (
+                    {permissaoAtivarDesativarMissao == 1 && (
+                    missao.statusMissao == 1 ? (
                       <Button
                         variant="contained"
                         color="error"
@@ -224,8 +290,10 @@ const MissoesList = () => {
                       >
                         Ativar
                       </Button>
-                    )}
-
+                    )
+                  )}
+                  
+                    {permissaoEditarMissao == 1 && (
                     <Button
                       variant="contained"
                       color="primary"
@@ -235,9 +303,9 @@ const MissoesList = () => {
                     >
                       Editar
                     </Button>
+                    )}
                   </Box>
                 </TableCell>
-                )}
 
               </TableRow>
             ))

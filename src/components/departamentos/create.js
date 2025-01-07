@@ -6,32 +6,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CriarDepartamento = () => {
-  const { id } = useParams(); // Obtenha o ID do departamento da URL
+  const { id } = useParams();
   const [tituloDepartamento, setTituloDepartamento] = useState('');
   const [textoDepartamento, setTextoDepartamento] = useState('');
-  const [imgDepartamento, setImgDepartamento] = useState('');
+  const [imgDepartamento, setImgDepartamento] = useState(null); // Armazena o arquivo selecionado
   const navigate = useNavigate();
-  const idCliente = localStorage.getItem('idCliente'); 
+  const idCliente = localStorage.getItem('idCliente');
 
-  // Função para buscar os detalhes do departamento se estiver editando
   useEffect(() => {
     const fetchDepartment = async () => {
       if (id) {
         try {
           const response = await api.get(`http://localhost:8000/api/departamentos/${id}`);
-          const departamento = response.data.departamento; // Acesse os dados do departamento corretamente
-          
-          // Defina os estados com os dados do departamento
+          const departamento = response.data.departamento;
+
           setTituloDepartamento(departamento.tituloDepartamento);
           setTextoDepartamento(departamento.textoDepartamento);
-          setImgDepartamento(departamento.imgDepartamento);
         } catch (error) {
-          console.error("Erro ao buscar detalhes do departamento:", error);
-          Swal.fire(
-            'Erro!',
-            'Não foi possível buscar os detalhes do departamento.',
-            'error'
-          );
+          console.error('Erro ao buscar detalhes do departamento:', error);
+          Swal.fire('Erro!', 'Não foi possível buscar os detalhes do departamento.', 'error');
         }
       }
     };
@@ -42,62 +35,51 @@ const CriarDepartamento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const departamentoData = {
-      tituloDepartamento,
-      textoDepartamento,
-      imgDepartamento,
-      idCliente
-    };
+    const formData = new FormData();
+    formData.append('tituloDepartamento', tituloDepartamento);
+    formData.append('textoDepartamento', textoDepartamento);
+    if (imgDepartamento) {
+      formData.append('imgDepartamento', imgDepartamento);
+    }
+    formData.append('idCliente', idCliente);
 
     try {
       if (id) {
-        // Se id estiver presente, atualize o departamento
-        await api.put(`http://localhost:8000/api/departamentos/${id}`, departamentoData);
-        Swal.fire(
-          'Departamento Atualizado!',
-          'O departamento foi atualizado com sucesso.',
-          'success'
-        );
+        await api.put(`http://localhost:8000/api/departamentos/${id}`, formData);
+        Swal.fire('Departamento Atualizado!', 'O departamento foi atualizado com sucesso.', 'success');
       } else {
-        // Se não houver id, crie um novo departamento
-        await api.post(`http://localhost:8000/api/departamentos`, departamentoData);
-        Swal.fire(
-          'Departamento Criado!',
-          'O departamento foi criado com sucesso.',
-          'success'
-        );
+        await api.post(`http://localhost:8000/api/departamentos`, formData);
+        Swal.fire('Departamento Criado!', 'O departamento foi criado com sucesso.', 'success');
       }
 
-      // Limpa os campos após o sucesso
       setTituloDepartamento('');
       setTextoDepartamento('');
-      setImgDepartamento('');
-      navigate('/dashboard/departaments'); // Navegue de volta para a lista de departamentos
+      setImgDepartamento(null);
+      navigate('/dashboard/departaments');
     } catch (error) {
       if (error.response && error.response.data.error) {
-        Swal.fire(
-          'Erro!',
-          error.response.data.error,
-          'error'
-        );
+        Swal.fire('Erro!', error.response.data.error, 'error');
       } else {
-        Swal.fire(
-          'Erro!',
-          'Houve um problema ao criar ou atualizar o departamento.',
-          'error'
-        );
+        Swal.fire('Erro!', 'Houve um problema ao criar ou atualizar o departamento.', 'error');
       }
     }
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Volta para a tela anterior
+    navigate(-1);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImgDepartamento(file);
   };
 
   return (
     <Container maxWidth="sm">
       <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
-        <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+        <button className="btn btn-secondary" onClick={handleGoBack}>
+          <IconArrowLeft /> Voltar
+        </button>
       </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
@@ -127,14 +109,14 @@ const CriarDepartamento = () => {
             required
           />
 
-          <TextField
-            label="Imagem URL do Departamento"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={imgDepartamento}
-            onChange={(e) => setImgDepartamento(e.target.value)}
-            required
+          <Typography variant="subtitle1" sx={{ marginTop: 2, marginBottom: 1 }}>
+            Imagem do Departamento
+          </Typography>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            required={!id} // Exigir imagem apenas para criação
           />
 
           <Button

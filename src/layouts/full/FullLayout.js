@@ -12,7 +12,6 @@ const MainWrapper = styled('div')(() => ({
   width: '100%',
 }));
 
-
 const PageWrapper = styled('div')(() => ({
   display: 'flex',
   flexGrow: 1,
@@ -22,82 +21,41 @@ const PageWrapper = styled('div')(() => ({
   backgroundColor: 'transparent',
 }));
 
-
 const FullLayout = () => {
-
   const navigate = useNavigate();
-  useEffect(() => {
-    const checkLoginTime = () => {
-        const loginTime = localStorage.getItem('loginTime'); // Hora do login
-        const currentTime = Date.now(); // Hora atual em milissegundos
-        
-        if (loginTime) {
-            const timeDifference = currentTime - parseInt(loginTime, 10); // Diferença em milissegundos
-            const thirtySeconds = 3 * 60 * 60 * 1000; // 3 horas em milissegundos
-
-            if (timeDifference > thirtySeconds) {
-                // Se passou mais de 30 segundos, limpar o localStorage
-                localStorage.clear();
-                navigate('/auth/login'); // Redireciona para a página de login
-            }
-        }
-    };
-
-    checkLoginTime();
-
-    // Adiciona o listener para limpar localStorage ao fechar a aba/janela
-    const handleUnload = () => {
-        localStorage.setItem('loginTime', Date.now()); // Armazena a hora atual
-    };
-
-    window.addEventListener('unload', handleUnload);
-
-    // Remove o listener ao desmontar o componente
-    return () => {
-        window.removeEventListener('unload', handleUnload);
-    };
-}, [navigate]);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  // const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+
+  useEffect(() => {
+    const hasReloaded = localStorage.getItem('hasReloaded');
+
+    if (!hasReloaded) {
+      localStorage.setItem('hasReloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
 
   return (
-    <MainWrapper
-      className='mainwrapper'
-    >
-      {/* ------------------------------------------- */}
-      {/* Sidebar */}
-      {/* ------------------------------------------- */}
-      <Sidebar isSidebarOpen={isSidebarOpen}
+    <MainWrapper className='mainwrapper'>
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
         isMobileSidebarOpen={isMobileSidebarOpen}
-        onSidebarClose={() => setMobileSidebarOpen(false)} />
-      {/* ------------------------------------------- */}
-      {/* Main Wrapper */}
-      {/* ------------------------------------------- */}
-      <PageWrapper
-        className="page-wrapper"
-      >
-        {/* ------------------------------------------- */}
-        {/* Header */}
-        {/* ------------------------------------------- */}
-        <Header toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} toggleMobileSidebar={() => setMobileSidebarOpen(true)} />
-        {/* ------------------------------------------- */}
-        {/* PageContent */}
-        {/* ------------------------------------------- */}
-        <Container sx={{
-          paddingTop: "20px",
-          maxWidth: '1200px',
-        }}
+        onSidebarClose={() => setMobileSidebarOpen(false)}
+      />
+      <PageWrapper className="page-wrapper">
+        <Header
+          toggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
+          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
+        <Container
+          sx={{
+            paddingTop: "20px",
+            maxWidth: '1200px',
+          }}
         >
-          {/* ------------------------------------------- */}
-          {/* Page Route */}
-          {/* ------------------------------------------- */}
           <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>
             <Outlet />
           </Box>
-          {/* ------------------------------------------- */}
-          {/* End Page */}
-          {/* ------------------------------------------- */}
         </Container>
       </PageWrapper>
     </MainWrapper>

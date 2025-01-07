@@ -2,45 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const EventoReport = () => {
-    const [eventos, setEventos] = useState([]);  // Inicializado como array vazio
+    const [eventos, setEventos] = useState([]);
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
-    
-    // Função para buscar os eventos da API
+    const location = useLocation();
+    // Extrai as datas da URL (assumindo o formato /eventos-report?dataInicial=YYYY-MM-DD&dataFinal=YYYY-MM-DD)
+    const params = new URLSearchParams(location.search);
+    const dataInicial = params.get('dataInicial');
+    const dataFinal = params.get('dataFinal');
+
+    // Função para buscar os eventos da API com base nas datas da URL
     const fetchEventos = async () => {
         try {
-            const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/eventosReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const idCliente = localStorage.getItem('idCliente');
+
+            if (!dataInicial || !dataFinal) {
+                throw new Error("Datas não fornecidas na URL");
+            }
+
+            const apiUrl = `http://localhost:8000/api/eventosReport?idCliente=${idCliente}&dataInicial=${dataInicial}&dataFinal=${dataFinal}`;
             const response = await api.get(apiUrl);
 
-            setEventos(response.data.eventos || []);  // Garante que eventos seja um array
-            setReportData(response.data || {}); // Armazena os dados do relatório, ou objeto vazio como fallback
+            setEventos(response.data.eventos || []);
+            setReportData(response.data || {});
         } catch (error) {
             console.error("Erro ao buscar eventos:", error);
-            setEventos([]); // Garante que eventos seja um array em caso de erro
+            setEventos([]);
         }
     };
 
-    // Busca os eventos quando o componente for montado
     useEffect(() => {
         fetchEventos();
-    }, []);
+    }, [location.search]); // Reexecuta quando as datas na URL mudarem
 
-    // Função para impressão
     const handlePrint = () => {
         window.print();
     };
 
     const handleGoBack = () => {
-        navigate(-1); // Volta para a tela anterior
+        navigate(-1);
     };
 
     return (
         <Paper className="relatorio" style={{ width: '80%', margin: 'auto' }}>
-            {/* Estilos para ocultar itens na impressão */}
             <style>
                 {`
                 @media print {
@@ -51,25 +58,21 @@ const EventoReport = () => {
                 `}
             </style>
 
-            {/* Botão de voltar */}
             <div className="d-flex justify-content-between mb-3 no-print" style={{ marginTop: '2%' }}>
                 <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
             </div>
-            
-            {/* Título e informações do relatório */}
+
             <Typography variant="h4" gutterBottom style={{ textAlign: 'center', padding: '5% 0 0 0' }}>
                 Relatório de Eventos da Primeira Igreja Batista de Presidente Prudente
             </Typography>
             <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: '200' }}>
-                Eventos realizados
+                Eventos realizados entre {new Date(dataInicial).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} e {new Date(dataFinal).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
             </Typography>
 
-            {/* Ícone de impressão */}
             <IconButton onClick={handlePrint} aria-label="imprimir" className="no-print">
                 <IconPrinter />
             </IconButton>
 
-            {/* Estatísticas do relatório */}
             <Grid container spacing={1} style={{ marginTop: '20px', width: '80%', margin: 'auto' }}>
                 <Grid item xs={12}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
@@ -97,7 +100,6 @@ const EventoReport = () => {
                 </Grid>
             </Grid>
 
-            {/* Tabela de eventos */}
             <TableContainer style={{ width: '80%', margin: '2% auto' }}>
                 <Table sx={{ borderCollapse: 'collapse', textAlign: 'center' }}>
                     <TableHead>
@@ -112,7 +114,7 @@ const EventoReport = () => {
                             eventos.map((evento, index) => (
                                 <TableRow key={index}>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{evento.nomeEvento}</TableCell>
-                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(evento.dataEvento).toLocaleDateString()}</TableCell>
+                                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>{new Date(evento.dataEvento).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</TableCell>
                                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}>R$ {evento.orcamentoEvento}</TableCell>
                                 </TableRow>
                             ))
@@ -127,16 +129,13 @@ const EventoReport = () => {
                 </Table>
             </TableContainer>
 
-            {/* Área de assinaturas */}
             <Grid container style={{ marginTop: '50px', textAlign: 'center', padding: '50px' }} spacing={4}>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
-                    </Typography>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}></Typography>
                     <Typography variant="body1">Pastor</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}>
-                    </Typography>
+                    <Typography variant="h6" style={{ marginBottom: '40px', borderTop: '1px solid black' }}></Typography>
                     <Typography variant="body1">Secretária</Typography>
                 </Grid>
             </Grid>

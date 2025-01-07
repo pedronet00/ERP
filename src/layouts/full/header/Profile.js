@@ -11,9 +11,17 @@ import {
   ListItemText
 } from '@mui/material';
 
-import { IconListCheck, IconMail, IconSettings, IconUser } from '@tabler/icons-react';
+import { IconSettings } from '@tabler/icons-react';
 
-import ProfileImg from 'src/assets/images/profile/user-1.jpg';
+const imgUsuario = localStorage.getItem('imgUsuario'); 
+
+// URL do ícone padrão
+const defaultImg = "https://icones.pro/wp-content/uploads/2021/02/icone-utilisateur-gris.png";
+
+// Função para verificar se a URL da imagem do usuário é válida
+const isValidImageUrl = (url) => {
+  return url && url !== 'undefined' && url.startsWith('http');
+};
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -40,17 +48,16 @@ const Profile = () => {
         onClick={handleClick2}
       >
         <Avatar
-          src={ProfileImg}
-          alt={ProfileImg}
+          src={isValidImageUrl(imgUsuario) ? imgUsuario : defaultImg} // Verifica se a URL é válida
+          alt="Imagem do Usuário"
           sx={{
-            width: 35,
-            height: 35,
+            width: 50,
+            height: 50,
           }}
         />
       </IconButton>
-      {/* ------------------------------------------- */}
-      {/* Message Dropdown */}
-      {/* ------------------------------------------- */}
+
+      {/* Menu */}
       <Menu
         id="msgs-menu"
         anchorEl={anchorEl2}
@@ -65,16 +72,16 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem component={Link} to="/dashboard/settings" onClick={handleClose2}>
+        {/* <MenuItem component={Link} to="/dashboard/configuracoes" onClick={handleClose2}>
           <ListItemIcon>
             <IconSettings width={20} />
           </ListItemIcon>
           <ListItemText primary="Configurações" />
-        </MenuItem>
-        
+        </MenuItem> */}
+
         <Box mt={1} py={1} px={2}>
-          <Button to="/auth/login" variant="outlined" color="primary" component={Link} fullWidth>
-            Logout
+          <Button to="/login" variant="outlined" color="primary" component={Link} fullWidth>
+            Sair
           </Button>
         </Box>
       </Menu>

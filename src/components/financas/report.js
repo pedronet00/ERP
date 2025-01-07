@@ -78,13 +78,13 @@ const FinancasReport = () => {
                 <Grid item xs={6} style={{marginTop: '5%'}}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Mês com maior entrada:</Typography>
-                        <Typography variant="h5">{reportData.mesMaiorEntrada?.mes} - R$ {reportData.mesMaiorEntrada?.valor}</Typography>
+                        <Typography variant="h5">{reportData.mesMaiorEntrada?.mes} | R$ {reportData.mesMaiorEntrada?.valor}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={6} style={{marginTop: '5%'}}>
                     <Paper style={{ padding: '20px', textAlign: 'center' }}>
                         <Typography variant="h6">Mês com maior saída:</Typography>
-                        <Typography variant="h5">{reportData.mesMaiorSaida?.mes} - R$ {reportData.mesMaiorSaida?.valor}</Typography>
+                        <Typography variant="h5">{reportData.mesMaiorSaida?.mes} | R$ {reportData.mesMaiorSaida?.valor}</Typography>
                     </Paper>
                 </Grid>
             </Grid>
