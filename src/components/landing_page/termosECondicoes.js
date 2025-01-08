@@ -105,6 +105,14 @@ const TermsAndConditions = () => {
         </Stack>
       </Box>
     </Container>
+    {/* Rodapé */}
+            <Box sx={{ backgroundColor: '#333', color: 'white', padding: '2rem 0' }}>
+                <Container>
+                <Typography variant="body1" align="center">
+                    © {new Date().getFullYear()} Aliance ERP - Todos os direitos reservados.
+                </Typography>
+                </Container>
+            </Box>
     </div>
   );
 };
