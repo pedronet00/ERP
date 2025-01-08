@@ -96,7 +96,7 @@ const TermsAndConditions = () => {
           <Box>
             <Typography variant="h3" sx={{ color: '#404e90' }}>8. Contato</Typography>
             <Typography variant="body1" sx={{ color: '#555' }}>
-              Se você tiver alguma dúvida ou preocupação em relação aos Termos e Condições, entre em contato conosco através do e-mail <strong>suporte@aliance.com.br</strong> ou pelo telefone <strong>(11) 1234-5678</strong>.
+              Se você tiver alguma dúvida ou preocupação em relação aos Termos e Condições, entre em contato conosco através do e-mail <strong>suporte@aliance.com.br</strong> ou pelo telefone <strong>(18) 98807-5144</strong>.
             </Typography>
             <Typography variant="body1" sx={{ color: '#555' }}>
               Estamos à disposição para esclarecer qualquer questão e ajudar no que for necessário para o bom uso do sistema.
