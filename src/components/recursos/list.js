@@ -78,35 +78,35 @@ const RecursosList = () => {
   };
 
   const handleReport = () => {
-        Swal.fire({
-          title: 'Gerar Relatório',
-          html: `
-            <p>Insira a data inicial e final para a geração do relatório.</p>
-            <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
-            <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
-            <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
-          `,
-          showCancelButton: true,
-          confirmButtonText: 'Gerar Relatório',
-          cancelButtonText: 'Cancelar',
-          focusConfirm: false,
-          preConfirm: () => {
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
-            if (!dataInicial || !dataFinal) {
-              Swal.showValidationMessage('Por favor, insira ambas as datas!');
-              return false;
-            }
-            return { dataInicial, dataFinal };
-          }
-        }).then((result) => {
-          if (result.isConfirmed) {
-            const { dataInicial, dataFinal } = result.value;
-            // Redirecionar para o relatório com as datas na URL
-            navigate(`/relatorio/recursos?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
-          }
-        });
-      };
+    Swal.fire({
+      title: 'Gerar Relatório',
+      html: `
+        <p>Insira a data inicial e final para a geração do relatório.</p>
+        <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
+        <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
+        <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Gerar Relatório',
+      cancelButtonText: 'Cancelar',
+      focusConfirm: false,
+      preConfirm: () => {
+        const dataInicial = document.getElementById('dataInicial').value;
+        const dataFinal = document.getElementById('dataFinal').value;
+        if (!dataInicial || !dataFinal) {
+          Swal.showValidationMessage('Por favor, insira ambas as datas!');
+          return false;
+        }
+        return { dataInicial, dataFinal };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const { dataInicial, dataFinal } = result.value;
+        // Redirecionar para o relatório com as datas na URL
+        navigate(`/relatorio/recursos?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
+      }
+    });
+  };
 
   const handleIncrease = async (recurso) => {
     try {
@@ -140,14 +140,16 @@ const RecursosList = () => {
       </div>
       
 
-      <AppBar position="static" style={{ marginTop: '2%' }} color="default">
-        <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
-          {categoriaRecursoList.map((categoria) => (
-            <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
-          ))}
-          <Tab key="novaCategoria" label="Categoria +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
-        </Tabs>
-      </AppBar>
+      <Box sx={{ overflowX: 'auto' }}>
+        <AppBar position="static" style={{ marginTop: '2%' }} color="default">
+          <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="scrollable">
+            {categoriaRecursoList.map((categoria) => (
+              <Tab key={categoria.categoriaRecurso} label={categoria.categoriaRecurso} value={categoria.categoriaRecurso} />
+            ))}
+            <Tab key="novaCategoria" label="Categoria +" value="novaCategoria" style={{ backgroundColor: "#0d6efd", color: "white" }} />
+          </Tabs>
+        </AppBar>
+      </Box>
 
       {categoriaRecursoList.map((categoria) => (
         activeTab === categoria.categoriaRecurso && (

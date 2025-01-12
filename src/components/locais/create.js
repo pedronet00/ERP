@@ -2,27 +2,31 @@ import React, { useState, useEffect } from 'react';
 import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 const CriarLocal = () => {
-  const { localId } = useParams(); // Obtenha o ID do local da URL, se estiver editando
-  const [nomeLocal, setNomeLocal] = useState('');
+  const location = useLocation();
   const navigate = useNavigate();
-  const idCliente = localStorage.getItem('idCliente'); 
+  const [nomeLocal, setNomeLocal] = useState('');
+  const idCliente = localStorage.getItem('idCliente');
+
+  // Parse query string to get id
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id'); // Get id from query string
 
   // Função para buscar os detalhes do local se estiver editando
   useEffect(() => {
     const fetchLocal = async () => {
-      if (localId) {
+      if (id) {
         try {
-          const response = await api.get(`http://localhost:8000/api/locais/${localId}`);
-          const local = response.data.local; // Acesse os dados do local corretamente
+          const response = await api.get(`http://localhost:8000/api/locais/${id}`);
+          const local = response.data; // Acesse o local diretamente
           
           // Defina os estados com os dados do local
           setNomeLocal(local.nomeLocal);
         } catch (error) {
-          console.error("Erro ao buscar detalhes do local:", error);
+          console.error('Erro ao buscar detalhes do local:', error);
           Swal.fire(
             'Erro!',
             'Não foi possível buscar os detalhes do local.',
@@ -33,7 +37,7 @@ const CriarLocal = () => {
     };
 
     fetchLocal();
-  }, [localId]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,16 +48,16 @@ const CriarLocal = () => {
     };
 
     try {
-      if (localId) {
-        // Se localId estiver presente, atualize o local
-        await api.put(`http://localhost:8000/api/locais/${localId}`, localData);
+      if (id) {
+        // Se id estiver presente, atualize o local
+        await api.put(`http://localhost:8000/api/locais/${id}`, localData);
         Swal.fire(
           'Local Atualizado!',
           'O local foi atualizado com sucesso.',
           'success'
         );
       } else {
-        // Se não houver localId, crie um novo local
+        // Se não houver id, crie um novo local
         await api.post(`http://localhost:8000/api/locais`, localData);
         Swal.fire(
           'Local Criado!',
@@ -93,7 +97,7 @@ const CriarLocal = () => {
       </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h4" gutterBottom>
-          {localId ? 'Editar Local' : 'Criar Novo Local'}
+          {id ? 'Editar Local' : 'Criar Novo Local'}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -113,7 +117,7 @@ const CriarLocal = () => {
             fullWidth
             sx={{ marginTop: 2 }}
           >
-            {localId ? 'Atualizar Local' : 'Criar Local'}
+            {id ? 'Atualizar Local' : 'Criar Local'}
           </Button>
         </form>
       </Box>

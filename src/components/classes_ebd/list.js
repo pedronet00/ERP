@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../axiosConfig';
-import { IconEdit, IconPlus, IconClipboard } from '@tabler/icons-react';
+import { IconEdit, IconPlus, IconClipboard, IconDotsVertical } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
   Typography, Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Button,
-  TextField,
-  Pagination,
+  Table, TableBody,
+  TableCell, TableHead,
+  TableRow, Button,
+  TextField, Pagination,
+  IconButton, Menu, MenuItem
 } from '@mui/material';
 
 const EBDClassesList = () => {
@@ -21,6 +18,8 @@ const EBDClassesList = () => {
   const [searchName, setSearchName] = useState('');
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(5);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
   const navigate = useNavigate();
 
   // Função para buscar classes da API
@@ -69,6 +68,24 @@ const EBDClassesList = () => {
     navigate('/relatorio/classes');
   };
 
+  // Abrir o menu
+  const handleMenuOpen = (event, classItem) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedClass(classItem);
+  };
+
+  // Fechar o menu
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedClass(null);
+  };
+
+  // Editar classe
+  const handleEditClass = (id) => {
+    navigate(`/dashboard/classesEBD/create?id=${id}`);
+    handleMenuClose();
+  };
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -87,9 +104,11 @@ const EBDClassesList = () => {
       </Box>
 
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleReport}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewClass}><IconPlus/>Nova classe</button>
+        <button className="btn btn-success" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
+        <button className="btn btn-primary" onClick={handleNewClass}><IconPlus /> Nova classe</button>
       </div>
+
+      
 
       {/* Tabela de Classes */}
       <Table sx={{ marginTop: '2%' }}>
@@ -98,6 +117,7 @@ const EBDClassesList = () => {
             <TableCell align="center"><Typography variant="subtitle2" fontWeight={600}>Nome da Classe</Typography></TableCell>
             <TableCell align="center"><Typography variant="subtitle2" fontWeight={600}>Quantidade de Membros</Typography></TableCell>
             <TableCell align="center"><Typography variant="subtitle2" fontWeight={600}>Status</Typography></TableCell>
+            <TableCell align="center"><Typography variant="subtitle2" fontWeight={600}>Ações</Typography></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -106,16 +126,17 @@ const EBDClassesList = () => {
               <TableRow key={classItem.id}>
                 <TableCell align="center"><Typography variant="body2">{classItem.nomeClasse}</Typography></TableCell>
                 <TableCell align="center"><Typography variant="body2">{classItem.quantidadeMembros}</Typography></TableCell>
+                <TableCell align="center"><Typography variant="body2">{classItem.statusClasse === 1 ? 'Ativa' : 'Desativada'}</Typography></TableCell>
                 <TableCell align="center">
-                  <Typography variant="body2">
-                    {classItem.statusClasse === 1 ? 'Ativa' : 'Desativada'}
-                  </Typography>
+                  <IconButton onClick={(e) => handleMenuOpen(e, classItem)}>
+                    <IconDotsVertical />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={3} align="center">
+              <TableCell colSpan={4} align="center">
                 <Typography variant="body1">Nenhuma classe encontrada</Typography>
               </TableCell>
             </TableRow>
@@ -132,6 +153,25 @@ const EBDClassesList = () => {
           color="primary"
         />
       </Box>
+
+      {/* Menu de Ações */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <MenuItem onClick={() => handleEditClass(selectedClass.id)}>
+          Editar Classe
+        </MenuItem>
+      </Menu>
     </div>
   );
 };

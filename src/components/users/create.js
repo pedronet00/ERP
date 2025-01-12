@@ -5,11 +5,22 @@ import { TextField, Button, Container, Typography, Box, MenuItem, Select, FormCo
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconArrowLeft } from '@tabler/icons-react';
 
+// Função para gerar senha aleatória de 24 caracteres
+const generateRandomPassword = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+  let password = '';
+  for (let i = 0; i < 24; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+};
+
 const CreateUser = ({ onUserCreated }) => {
   const { userId } = useParams(); 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(generateRandomPassword()); // Define a senha aleatória automaticamente
   const [perfil, setPerfil] = useState('');
   const [dataNascimentoUsuario, setDataNascimentoUsuario] = useState('');
   const [imgUsuario, setImgUsuario] = useState(null); // Alterado para armazenar a imagem
@@ -36,7 +47,7 @@ const CreateUser = ({ onUserCreated }) => {
     const fetchUser = async () => {
       if (userId) {
         try {
-          const response = await api.get(`http://localhost:8000/api/user/${userId}`);
+          const response = await api.get(`http://localhost:8000/api/user/${userId}?idCliente=${idCliente}`);
           const user = response.data.user;
   
           setName(user.name);
@@ -46,7 +57,10 @@ const CreateUser = ({ onUserCreated }) => {
           setImgUsuario(user.imgUsuario);
           setOldPassword(user.password);
         } catch (error) {
-          console.error("Erro ao buscar detalhes do usuário:", error);
+          Swal.fire('Erro!', 'Não foi possível buscar os detalhes do usuário.', 'error')
+            .then(() => {
+                navigate(-1);
+            });
         }
       }
     };
@@ -61,7 +75,7 @@ const CreateUser = ({ onUserCreated }) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
-    formData.append('password', password || oldPassword);
+    formData.append('password', password || oldPassword); // Usando a senha aleatória ou a antiga
     formData.append('perfil', perfil);
     formData.append('dataNascimentoUsuario', dataNascimentoUsuario);
     formData.append('idCliente', idCliente);
@@ -148,16 +162,7 @@ const CreateUser = ({ onUserCreated }) => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <TextField
-            label="Senha"
-            type="password"
-            variant="outlined"
-            fullWidth
-            inputProps={{ maxLength: 40 }}
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          {/* Removido o campo de senha */}
           <FormControl fullWidth margin="normal" required>
             <InputLabel id="perfil-label">Perfil</InputLabel>
             <Select

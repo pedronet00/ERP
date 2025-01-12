@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../axiosConfig';
-import { IconCheck, IconX, IconClipboard, IconPlus } from '@tabler/icons-react'; // Ícones
+import { IconDotsVertical, IconPlus } from '@tabler/icons-react'; // Icon for the menu
 import { useNavigate } from 'react-router-dom';
 import {
   Typography,
@@ -10,62 +10,80 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Button,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 
 const ListaLocais = () => {
   const [locations, setLocations] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const navigate = useNavigate();
 
-  // Função para buscar locais da API
+  // Function to fetch locations from the API
   const fetchLocations = async () => {
     try {
-      const idCliente = localStorage.getItem('idCliente'); // Pegando idCliente do localStorage
-      const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // URL com idCliente como parâmetro
+      const idCliente = localStorage.getItem('idCliente');
+      const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`;
       const response = await api.get(apiUrl);
-      setLocations(response.data); // Guardar os locais obtidos na state
+      setLocations(response.data);
     } catch (error) {
-      console.error("Erro ao buscar locais:", error);
+      console.error('Erro ao buscar locais:', error);
     }
   };
 
-  // Usar o useEffect para chamar a API quando o componente for montado
   useEffect(() => {
     fetchLocations();
   }, []);
 
-  // Função para ativar local
-  const handleActivateLocation = async (locationId) => {
-    try {
-      await api.patch(`http://localhost:8000/api/locais/${locationId}/ativar`);
-      fetchLocations(); // Atualizar a lista de locais após ativar
-    } catch (error) {
-      console.error("Erro ao ativar local:", error);
-    }
-  };
-
-  // Função para desativar local
+  // Function to deactivate location
   const handleDeactivateLocation = async (locationId) => {
     try {
       await api.patch(`http://localhost:8000/api/locais/${locationId}/desativar`);
-      fetchLocations(); // Atualizar a lista de locais após desativar
+      fetchLocations(); // Refresh the list after deactivating
+      handleMenuClose();
     } catch (error) {
-      console.error("Erro ao desativar local:", error);
+      console.error('Erro ao desativar local:', error);
     }
   };
 
-  const handleNewUser = () => {
-    navigate('/dashboard/locais/create'); // Volta para a tela anterior
+  // Function to activate location
+  const handleActivateLocation = async (locationId) => {
+    try {
+      await api.patch(`http://localhost:8000/api/locais/${locationId}/ativar`);
+      fetchLocations(); // Refresh the list after activating
+      handleMenuClose();
+    } catch (error) {
+      console.error('Erro ao ativar local:', error);
+    }
+  };
+
+  const handleEditLocation = async (locationId) => {
+    window.location.href= `/dashboard/locais/create?id=${locationId}`
+  }
+
+  const handleMenuOpen = (event, location) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedLocation(location);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedLocation(null);
+  };
+
+  const handleNewLocation = () => {
+    navigate('/dashboard/locais/create');
   };
 
   return (
     <div className="container mt-4">
       <h2>Lista de Locais</h2>
       <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={handleNewUser}><IconClipboard/> Gerar Relatório</button>
-        <button className="btn btn-primary" onClick={handleNewUser}><IconPlus/>Novo Local</button>
+        <button className="btn btn-success" onClick={handleNewLocation}><IconPlus /> Novo Local</button>
       </div>
-      {/* Tabela de Locais */}
+      
       <Table sx={{ marginTop: '2%' }}>
         <TableHead>
           <TableRow>
@@ -99,29 +117,9 @@ const ListaLocais = () => {
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Box display="flex" justifyContent="center" gap={2}>
-                    {location.statusLocal === 1 ? (
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleDeactivateLocation(location.id)}
-                        startIcon={<IconX />}
-                        size="small"
-                      >
-                        Desativar
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => handleActivateLocation(location.id)}
-                        startIcon={<IconCheck />}
-                        size="small"
-                      >
-                        Ativar
-                      </Button>
-                    )}
-                  </Box>
+                  <IconButton onClick={(e) => handleMenuOpen(e, location)}>
+                    <IconDotsVertical />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))
@@ -134,6 +132,35 @@ const ListaLocais = () => {
           )}
         </TableBody>
       </Table>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        {selectedLocation && (
+          selectedLocation.statusLocal === 1 ? (
+            <MenuItem onClick={() => handleDeactivateLocation(selectedLocation.id)}>
+              Desativar Local
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={() => handleActivateLocation(selectedLocation.id)}>
+              Ativar Local
+            </MenuItem>
+          )
+        )}
+          <MenuItem onClick={() => handleEditLocation(selectedLocation.id)}>
+              Editar Local
+          </MenuItem>
+      </Menu>
     </div>
   );
 };

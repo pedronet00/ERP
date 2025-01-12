@@ -30,6 +30,13 @@ const CriarAulaEBD = () => {
     const fetchClasses = async () => {
       try {
         const response = await api.get(`http://localhost:8000/api/classesEBD?idCliente=${idCliente}`);
+        if (response.data.length === 0) {
+          Swal.fire({
+            title: 'Aviso!',
+            html: 'Não existem salas de EBD cadastradas. Por favor, <a href="/dashboard/classesEBD/create">cadastre uma sala</a> antes de registrar uma aula.',
+            icon: 'warning',
+          });
+        }
         setClasses(response.data); // Supondo que a resposta seja uma lista de classes
       } catch (error) {
         console.error("Erro ao buscar classes:", error);
@@ -74,6 +81,8 @@ const CriarAulaEBD = () => {
       setClasseAula('');
       setQuantidadePresentes('');
       setNumeroAula('');
+
+      navigate('/dashboard/aulasEBD')
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire('Erro!', error.response.data.error, 'error');

@@ -86,7 +86,10 @@ const ListaCultos = () => {
   };
 
   const handleEditarCulto = () => {
-    navigate(`/dashboard/cultos/create`);
+    if (selectedCulto) {
+      navigate(`/dashboard/cultos/create?idCulto=${selectedCulto}`);
+    }
+    handleMenuClose();
   };
 
   const handleDeleteCulto = async () => {

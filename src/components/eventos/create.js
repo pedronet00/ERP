@@ -40,6 +40,14 @@ const CadastrarEvento = () => {
       try {
         const apiUrl = `http://localhost:8000/api/locais?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
         const response = await api.get(apiUrl);
+
+        if (response.data.length === 0) {
+          Swal.fire({
+            title: 'Aviso!',
+            html: 'Não existem locais cadastrados. Por favor, <a href="/dashboard/locais/create">cadastre um local</a> antes de criar o encontro.',
+            icon: 'warning',
+          });
+        }
         const locaisData = response.data;
 
         if (locaisData.length === 0) {
@@ -67,7 +75,7 @@ const CadastrarEvento = () => {
     const fetchEvento = async () => {
       if (eventId) {
         try {
-          const response = await api.get(`http://localhost:8000/api/eventos/${eventId}`);
+          const response = await api.get(`http://localhost:8000/api/eventos/${eventId}?idCliente=${idCliente}`);
           const evento = response.data;
   
           setNomeEvento(evento.evento.nomeEvento || '');
@@ -77,7 +85,10 @@ const CadastrarEvento = () => {
           setPrioridadeEvento(evento.evento.prioridadeEvento || '');
           setOrcamentoEvento(evento.evento.orcamentoEvento || '');
         } catch (error) {
-          console.error('Erro ao buscar o evento:', error);
+          Swal.fire('Erro!', 'Não foi possível buscar os detalhes do evento.', 'error')
+            .then(() => {
+                navigate(-1);
+            });
         }
       }
     };

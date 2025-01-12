@@ -17,7 +17,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IconDotsVertical, IconClipboard, IconPlus } from '@tabler/icons-react';
+import { IconDotsVertical, IconArrowLeft } from '@tabler/icons-react';
 import QuantidadeMembrosCelula from '../../views/dashboard/components/QuantidadeMembrosCelula';
 import InformativoProximoEncontro from '../../views/dashboard/components/ProximosEncontrosCelulas';
 
@@ -27,9 +27,29 @@ const PerfilCelula = () => {
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedEncontro, setSelectedEncontro] = useState(null);
+  const [qtdeUsuarios, setQtdeUsuarios] = useState(0);
+  const [versiculoAtual, setVersiculoAtual] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente');
+
+  const versiculos = [
+    { versiculo: "Porque eu sei que o meu Redentor vive, e que por fim se levantará sobre a terra.", endereco: "Jó 19:25" },
+    { versiculo: "O Senhor é o meu pastor, nada me faltará.", endereco: "Salmos 23:1" },
+    { versiculo: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", endereco: "João 3:16" },
+    { versiculo: "Aquele que habita no esconderijo do Altíssimo, à sombra do Onipotente descansará.", endereco: "Salmos 91:1" },
+    { versiculo: "Posso todas as coisas em Cristo que me fortalece.", endereco: "Filipenses 4:13" },
+    { versiculo: "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça.", endereco: "Isaías 41:10" },
+    { versiculo: "Deleita-te também no Senhor, e ele te concederá o que deseja o teu coração.", endereco: "Salmos 37:4" },
+    { versiculo: "O Senhor é a minha luz e a minha salvação; a quem temerei? O Senhor é a força da minha vida; de quem me recearei?", endereco: "Salmos 27:1" },
+    { versiculo: "Porque para mim o viver é Cristo, e o morrer é ganho.", endereco: "Filipenses 1:21" },
+    { versiculo: "Mas os que esperam no Senhor renovarão as forças, subirão com asas como águias; correrão, e não se cansarão; caminharão, e não se fatigarão.", endereco: "Isaías 40:31" }
+  ];
+
+  useEffect(() => {
+    const versiculoAleatorio = versiculos[Math.floor(Math.random() * versiculos.length)];
+    setVersiculoAtual(versiculoAleatorio);
+  }, []);
 
   const formatarData = (data) => {
     const dateObj = new Date(data);
@@ -56,6 +76,16 @@ const PerfilCelula = () => {
     } catch (error) {
       console.error('Erro ao buscar encontros:', error);
       Swal.fire('Erro!', 'Não foi possível buscar os encontros da célula.', 'error');
+    }
+  };
+
+  const fetchQtdeUsuarios = async () => {
+    try {
+      const response = await api.get(`http://localhost:8000/api/membrosCount?idCelula=${id}`);
+      setQtdeUsuarios(response.data.totalMembros);
+    } catch (error) {
+      console.error('Erro ao buscar quantidade de membros:', error);
+      Swal.fire('Erro!', 'Não foi possível buscar a quantidade de membros da célula.', 'error');
     }
   };
 
@@ -101,11 +131,21 @@ const PerfilCelula = () => {
     setLoading(true);
     fetchCelula();
     fetchEncontros();
+    fetchQtdeUsuarios();
     setLoading(false);
   }, [id, idCliente]);
 
+  const handleGoBack = () => {
+    navigate(-1)
+  }
+
   return (
     <Container maxWidth="lg">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+              <button className="btn btn-secondary" onClick={handleGoBack}>
+                <IconArrowLeft /> Voltar
+              </button>
+            </div>
       <Box
         sx={{
           backgroundImage: celula?.imagemCelula
@@ -135,14 +175,16 @@ const PerfilCelula = () => {
         }}
         elevation={0}
       >
-        <Typography variant="body1" fontStyle="italic">
-          "Foge também das paixões da mocidade, e segue a justiça, a fé, o amor, a paz com os que, de coração puro, invocam o Senhor." — 2 Timóteo 2:22
-        </Typography>
+        {versiculoAtual && (
+          <Typography variant="body1" fontStyle="italic">
+            "{versiculoAtual.versiculo}" — {versiculoAtual.endereco}
+          </Typography>
+        )}
       </Paper>
 
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <QuantidadeMembrosCelula nomeCelula={celula?.nomeCelula || ''} qtdeUsuarios={50} />
+          <QuantidadeMembrosCelula nomeCelula={celula?.nomeCelula || ''} qtdeUsuarios={qtdeUsuarios} />
         </Grid>
         <Grid item xs={6}>
           <InformativoProximoEncontro idCelula={celula?.idCelula || ''} />

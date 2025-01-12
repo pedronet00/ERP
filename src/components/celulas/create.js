@@ -66,6 +66,14 @@ const CriarCelula = () => {
     const fetchLocais = async () => {
       try {
         const response = await api.get(`http://localhost:8000/api/locais?idCliente=${idCliente}`);
+
+        if (response.data.length === 0) {
+          Swal.fire({
+            title: 'Aviso!',
+            html: 'Não existem locais cadastrados. Por favor, <a href="/dashboard/locais/create">cadastre um local</a> antes de criar o encontro.',
+            icon: 'warning',
+          });
+        }
         const ativos = response.data.filter((local) => local.statusLocal === 1);
         setLocais(ativos);
       } catch (error) {

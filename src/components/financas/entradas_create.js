@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
+import { IconArrowLeft } from '@tabler/icons-react';
 import { Container, Typography, Box, TextField, Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 const CadastrarEntrada = () => {
   const [descricao, setDescricao] = useState('');
@@ -9,6 +11,7 @@ const CadastrarEntrada = () => {
   const [data, setData] = useState('');
   const [categoria, setCategoria] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +33,9 @@ const CadastrarEntrada = () => {
       setValor('');
       setData('');
       setCategoria('');
+
+      navigate('/dashboard/financas');
+
     } catch (error) {
       console.error('Erro ao cadastrar entrada:', error);
       Swal.fire('Erro!', 'Ocorreu um erro ao cadastrar a entrada.', 'error');
@@ -38,8 +44,17 @@ const CadastrarEntrada = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  }
+
   return (
     <Container maxWidth="sm">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+              <button className="btn btn-secondary" onClick={handleGoBack}>
+                <IconArrowLeft /> Voltar
+              </button>
+            </div>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h5" gutterBottom>Cadastrar Entrada</Typography>
         <form onSubmit={handleSubmit}>

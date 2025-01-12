@@ -41,6 +41,8 @@ const CriarEncontroCelula = () => {
       try {
         const response = await api.get(`http://localhost:8000/api/locais?idCliente=${idCliente}`);
         setLocais(response.data);
+        
+        
       } catch (error) {
         console.error("Erro ao buscar locais:", error);
         Swal.fire('Erro!', 'Não foi possível buscar a lista de locais.', 'error');
@@ -77,7 +79,7 @@ const CriarEncontroCelula = () => {
       setTemaEstudo('');
       setDataEncontro('');
 
-      navigate(`/dashboard/celulas/${idCelula}/encontros`);
+      navigate(`/dashboard/celulas/${idCelula}`);
     } catch (error) {
       if (error.response && error.response.data.error) {
         Swal.fire('Erro!', error.response.data.error, 'error');

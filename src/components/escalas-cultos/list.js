@@ -7,6 +7,7 @@ import {
   IconPlus,
   IconClipboard,
   IconCheck,
+  IconBrandWhatsapp,
   IconArrowLeft,
   IconDotsVertical // Ícone dos três pontinhos
 } from '@tabler/icons-react'; // IconCheck adicionado
@@ -85,34 +86,9 @@ const ListaEscalasCulto = () => {
   }
 
   const handleReport = () => {
-    Swal.fire({
-      title: 'Gerar Relatório',
-      html: `
-        <p>Insira a data inicial e final para a geração do relatório.</p>
-        <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
-        <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
-        <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Gerar Relatório',
-      cancelButtonText: 'Cancelar',
-      focusConfirm: false,
-      preConfirm: () => {
-        const dataInicial = document.getElementById('dataInicial').value;
-        const dataFinal = document.getElementById('dataFinal').value;
-        if (!dataInicial || !dataFinal) {
-          Swal.showValidationMessage('Por favor, insira ambas as datas!');
-          return false;
-        }
-        return { dataInicial, dataFinal };
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const { dataInicial, dataFinal } = result.value;
-        // Redirecionar para o relatório com as datas na URL
-        navigate(`/relatorio/escala-culto?dataInicial=${dataInicial}&dataFinal=${dataFinal}&idCulto=${idCulto}`);
-      }
-    });
+    
+    navigate(`/relatorio/escala-culto?idCulto=${idCulto}`);
+      
   };
 
   const handleMenuClick = (event, escala) => {
@@ -165,6 +141,23 @@ const ListaEscalasCulto = () => {
       }
     }
   };
+
+  const handleWhatsappMessage = () => {
+    if (!currentEscala) return;
+    const { pessoa, funcao_culto } = currentEscala;
+    const numeroTelefone = '5518988075144'; // Número de telefone fixo para o exemplo
+    const mensagem = `Olá, ${pessoa.name}! Você está escalado para o culto na função de ${funcao_culto.nomeFuncao}. Data: ${new Date().toLocaleDateString()}.`;
+  
+    // Codifica a mensagem para inseri-la na URL
+    const mensagemCodificada = encodeURIComponent(mensagem);
+    const urlWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagemCodificada}`;
+  
+    // Abre a URL do WhatsApp em uma nova aba
+    window.open(urlWhatsapp, '_blank');
+  
+    handleMenuClose();
+  };
+  
   
 
   return (
@@ -231,6 +224,11 @@ const ListaEscalasCulto = () => {
                     <MenuItem onClick={handleEditEscala}>
                       Editar escala
                     </MenuItem>
+                    <MenuItem onClick={handleWhatsappMessage}>
+                      Lembrete &nbsp;
+                      <IconBrandWhatsapp style={{ fontWeight: 100, width: '15px', height: '15px' }} />
+                    </MenuItem>
+
                     <MenuItem style={{color: 'red'}} onClick={handleDeleteEscala}>
                       Excluir escala
                     </MenuItem>

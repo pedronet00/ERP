@@ -346,6 +346,9 @@ const UserList = () => {
           horizontal: 'center',
         }}
       >
+        <MenuItem onClick={() => navigate(`/dashboard/user/create/${selectedUser?.id}`)}>
+        Editar usuário
+      </MenuItem>
        {permissaoAtivarDesativarUsuario === 1 && 
         selectedUser?.usuarioAtivo === 0 && ( // Verifica se o usuário está inativo
             <MenuItem onClick={handleActivateUser}>Ativar Usuário</MenuItem>
@@ -356,6 +359,7 @@ const UserList = () => {
           <MenuItem onClick={handleDeactivateUser}>Desativar Usuário</MenuItem>
         )}
 
+      
       <MenuItem onClick={() => navigate(`/dashboard/escalas-cultos/usuario?idPessoa=${selectedUser?.id}`)}>
         Ver Escalas do Usuário
       </MenuItem>

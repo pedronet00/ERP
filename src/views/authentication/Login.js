@@ -116,7 +116,7 @@ const Login = () => {
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     Não tem uma conta?{' '}
-                    <Link to="/register" style={{ textDecoration: 'none', color: '#393f81' }}>
+                    <Link to="/cadastro" style={{ textDecoration: 'none', color: '#393f81' }}>
                       Registre-se aqui
                     </Link>
                   </Typography>

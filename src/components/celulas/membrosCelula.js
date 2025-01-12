@@ -13,7 +13,7 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { IconDotsVertical, IconClipboard, IconPlus } from '@tabler/icons-react';
+import { IconDotsVertical, IconClipboard, IconPlus, IconArrowLeft } from '@tabler/icons-react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ListaMembrosCelula = () => {
@@ -48,6 +48,10 @@ const ListaMembrosCelula = () => {
     setSelectedMember(null);
   };
 
+  const handleGoBack = () => {
+    navigate(-1)
+  }
+
   const handleDeleteMember = async () => {
     handleMenuClose();
 
@@ -74,6 +78,11 @@ const ListaMembrosCelula = () => {
 
   return (
     <div className="container mt-4">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+        <button className="btn btn-secondary" onClick={handleGoBack}>
+          <IconArrowLeft /> Voltar
+        </button>
+      </div>
       <h2>Lista de Membros da Célula</h2>
       <div className="d-flex justify-content-between mb-3">
         <button className="btn btn-success" onClick={() => navigate(`/dashboard/membrosCelula/${idCelula}/adicionar`)}>

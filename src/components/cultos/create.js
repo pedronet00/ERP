@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 import { Typography, Box, TextField, MenuItem, Button, Alert } from '@mui/material';
 import Swal from 'sweetalert2';
+import { IconArrowLeft} from '@tabler/icons-react'; // IconCheck adicionado
 
 const CriarCulto = () => {
   const [searchParams] = useSearchParams();
@@ -13,6 +14,7 @@ const CriarCulto = () => {
   const [locais, setLocais] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const fetchCulto = async () => {
     try {
@@ -61,6 +63,7 @@ const CriarCulto = () => {
       turnoCulto: parseInt(turnoCulto, 10),
       idCliente: parseInt(idCliente, 10),
       localCulto: localCulto,
+      idCulto: idCulto
     };
     try {
       if (idCulto) {
@@ -102,8 +105,15 @@ const CriarCulto = () => {
     }
   };
 
+  const handleGoBack = () =>{
+    navigate(-1);
+  }
+
   return (
     <Box className="container mt-4">
+      <div className="d-flex justify-content-between mb-3" style={{ marginTop: '2%' }}>
+              <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+            </div>
       <Typography variant="h5" gutterBottom>
         {idCulto ? 'Editar Culto' : 'Criar Culto'}
       </Typography>

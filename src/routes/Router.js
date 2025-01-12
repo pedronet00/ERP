@@ -99,15 +99,21 @@ const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const SemPermissao = Loadable(lazy(() => import('../views/authentication/SemPermissao')));
 const ReportCreate = Loadable(lazy(() => import('../components/reports/create')));
 
+import MercadoPagoButton from '../components/mercadopago/index.js';
+import CancelCheckout from '../components/checkout/cancelCheckout.js';
+import SuccessCheckout from '../components/checkout/successCheckout.js';
 
 const Router = [
    // Landing page fora das rotas autenticadas
    { path: '/', element: <AlianceLandingPage /> },
 
+   { path: '/tete', element: <MercadoPagoButton /> },
    { path: '/login', element: <Login /> },
    { path: '/cadastro', element: <Register /> },
    { path: '/pagamento', element: <SavePaymentMethodWrapper /> },
    { path: '/termos-e-condicoes', element: <TermsAndConditions /> },
+   { path: '/cancelar-checkout', element: <CancelCheckout /> },
+   { path: '/sucesso-checkout', element: <SuccessCheckout /> },
    // Rotas autenticadas
    {
     path: '/dashboard',

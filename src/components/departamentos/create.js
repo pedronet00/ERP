@@ -13,24 +13,30 @@ const CriarDepartamento = () => {
   const navigate = useNavigate();
   const idCliente = localStorage.getItem('idCliente');
 
-  useEffect(() => {
-    const fetchDepartment = async () => {
-      if (id) {
-        try {
-          const response = await api.get(`http://localhost:8000/api/departamentos/${id}`);
-          const departamento = response.data.departamento;
+useEffect(() => {
+  const fetchDepartment = async () => {
+    if (id && idCliente) { // Verifica se ambos id e idCliente existem
+      try {
+        // Passando idCliente como parâmetro de consulta
+        const response = await api.get(`http://localhost:8000/api/departamentos/${id}?idCliente=${idCliente}`);
+        const departamento = response.data.departamento;
 
-          setTituloDepartamento(departamento.tituloDepartamento);
-          setTextoDepartamento(departamento.textoDepartamento);
-        } catch (error) {
-          console.error('Erro ao buscar detalhes do departamento:', error);
-          Swal.fire('Erro!', 'Não foi possível buscar os detalhes do departamento.', 'error');
-        }
+        setTituloDepartamento(departamento.tituloDepartamento);
+        setTextoDepartamento(departamento.textoDepartamento);
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do departamento:', error);
+        Swal.fire('Erro!', 'Não foi possível buscar os detalhes do departamento.', 'error')
+  .then(() => {
+      navigate(-1);
+  });
+
       }
-    };
+    }
+  };
 
-    fetchDepartment();
-  }, [id]);
+  fetchDepartment();
+}, [id, idCliente]); // Adiciona idCliente no array de dependências
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

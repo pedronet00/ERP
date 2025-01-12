@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import api from '../../axiosConfig';
 import Swal from 'sweetalert2';
-import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck } from '@tabler/icons-react';
-import { Container, Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, TextField, Select, MenuItem, InputLabel, FormControl, Chip, Button } from '@mui/material';
+import { IconX, IconEdit, IconPlus, IconClipboard, IconCheck, IconDotsVertical } from '@tabler/icons-react';
+import { Container, Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, TextField, Select, MenuItem, InputLabel, FormControl, Chip, Button, IconButton, Menu } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Financas = () => {
@@ -12,6 +12,8 @@ const Financas = () => {
   const [filterDate, setFilterDate] = useState('');
   const [filterCategoria, setFilterCategoria] = useState('');
   const [loading, setLoading] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const idCliente = localStorage.getItem('idCliente');  
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -37,7 +39,6 @@ const Financas = () => {
       return []; // Retorna um array vazio em caso de erro
     }
   }
-
 
   useEffect(() => {
     const fetchFinancas = async () => {
@@ -86,7 +87,40 @@ const Financas = () => {
     navigate('/relatorio/financas');
   };
 
-  // Função para agrupar entradas e saídas por mês
+  const handleMenuClick = (event, item) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedItem(item);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedItem(null);
+  };
+
+  const handleDelete = async (type, id) => {
+    handleMenuClose();
+    const result = await Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você não poderá reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, excluir!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await api.delete(`http://localhost:8000/api/${type}/${id}`);
+        Swal.fire('Excluído!', 'O registro foi excluído.', 'success');
+        setEntradas(entradas.filter(entrada => entrada.id !== id));
+        setSaidas(saidas.filter(saida => saida.id !== id));
+      } catch (error) {
+        Swal.fire('Erro!', 'Não foi possível excluir o registro.', 'error');
+      }
+    }
+  };
+
   const groupByMonth = (data) => {
     return data.reduce((acc, item) => {
       const [ano, mes] = item.data.split('-'); // Extrair ano e mês da data
@@ -105,18 +139,17 @@ const Financas = () => {
   const groupedSaidas = groupByMonth(filteredData.saidas);
 
   useEffect(() => {
-            fetchPerfilFuncao().then(fetchedData => {
-              setData(fetchedData); // Atualiza o estado com os dados
-            });
-          }, []); // Executa apenas uma vez ao montar o componente
-        
-          if (data === null) {
-            return []; // Retorna um array vazio enquanto os dados estão sendo carregados
-          }
-          
-    const permissaoCadastroEntradas = data.find(permissao => permissao.idFuncao === 13)?.permissao; // Listagem de células
-    const permissaoCadastroSaidas = data.find(permissao => permissao.idFuncao === 14)?.permissao; // Listagem de células
+    fetchPerfilFuncao().then(fetchedData => {
+      setData(fetchedData); // Atualiza o estado com os dados
+    });
+  }, []); // Executa apenas uma vez ao montar o componente
+
+  if (data === null) {
+    return []; // Retorna um array vazio enquanto os dados estão sendo carregados
+  }
   
+  const permissaoCadastroEntradas = data.find(permissao => permissao.idFuncao === 13)?.permissao; // Listagem de células
+  const permissaoCadastroSaidas = data.find(permissao => permissao.idFuncao === 14)?.permissao; // Listagem de células
 
   return (
     <Container maxWidth="lg">
@@ -168,8 +201,6 @@ const Financas = () => {
           <Typography variant="body1">Carregando...</Typography>
         ) : (
           <>
-            {/* Tabela de Entradas por Mês */}
-            
             {Object.keys(groupedEntradas).map(month => (
               <div key={month}>
                 <Typography variant="h6" gutterBottom style={{'backgroundColor': 'lightgreen','padding': '1%', 'color': 'white'}}>
@@ -182,6 +213,7 @@ const Financas = () => {
                       <TableCell>Data</TableCell>
                       <TableCell>Categoria</TableCell>
                       <TableCell>Valor</TableCell>
+                      <TableCell>Ações</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -191,14 +223,19 @@ const Financas = () => {
                           <TableCell>{entrada.descricao}</TableCell>
                           <TableCell>{entrada.data.split('-').reverse().join('/')}</TableCell>
                           <TableCell>
-                            <Chip label={entrada.categoria === 1 ? 'Dízimo' : entrada.categoria === 2 ? 'Oferta' : 'Outros'} />
+                            <Chip label={entrada.categoria === 1 ? 'Dízimo' : entrada.categoria === 2 ? 'Oferta' : entrada.categoria === 3 ? 'Doação' : 'Outros'}/>
                           </TableCell>
                           <TableCell>R$ {entrada.valor}</TableCell>
+                          <TableCell>
+                            <IconButton onClick={(event) => handleMenuClick(event, { type: 'entradas', id: entrada.id })}>
+                              <IconDotsVertical />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={4} align="center">Nenhuma entrada encontrada</TableCell>
+                        <TableCell colSpan={5} align="center">Nenhuma entrada encontrada</TableCell>
                       </TableRow>
                     )}
                   </TableBody>
@@ -208,7 +245,6 @@ const Financas = () => {
             {permissaoCadastroSaidas == 1 && (
             <button className="btn btn-danger" onClick={handleNewSaida}><IconPlus/>Nova saída</button>
             )}
-            {/* Tabela de Saídas por Mês */}
             {Object.keys(groupedSaidas).map(month => (
               <div key={month}>
                 <Typography variant="h6" gutterBottom sx={{ marginTop: 4 }} style={{'backgroundColor': '#f58d8d','padding': '1%', 'color': 'white'}}>
@@ -221,6 +257,7 @@ const Financas = () => {
                       <TableCell>Data</TableCell>
                       <TableCell>Categoria</TableCell>
                       <TableCell>Valor</TableCell>
+                      <TableCell>Ações</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -233,17 +270,29 @@ const Financas = () => {
                             <Chip label={saida.categoria=== 1 ? 'Salários' : saida.categoria === 2 ? 'Manutenção' : saida.categoria === 3 ? 'Materiais' : 'Outros'}  />
                           </TableCell>
                           <TableCell>R$ {saida.valor}</TableCell>
+                          <TableCell>
+                            <IconButton onClick={(event) => handleMenuClick(event, { type: 'saidas', id: saida.id })}>
+                              <IconDotsVertical />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={4} align="center">Nenhuma saída encontrada</TableCell>
+                        <TableCell colSpan={5} align="center">Nenhuma saída encontrada</TableCell>
                       </TableRow>
                     )}
                   </TableBody>
                 </Table>
               </div>
             ))}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={() => handleDelete(selectedItem.type, selectedItem.id)}>Excluir</MenuItem>
+            </Menu>
           </>
         )}
       </Box>

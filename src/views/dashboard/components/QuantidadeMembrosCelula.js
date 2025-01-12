@@ -71,14 +71,7 @@ const QuantidadeMembrosCelula = ({ qtdeUsuarios, nomeCelula }) => {  // Recebe a
           <Typography variant="h3" fontWeight="700">
             {qtdeUsuarios} {/* Usa a quantidade de membros passada por props */}
           </Typography>
-          <Stack direction="row" spacing={1} mt={1} alignItems="center">
-            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
-              <IconArrowUpLeft width={20} color="#39B69A" />
-            </Avatar>
-            <Typography variant="subtitle2" fontWeight="600">
-              +9%
-            </Typography>
-          </Stack>
+          
           <Stack spacing={3} mt={3} direction="row">
             
           </Stack>

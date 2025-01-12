@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
 
 const EscalaCultoReport = () => {
     const [escalas, setEscalas] = useState([]);
     const [cultoData, setCultoData] = useState({});
     const location = useLocation();
+    const navigate = useNavigate();
 
     const fetchEscalas = async () => {
         try {
@@ -40,8 +42,26 @@ const EscalaCultoReport = () => {
         fetchEscalas();
     }, [location.search]);
 
+    const handleGoBack = () => {
+        navigate(-1);
+    }
+
     return (
         <Paper style={{ width: '80%', margin: 'auto', padding: '20px' }}>
+            <style>
+                {`
+                @media print {
+                    .no-print {
+                        display: none !important;
+                    }
+                }
+                `}
+            </style>
+
+            {/* Botão de voltar */}
+            <div className="d-flex justify-content-between mb-3 no-print" style={{ marginTop: '2%' }}>
+                <button className="btn btn-secondary" onClick={handleGoBack}><IconArrowLeft /> Voltar</button>
+            </div>
             <Typography variant="h4" gutterBottom style={{ textAlign: 'center', padding: '20px 0' }}>
                 Relatório de Escala de Culto
             </Typography>

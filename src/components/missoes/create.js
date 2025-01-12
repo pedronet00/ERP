@@ -33,7 +33,7 @@ const MissaoEdit = () => {
     const fetchMissao = async () => {
       if (missaoId) {
         try {
-          const response = await api.get(`http://localhost:8000/api/missoes/${missaoId}`);
+          const response = await api.get(`http://localhost:8000/api/missoes/${missaoId}?idCliente=${idCliente}`);
           const missao = response.data.missao; // Acesse os dados da missão
           
           // Defina os estados com os dados da missão
@@ -42,8 +42,10 @@ const MissaoEdit = () => {
           setCidadeMissao(missao.cidadeMissao);
           setPastorTitular(missao.pastorTitular);
         } catch (error) {
-          console.error("Erro ao buscar detalhes da missão:", error);
-        }
+        Swal.fire('Erro!', 'Não foi possível buscar os detalhes da missão.', 'error')
+                    .then(() => {
+                        navigate(-1);
+                    });        }
       }
     };
 
