@@ -95,6 +95,7 @@ const ListaCelulas = () => {
 
 const handleExcluirCelula = () => {
   // Exibe a janela de confirmação do SweetAlert
+  handleMenuClose();
   Swal.fire({
     title: 'Tem certeza?',
     text: "Esta ação não pode ser desfeita.",
@@ -116,6 +117,7 @@ const handleExcluirCelula = () => {
           'success'
         );
 
+        fetchCelulas()
         // Aqui você pode redirecionar o usuário ou fazer qualquer outra ação após a exclusão
         // navigate('/caminho/para/redirecionar'); // Caso precise redirecionar após a exclusão
 

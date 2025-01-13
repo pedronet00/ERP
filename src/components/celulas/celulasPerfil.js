@@ -89,7 +89,35 @@ const PerfilCelula = () => {
     }
   };
 
+  const handleRegistrarPresentes = async (encontroId) => {
+    handleMenuClose();
+    const { value: qtdePresentes } = await Swal.fire({
+      title: 'Registrar Presentes',
+      input: 'number',
+      inputLabel: 'Quantidade de presentes',
+      inputPlaceholder: 'Insira a quantidade de presentes',
+      showCancelButton: true,
+      confirmButtonText: 'Registrar',
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (qtdePresentes) {
+      try {
+        await api.post('http://localhost:8000/api/encontrosCelulas/registrarPresentes', {
+          idEncontro: encontroId,
+          qtdePresentes: parseInt(qtdePresentes, 10),
+        });
+        Swal.fire('Sucesso!', 'Quantidade de presentes registrada com sucesso.', 'success');
+        fetchEncontros(); // Atualiza a lista para refletir as mudanças
+      } catch (error) {
+        console.error('Erro ao registrar presentes:', error);
+        Swal.fire('Erro!', 'Não foi possível registrar a quantidade de presentes.', 'error');
+      }
+    }
+  };
+
   const handleDeleteEncontro = async (encontroId) => {
+    handleMenuClose();
     const result = await Swal.fire({
       title: 'Confirmar exclusão',
       text: 'Tem certeza que deseja excluir este encontro?',
@@ -100,7 +128,7 @@ const PerfilCelula = () => {
       confirmButtonText: 'Sim, excluir!',
       cancelButtonText: 'Cancelar',
     });
-
+  
     if (result.isConfirmed) {
       try {
         await api.delete(`http://localhost:8000/api/encontrosCelulas/${encontroId}`);
@@ -234,6 +262,11 @@ const PerfilCelula = () => {
                     onClose={handleMenuClose}
                   >
                     <MenuItem onClick={() => handleEditEncontro(encontro.id)}>Editar encontro</MenuItem>
+                    {encontro.qtdePresentes === null && (
+  <MenuItem onClick={() => handleRegistrarPresentes(encontro.id)}>
+    Registrar Presentes
+  </MenuItem>
+)}
                     <MenuItem style={{color: 'red'}} onClick={() => handleDeleteEncontro(encontro.id)}>Excluir encontro</MenuItem>
                   </Menu>
                 </TableCell>
