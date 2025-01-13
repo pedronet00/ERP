@@ -30,19 +30,7 @@ const RecursosList = () => {
     try {
       const apiUrl = `http://localhost:8000/api/recurso?idCliente=${idCliente}`;
       const response = await api.get(apiUrl);
-      const recursosData = response.data;
-
-      // Verifica se a lista de recursos está vazia
-      if (recursosData.length === 0) {
-        Swal.fire({
-          title: 'Dica',
-          html: 'Antes de cadastrar um recurso, você deve criar categorias de recursos e <a href="/dashboard/tipoRecursos/create" style="text-decoration: none;">tipos de recursos</a>.',
-          icon: 'info',
-          confirmButtonText: 'Entendi'
-        });
-      }
-
-      setRecursosList(recursosData);
+      setRecursosList(response.data);
     } catch (error) {
       console.error("Erro ao buscar recursos:", error);
     }
@@ -102,7 +90,6 @@ const RecursosList = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const { dataInicial, dataFinal } = result.value;
-        // Redirecionar para o relatório com as datas na URL
         navigate(`/relatorio/recursos?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
       }
     });
@@ -128,6 +115,28 @@ const RecursosList = () => {
     }
   };
 
+  const handleDelete = (recursoId) => {
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Deseja realmente excluir este recurso?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api.delete(`http://localhost:8000/api/recurso/${recursoId}`)
+          .then(() => {
+            Swal.fire('Excluído!', 'O recurso foi excluído com sucesso.', 'success');
+            fetchRecursos();
+          })
+          .catch((error) => {
+            Swal.fire('Erro!', 'Houve um problema ao excluir o recurso.', 'error');
+          });
+      }
+    });
+  };
+
   return (
     <div style={{ maxWidth: '100%', padding: '20px' }}>
       <Typography variant="h4" gutterBottom>
@@ -139,7 +148,6 @@ const RecursosList = () => {
         <button className="btn btn-primary" onClick={handleReport}><IconClipboard /> Gerar Relatório</button>
       </div>
       
-
       <Box sx={{ overflowX: 'auto' }}>
         <AppBar position="static" style={{ marginTop: '2%' }} color="default">
           <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" variant="scrollable">
@@ -160,9 +168,7 @@ const RecursosList = () => {
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Nome</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Tipo</Typography></TableCell>
                   <TableCell><Typography variant="subtitle2" fontWeight={600}>Quantidade</Typography></TableCell>
-                  {nivelUsuario > 1 && (
                   <TableCell align="right"><Typography variant="subtitle2" fontWeight={600}>Ações</Typography></TableCell>
-                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -173,13 +179,11 @@ const RecursosList = () => {
                       <TableCell><Typography variant="body2">{recurso.nomeRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.tipo.tipoRecurso}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{recurso.quantidadeRecurso}</Typography></TableCell>
-                      {nivelUsuario > 1 && (
                       <TableCell align="right">
                         <IconButton onClick={() => handleDecrease(recurso)}><IconMinus /></IconButton>
                         <IconButton onClick={() => handleIncrease(recurso)}><IconPlus /></IconButton>
-                        <IconButton><IconTrash style={{ color: "#ff4c4c" }} /></IconButton>
+                        <IconButton onClick={() => handleDelete(recurso.id)}><IconTrash style={{ color: "#ff4c4c" }} /></IconButton>
                       </TableCell>
-                      )}
                     </TableRow>
                   ))}
               </TableBody>

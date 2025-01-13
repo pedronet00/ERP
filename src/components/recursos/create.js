@@ -66,6 +66,8 @@ const RecursosCreate = () => {
         setCategoriaRecurso('');
         setTipoRecurso('');
         setQuantidadeRecurso('');
+
+        navigate('/dashboard/recursos');
       })
       .catch((error) => {
         if (error.response && error.response.data.error) {

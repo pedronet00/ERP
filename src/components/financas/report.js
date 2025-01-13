@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, Typography, TableContainer, TableHead, TableRow, Paper, IconButton, Grid } from '@mui/material';
 import { IconPrinter, IconArrowLeft } from '@tabler/icons-react';
 import api from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const FinancasReport = () => {
     const [reportData, setReportData] = useState({});
     const navigate = useNavigate();
+    const location = useLocation();
+    // Extrai as datas da URL (assumindo o formato /eventos-report?dataInicial=YYYY-MM-DD&dataFinal=YYYY-MM-DD)
+    const params = new URLSearchParams(location.search);
+    const dataInicial = params.get('dataInicial');
+    const dataFinal = params.get('dataFinal');
+
     
     // Função para buscar os dados financeiros da API
     const fetchFinancas = async () => {
         try {
             const idCliente = localStorage.getItem('idCliente'); // Pega o idCliente do localStorage
-            const apiUrl = `http://localhost:8000/api/financasReport?idCliente=${idCliente}`; // Monta a URL com o idCliente como parâmetro
+            const apiUrl = `http://localhost:8000/api/financasReport?idCliente=${idCliente}&dataInicial=${dataInicial}&dataFinal=${dataFinal}`; // Monta a URL com o idCliente como parâmetro
             const response = await api.get(apiUrl);
 
             // Armazena os dados do relatório

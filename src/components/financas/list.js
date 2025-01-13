@@ -84,7 +84,34 @@ const Financas = () => {
   };
 
   const handleReport = () => {
-    navigate('/relatorio/financas');
+    Swal.fire({
+      title: 'Gerar Relatório',
+      html: `
+        <p>Insira a data inicial e final para a geração do relatório.</p>
+        <p style="font-size: 12px;">*<b>Atenção:</b> não coloque períodos muito longos, pois isso acarretará na lentidão do processamento do relatório.</p>
+        <input type="date" id="dataInicial" class="swal2-input" placeholder="Data Inicial">
+        <input type="date" id="dataFinal" class="swal2-input" placeholder="Data Final">
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Gerar Relatório',
+      cancelButtonText: 'Cancelar',
+      focusConfirm: false,
+      preConfirm: () => {
+        const dataInicial = document.getElementById('dataInicial').value;
+        const dataFinal = document.getElementById('dataFinal').value;
+        if (!dataInicial || !dataFinal) {
+          Swal.showValidationMessage('Por favor, insira ambas as datas!');
+          return false;
+        }
+        return { dataInicial, dataFinal };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const { dataInicial, dataFinal } = result.value;
+        // Redirecionar para o relatório com as datas na URL
+        navigate(`/relatorio/financas?dataInicial=${dataInicial}&dataFinal=${dataFinal}`);
+      }
+    });
   };
 
   const handleMenuClick = (event, item) => {

@@ -95,7 +95,6 @@ const CadastrarEntrada = () => {
               onChange={(e) => setCategoria(e.target.value)}
               required
             >
-              <MenuItem value="1">Dízimo</MenuItem>
               <MenuItem value="2">Oferta</MenuItem>
               <MenuItem value="3">Doação</MenuItem>
               <MenuItem value="4">Outros</MenuItem>
